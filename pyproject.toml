@@ -33,7 +33,6 @@ dev = [
     "twine"
 ]
 
-
 [project.scripts]
 guidescan = "guidescan.__main__:main"
 
@@ -47,6 +46,9 @@ zip-safe = false
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["guidescan*"]
+
+[tool.setuptools.package-data]
+guidescan = ["config.json"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"

@@ -1,6 +1,6 @@
 from flask import Flask
 
-from guidescan import __version__
+from guidescan import __version__, config
 from guidescan.flask.blueprints import cache
 
 
