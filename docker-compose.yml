@@ -1,0 +1,12 @@
+version: "2"
+services:
+  app:
+    build: .
+    image: guidescan
+    ports:
+      - "80:5000"
+
+  celery:
+    build: .
+    image: guidescan_celery
+    command: python -m celery worker -l info -A guidescan.tasks.app

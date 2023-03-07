@@ -43,6 +43,9 @@ def setup_config():
     except KeyError as e:
         raise RuntimeError(f'Environment variable {e.args[0]} missing')
 
+    # Save the original dict in case it is easier to deal with it (e.g. when using json parsing libraries)
+    config.json_dict_ = d
+
     return config
 
 

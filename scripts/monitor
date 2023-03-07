@@ -1,0 +1,4 @@
+#!/bin/bash
+
+conda activate guidescan
+python -m celery -A guidescan.tasks.app flower

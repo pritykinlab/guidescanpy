@@ -1,8 +1,21 @@
 {
+  "guidescan": {
+    "bin": "/media/vineetb/DELTA/guidescan/guidescan-cli/build/bin/guidescan",
+    "grna_database_path_prefix": "media/vineetb/t5/ec2/guidescan/guidescan2_dbs/cas9/",
+    "grna_database_path_map": [
+      {"organism": "ce11", "enzyme": "cas9", "file": "ce11.bam.sorted"},
+      {"organism": "mm10", "enzyme": "cas9", "file": "mm10.bam.sorted"}
+    ]
+  },
+
   "flask": {
     "DEBUG": 0,
     "SECRET_KEY": "Dfsf00_34aslaS~~t5))pVls0$aGkxlas[q%91;",
     "SQLALCHEMY_TRACK_MODIFICATIONS": 0
+  },
+
+  "celery": {
+    "broker_url": "pyamqp://guest@localhost//"
   },
 
   "logging": {
@@ -22,7 +35,7 @@
       }
     },
     "loggers": {
-      "hellas": {
+      "guidescan": {
         "level": "DEBUG",
         "handlers": ["console"]
       }

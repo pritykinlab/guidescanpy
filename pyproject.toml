@@ -22,8 +22,11 @@ dependencies = [
 
 [project.optional-dependencies]
 web = [
+    "celery",
     "Flask",
     "flask-caching",
+    "flower",
+    "kombu",
     "werkzeug"
 ]
 dev = [

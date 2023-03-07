@@ -14,9 +14,9 @@ def create_app(debug=False):
         from werkzeug.debug import DebuggedApplication
         app.wsgi_app = DebuggedApplication(app.wsgi_app, True)
 
-    import guidescan.flask.blueprints.web
+    import guidescan.flask.blueprints.info
 
-    app.register_blueprint(guidescan.flask.blueprints.web.bp, url_prefix='/')
+    app.register_blueprint(guidescan.flask.blueprints.info.bp, url_prefix='/info')
 
     app.add_template_global(lambda: __version__, name='app_version')
     return app
