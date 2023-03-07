@@ -23,6 +23,7 @@ dependencies = [
 [project.optional-dependencies]
 web = [
     "Flask",
+    "flask-caching",
     "werkzeug"
 ]
 dev = [

@@ -9,7 +9,7 @@ COPY src /app/src/
 
 WORKDIR /app
 
-RUN ["/bin/bash", "-c", "python -m pip install .[web]"]
+RUN ["/bin/bash", "-c", "pip install git+https://github.com/vineetbansal/guidescan.git#egg=guidescan[dev,web]"]
 
 ENV FLASK_APP=guidescan.flask:create_app
 ENTRYPOINT ["/bin/bash", "-c"]
