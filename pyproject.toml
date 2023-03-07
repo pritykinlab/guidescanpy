@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "guidescan"
+dynamic = ["version"]
+authors = [
+  { name="Henry Schmidt", email="henri.schmidt@princeton.edu" },
+  { name="Vineet Bansal", email="vineetb@princeton.edu" }
+]
+description = "GuideScan is a tool for genome-wide CRISPR guide RNA (gRNA) design and analysis in custom genomes."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: POSIX :: Linux",
+]
+dependencies = [
+]
+
+[project.optional-dependencies]
+web = [
+    "Flask",
+    "werkzeug"
+]
+dev = [
+    "build",
+    "pre-commit",
+    "pyright",
+    "pytest>=6",
+    "twine"
+]
+
+
+[project.scripts]
+guidescan = "guidescan.__main__:main"
+
+[tool.setuptools_scm]
+write_to = "src/guidescan/_version.py"
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["guidescan*"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-rA"
+testpaths = [
+    "tests"
+]
+
+[tool.pyright]
+exclude = ["build/**", "scripts/**"]
