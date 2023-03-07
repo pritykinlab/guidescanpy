@@ -6,7 +6,7 @@ from guidescan.flask.blueprints import cache
 
 def create_app(debug=False):
 
-    app = Flask('potboiler', static_folder='flask/static', template_folder='flask/templates')
+    app = Flask('guidescan', static_folder='flask/static', template_folder='flask/templates')
     app.config.from_object(config.flask)
     cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
