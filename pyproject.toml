@@ -26,7 +26,9 @@ web = [
     "Flask",
     "flask-caching",
     "flower",
-    "kombu",
+    "numpy",
+    "psycopg2",
+    "pysam",
     "werkzeug"
 ]
 dev = [

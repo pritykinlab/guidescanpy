@@ -1,6 +1,7 @@
 import subprocess
 from flask import jsonify, Blueprint, request
 from guidescan import config, __version__
+from guidescan.flask.db import conn
 
 bp = Blueprint('info', __name__)
 
@@ -9,7 +10,12 @@ bp = Blueprint('info', __name__)
 def supported():
     result = subprocess.run([config.guidescan.bin, "--version"], stdout=subprocess.PIPE)
     guidescan_cli_version = result.stdout.decode('utf-8').strip()
-    available = config.json_dict_['guidescan']['grna_database_path_map']
+
+    available = []
+    available_dbs = config.json_dict_['guidescan']['grna_database_path_map']
+    for organism, v in available_dbs.items():
+        for enzyme, _ in v.items():
+            available.append({'organism': organism, 'enzyme': enzyme})
 
     return jsonify(
         {

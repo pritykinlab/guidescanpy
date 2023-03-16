@@ -1,5 +1,6 @@
 FROM python:3.10
 
+# ubuntu deps = rabbitmq-server, libpq-dev
 EXPOSE 5000
 
 RUN mkdir /app/ && mkdir /app/src

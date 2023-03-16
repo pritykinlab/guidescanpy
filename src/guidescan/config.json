@@ -1,11 +1,16 @@
 {
   "guidescan": {
     "bin": "/media/vineetb/DELTA/guidescan/guidescan-cli/build/bin/guidescan",
-    "grna_database_path_prefix": "media/vineetb/t5/ec2/guidescan/guidescan2_dbs/cas9/",
-    "grna_database_path_map": [
-      {"organism": "ce11", "enzyme": "cas9", "file": "ce11.bam.sorted"},
-      {"organism": "mm10", "enzyme": "cas9", "file": "mm10.bam.sorted"}
-    ]
+    "grna_database_path_prefix": "/media/vineetb/t5/ec2/guidescan/guidescan2_dbs/",
+    "grna_database_path_map": {
+      "ce11": {
+        "cas9": "cas9/ce11.bam.sorted"
+      },
+      "mm10": {
+        "cas9": "cas9/mm10.bam.sorted"
+      }
+    },
+    "db": "host=localhost dbname=guidescan user=scott password=tiger"
   },
 
   "flask": {

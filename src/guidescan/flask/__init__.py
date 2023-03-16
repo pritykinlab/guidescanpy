@@ -14,9 +14,10 @@ def create_app(debug=False):
         from werkzeug.debug import DebuggedApplication
         app.wsgi_app = DebuggedApplication(app.wsgi_app, True)
 
-    import guidescan.flask.blueprints.info
+    from guidescan.flask.blueprints import info, query
 
-    app.register_blueprint(guidescan.flask.blueprints.info.bp, url_prefix='/info')
+    app.register_blueprint(info.bp, url_prefix='/info')
+    app.register_blueprint(query.bp, url_prefix='/query')
 
     app.add_template_global(lambda: __version__, name='app_version')
     return app
