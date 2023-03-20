@@ -26,11 +26,54 @@ def supported():
     )
 
 
+@bp.route('/examples', methods=['GET'])
+def examples():
+    return jsonify({
+        "coords": {
+            "dm6": {
+                "cas9": "spn-A\nAct5C\nCdk1\nTor\nZw",
+                "cpf1": "spn-A\nAct5C\nCdk1\nTor\nZw"
+            },
+            "ce11": {
+                "cas9": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1",
+                "cpf1": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1"
+            },
+            "rn6": {
+                "cas9": "rad51\nactb1\nCdk1\nMtor\nG6pd",
+                "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+            },
+            "mm39": {
+                "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
+                "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+            },
+            "sacCer3": {
+                "cas9": "RAD51\nACTB\nCDC28\nTOR1\nZWF1",
+                "cpf1": "RAD51\nACTB\nCDC28\nTOR1\nZWF1"
+            },
+            "hg38": {
+                "cas9": "RAD51\nACTB\nCDK1\nMTOR\nG6PD",
+                "cpf1": "RAD51\nACTB\nCDK1\nMTOR\nG6PD"
+            },
+            "mm10": {
+                "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
+                "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+            }
+        },
+        "library": {
+            "mm39": "Rad51\nActb\nCdk1\nMtor\nG6pd",
+            "hg38": "RAD51\nACTB\nCDK1\nMTOR\nG6PD"
+        }
+    })
+
+
 @bp.route('/grna_query', methods=['GET'])
 def grna_query():
     from guidescan.tasks import grna_query as f
     x = request.args.get('x')
     f.delay(x)
     return 'query queued'
+
+
+
 
 

@@ -7,13 +7,26 @@ from guidescan import config
 conn = psycopg2.connect(config.guidescan.db)
 
 
-def create_gene_symbol_query(gene_symbol, organism):
-    # Get chromosome + position data for a gene
-    query = sql.SQL("SELECT genes.entrez_id, genes.gene_symbol, genes.start_pos, genes.end_pos, "
-                    "genes.sense, chromosomes.name, chromosomes.accession FROM genes, chromosomes "
-                    "WHERE genes.gene_symbol = %s AND genes.chromosome=chromosomes.accession AND chromosomes.organism = %s")
+def create_region_query(organism, region):
+    try:
+        int(region)
+    except ValueError:
+        is_entrez_id = False
+    else:
+        is_entrez_id = True
+
+    query = "SELECT genes.entrez_id, genes.gene_symbol AS region_name, genes.start_pos AS start_pos, genes.end_pos AS end_pos, " \
+            "genes.sense, chromosomes.name AS chromosome_name, chromosomes.accession AS chromosome_accession FROM genes, chromosomes " \
+            "WHERE genes.chromosome=chromosomes.accession AND chromosomes.organism = %s"
+
+    if is_entrez_id:
+        query += " AND genes.entrez_id=%s"
+    else:
+        query += " AND genes.gene_symbol=%s"
+
+    query = sql.SQL(query)
     cur = conn.cursor(cursor_factory=DictCursor)
-    cur.execute(query, (gene_symbol, organism))
+    cur.execute(query, (organism, region))
     result = cur.fetchone()
     if result is not None:
         return dict(result)
@@ -22,7 +35,7 @@ def create_gene_symbol_query(gene_symbol, organism):
 
 
 def get_chromosome_names(organism):
-    query = sql.SQL("SELECT accession, name FROM chromosomes "
+    query = sql.SQL("SELECT accession, CONCAT('chr', name) FROM chromosomes "
                     "WHERE organism = %s")
     cur = conn.cursor(cursor_factory=DictCursor)
     cur.execute(query, (organism,))

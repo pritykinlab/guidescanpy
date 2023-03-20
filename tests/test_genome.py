@@ -1,11 +1,11 @@
 import os.path
 import numpy as np
-from guidescan.flask.core.genome import GenomeStructure
+from guidescan.flask.core.genome import get_genome_structure
 from guidescan import config
 
 
-def test_genome_structure(bam_file):
-    genome_structure = GenomeStructure(organism='mm10', enzyme='cas9')
+def test_genome_structure():
+    genome_structure = get_genome_structure(organism='mm10')
 
     genome = genome_structure.genome
     assert genome[0][0:3] == (195471971, 169725, 241735)
@@ -17,7 +17,7 @@ def test_genome_structure(bam_file):
     # x = genome_structure.query('NC_000068.7', 119112814, 119136073)
 
     # manually selected region on chr2 - should give 4 aligned reads from BAM
-    results = genome_structure.query('NC_000068.7', 119127007, 119127029)
+    results = genome_structure.query('NC_000068.7', 119127007, 119127029, enzyme='cas9')
     import pprint
     pprint.pprint(results[1]['off-targets'])
     assert len(results) == 4

@@ -2,6 +2,7 @@ import logging
 import json
 from importlib.resources import read_text
 from flask import Blueprint, request, render_template, send_file, session, abort, redirect, url_for
+from guidescan.flask.blueprints.query import query
 
 
 bp = Blueprint('web', __name__)
@@ -13,8 +14,37 @@ def index():
     return redirect(url_for('web.grna_design'))
 
 
-@bp.route('/grna_design')
+@bp.route('/grna_design', methods=['GET', 'POST'])
 def grna_design():
+    if request.method == 'POST':
+        form = request.form
+        form_data = {
+            'organism': form['selectOrganism'],
+            'enzyme': form['selectEnzyme'],
+            'query-text': form['txtCoordinates'],
+            'filter-annotated': form.get('checkExonic', 'off') == 'on',
+            'mode': 'flanking' if form.get('checkFlanking', 'off') == 'on' else 'within'
+        }
+
+        if form.get('checkFlanking', 'off') == 'on':
+            form_data['flanking'] = int(form['txtFlanking'])
+
+        if form.get('checkTopN', 'off') == 'on':
+            form_data['topn'] = int(form['txtTopN'])
+
+        if request.files['fileCoordinates'].read().decode('utf8'):
+            form_data['query-file-upload'] = request.files['fileCoordinates']  # TODO: What should go here?
+
+        if form.get('checkFilterAboveSpecificity', 'off') == 'on':
+            form_data['s-bounds-l'] = int(form['txtFilterAboveSpecificity'])
+            form_data['s-bounds-u'] = 1
+
+        if form.get('checkFilterAboveCE', 'off') == 'on':
+            form_data['ce-bounds-l'] = int(form['txtFilterAboveCE'])
+            form_data['ce-bounds-u'] = 1
+
+        results = query(form_data)
+
     return render_template('grna_design.html')
 
 

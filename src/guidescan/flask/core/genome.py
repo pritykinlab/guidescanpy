@@ -1,7 +1,11 @@
 import os.path
+import re
+from functools import lru_cache
+from collections import OrderedDict
+from typing import Union
 import numpy as np
 import pysam
-from guidescan.flask.db import get_chromosome_names
+from guidescan.flask.db import get_chromosome_names, create_region_query
 from guidescan.flask.core.utils import hex_to_offtarget_info
 from guidescan import config
 
@@ -9,26 +13,58 @@ from guidescan import config
 EMULATE_BUG = True
 
 
+@lru_cache(maxsize=32)
+def get_genome_structure(organism):
+    return GenomeStructure(organism=organism)
+
+
 class GenomeStructure:
-    def __init__(self, organism=None, enzyme=None, bam_file=None):
+    def __init__(self, organism=None):
 
-        if bam_file is None:
-            assert organism is not None
-            assert enzyme is not None
-            bam_dir = config.guidescan.grna_database_path_prefix
-            bam_filename = config.guidescan.grna_database_path_map.mm10.cas9
-            bam_file = os.path.join(bam_dir, bam_filename)
-            self.chromosome_names = get_chromosome_names(organism)
-        else:
-            assert organism is None
-            assert enzyme is None
-            self.chromosome_names = {}
+        self.organism = organism
 
-        self.bam_file = bam_file
-        with pysam.AlignmentFile(bam_file, 'r') as bam:
+        bam_dir = config.guidescan.grna_database_path_prefix
+        bam_filename = getattr(getattr(config.guidescan.grna_database_path_map, organism), 'cas9')
+        self.acc_to_chr = get_chromosome_names(organism)
+        self.chr_to_acc = {v: k for k, v in self.acc_to_chr.items()}
+
+        bam_filepath = os.path.join(bam_dir, bam_filename)
+        with pysam.AlignmentFile(bam_filepath, 'r') as bam:
+            self.acc_to_length = OrderedDict(zip(bam.references, bam.lengths))
+            # TODO: The following 2 attributes are not required, and can be obsoleted
             self.genome = bam.lengths, bam.references
             self.absolute_genome = np.insert(np.cumsum(bam.lengths), 0, 0)
             self.off_target_delim = -(self.absolute_genome[-1] + 1)
+
+    def parse_region(self, region:str) -> Union[dict, None]:
+        # region can be chr:start-end where start and end are 1-indexed and inclusive
+        region = region.replace(',', '')
+        match = re.match(r'^(.*):(\d+)-(\d+)', region)
+        if match is not None:
+            chr, start, end = match.group(1), int(match.group(2)), int(match.group(3))
+            if chr not in self.chr_to_acc:
+                return None
+            else:
+                acc = self.chr_to_acc[chr]
+                acc_length = self.acc_to_length[acc]
+                if start > acc_length or end > acc_length or start > end:
+                    return None
+                else:
+                    retval = {
+                        'region-name': region,
+                        'chromosome-name': chr,
+                        'coords': (acc, start, end)
+                    }
+        else:
+            region = create_region_query(self.organism, region)
+            if region is None:
+                return None
+            retval = {
+                'region-name': region['region_name'],
+                'chromosome-name': region['chromosome_name'],
+                'coords': (region['chromosome_accession'], region['start_pos'], region['end_pos'])
+            }
+        return retval
 
     def find_position(self, absolute_coords):
         """
@@ -51,9 +87,14 @@ class GenomeStructure:
 
         return chrom, coord, strand
 
-    def query(self, chromosome, start_pos, end_pos):
+    def query(self, chromosome, start_pos, end_pos, enzyme='cas9'):
+
+        bam_dir = config.guidescan.grna_database_path_prefix
+        bam_filename = getattr(getattr(config.guidescan.grna_database_path_map, self.organism), enzyme)
+        bam_filepath = os.path.join(bam_dir, bam_filename)
+
         results = []
-        with pysam.AlignmentFile(self.bam_file, 'r') as bam:
+        with pysam.AlignmentFile(bam_filepath, 'r') as bam:
             for i, read in enumerate(bam.fetch(chromosome, start_pos, end_pos)):
 
                 offtarget_hex = read.get_tag('of')
@@ -78,7 +119,7 @@ class GenomeStructure:
                     off_target = {
                         'original_pos': pos,
                         'accession': genomic_chrom,
-                        'chromosome': self.chromosome_names.get(genomic_chrom, genomic_chrom),
+                        'chromosome': self.acc_to_chr.get(genomic_chrom, genomic_chrom),
                         'direction': genomic_strand,
                         'distance': dist,
                         'position': genomic_coord
