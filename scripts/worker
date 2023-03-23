@@ -1,4 +1,4 @@
 #!/bin/bash
 
 conda activate guidescan
-python -m celery -A guidescan.tasks.app worker -l INFO
+python -m celery -A guidescanpy.tasks.app worker -l INFO

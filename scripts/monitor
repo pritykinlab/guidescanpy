@@ -1,6 +1,6 @@
 #!/bin/bash
 
 conda activate guidescan
-python -m celery -A guidescan.tasks.app flower
+python -m celery -A guidescanpy.tasks.app flower
 
 # http://localhost:5555/

@@ -1,4 +1,4 @@
-from guidescan.flask.db import create_region_query, get_chromosome_names
+from guidescanpy.flask.db import create_region_query, get_chromosome_names
 
 
 def test_create_region_query_Mct2():

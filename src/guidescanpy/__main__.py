@@ -1,6 +1,6 @@
 import sys
-import guidescan
-from guidescan.flask import create_app
+import guidescanpy
+from guidescanpy.flask import create_app
 
 
 commands = (
@@ -9,14 +9,14 @@ commands = (
 
 
 def print_usage():
-    print('Guidescan v' + guidescan.__version__)
-    print('Usage: guidescan <command> <arguments ..>')
+    print('Guidescanpy v' + guidescanpy.__version__)
+    print('Usage: guidescanpy <command> <arguments ..>')
     print('\nThe following commands are supported:\n ' + '\n '.join(commands))
 
 
 def web(*args, **kwargs):
     app = create_app()
-    return app.run(host="localhost", port=5001, debug=True)
+    return app.run(host="0.0.0.0", port=5000, debug=True)
 
 
 def main():

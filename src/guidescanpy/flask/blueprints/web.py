@@ -2,7 +2,7 @@ import logging
 import json
 from importlib.resources import read_text
 from flask import Blueprint, request, render_template, send_file, session, abort, redirect, url_for
-from guidescan.flask.blueprints.query import query
+from guidescanpy.flask.blueprints.query import query
 
 
 bp = Blueprint('web', __name__)

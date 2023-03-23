@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "setuptools_scm>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "guidescan"
+name = "guidescanpy"
 dynamic = ["version"]
 authors = [
   { name="Henry Schmidt", email="henri.schmidt@princeton.edu" },
@@ -27,7 +27,8 @@ web = [
     "flask-caching",
     "flower",
     "numpy",
-    "psycopg2",
+    "pandas",
+    "psycopg2-binary",
     "pysam",
     "werkzeug"
 ]
@@ -40,10 +41,10 @@ dev = [
 ]
 
 [project.scripts]
-guidescan = "guidescan.__main__:main"
+guidescanpy = "guidescanpy.__main__:main"
 
 [tool.setuptools_scm]
-write_to = "src/guidescan/_version.py"
+write_to = "src/guidescanpy/_version.py"
 
 [tool.setuptools]
 include-package-data = true
@@ -51,10 +52,10 @@ zip-safe = false
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["guidescan*"]
+include = ["guidescanpy*"]
 
 [tool.setuptools.package-data]
-guidescan = ["config.json"]
+guidescanpy = ["config.json"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"

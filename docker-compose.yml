@@ -1,12 +1,32 @@
-version: "2"
+version: "3.8"
+
 services:
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=scott
+      - POSTGRES_PASSWORD=tiger
+      - POSTGRES_DB=guidescan
+    ports:
+      - "5432:5432"
+
   app:
     build: .
     image: guidescan
+    depends_on:
+      - db
     ports:
       - "80:5000"
+    command: python -m guidescanpy web
 
   celery:
     build: .
     image: guidescan_celery
-    command: python -m celery worker -l info -A guidescan.tasks.app
+    depends_on:
+      - app
+    command: python -m celery -A guidescanpy.tasks.app worker -l INFO
+
+volumes:
+  postgres_data:

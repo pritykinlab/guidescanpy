@@ -1,6 +1,5 @@
-FROM python:3.10
+FROM continuumio/miniconda3
 
-# ubuntu deps = rabbitmq-server, libpq-dev
 EXPOSE 5000
 
 RUN mkdir /app/ && mkdir /app/src
@@ -10,8 +9,5 @@ COPY src /app/src/
 
 WORKDIR /app
 
-RUN ["/bin/bash", "-c", "pip install git+https://github.com/vineetbansal/guidescan.git#egg=guidescan[dev,web]"]
-
-ENV FLASK_APP=guidescan.flask:create_app
-ENTRYPOINT ["/bin/bash", "-c"]
-CMD ["exec python -m flask run --host=0.0.0.0"]
+RUN conda install -c conda-forge -c bioconda guidescan
+RUN --mount=source=.git,target=.git,type=bind pip install --no-cache-dir -e .[web]

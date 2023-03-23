@@ -1,7 +1,7 @@
 import os.path
 import pytest
-from guidescan.flask import create_app
-from guidescan import config
+from guidescanpy.flask import create_app
+from guidescanpy import config
 
 
 @pytest.fixture(scope="session")

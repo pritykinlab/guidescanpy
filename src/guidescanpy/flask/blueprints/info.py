@@ -1,7 +1,7 @@
 import subprocess
 from flask import jsonify, Blueprint, request
-from guidescan import config, __version__
-from guidescan.flask.db import conn
+from guidescanpy import config, __version__
+from guidescanpy.flask.db import conn
 
 bp = Blueprint('info', __name__)
 
@@ -68,7 +68,7 @@ def examples():
 
 @bp.route('/grna_query', methods=['GET'])
 def grna_query():
-    from guidescan.tasks import grna_query as f
+    from guidescanpy.tasks import grna_query as f
     x = request.args.get('x')
     f.delay(x)
     return 'query queued'

@@ -4,17 +4,17 @@ import logging
 from types import SimpleNamespace
 import json
 from importlib.resources import read_text
-import guidescan
+import guidescanpy
 
 try:
-    from guidescan._version import version as __version__  # type: ignore
+    from guidescanpy._version import version as __version__  # type: ignore
 except ModuleNotFoundError:
     # We're likely running as a source package without installation
     __version__ = 'src'
 
 
 def setup_config():
-    s = read_text(guidescan, 'config.json')
+    s = read_text(guidescanpy, 'config.json')
     d = json.loads(s)
 
     # logging.config doesn't support configuration from an object, but does support dictConfig,

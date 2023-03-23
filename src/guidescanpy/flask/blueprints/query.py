@@ -2,9 +2,9 @@ import subprocess
 import re
 from typing import Union
 from flask import jsonify, Blueprint, request
-from guidescan import config, __version__
-from guidescan.flask.db import conn, create_region_query
-from guidescan.flask.core.genome import get_genome_structure
+from guidescanpy import config, __version__
+from guidescanpy.flask.db import conn, create_region_query
+from guidescanpy.flask.core.genome import get_genome_structure
 
 bp = Blueprint('query', __name__)
 

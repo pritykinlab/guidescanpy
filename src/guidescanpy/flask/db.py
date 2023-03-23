@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 from psycopg2.extras import DictCursor
-from guidescan import config
+from guidescanpy import config
 
 
 conn = psycopg2.connect(config.guidescan.db)

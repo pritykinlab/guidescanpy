@@ -1,5 +1,5 @@
 import pysam
-from guidescan.flask.core.utils import hex_to_offtarget_info
+from guidescanpy.flask.core.utils import hex_to_offtarget_info
 
 
 def test_bam_header(bam_file):

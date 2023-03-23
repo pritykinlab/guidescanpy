@@ -4,13 +4,15 @@ from functools import lru_cache
 from collections import OrderedDict
 from typing import Union
 import numpy as np
+import pandas as pd
 import pysam
-from guidescan.flask.db import get_chromosome_names, create_region_query
-from guidescan.flask.core.utils import hex_to_offtarget_info
-from guidescan import config
+from guidescanpy.flask.db import get_chromosome_names, create_region_query
+from guidescanpy.flask.core.utils import hex_to_offtarget_info
+from guidescanpy import config
 
 
-EMULATE_BUG = True
+EMULATE_BUG1 = True
+EMULATE_BUG2 = True
 
 
 @lru_cache(maxsize=32)
@@ -31,12 +33,12 @@ class GenomeStructure:
         bam_filepath = os.path.join(bam_dir, bam_filename)
         with pysam.AlignmentFile(bam_filepath, 'r') as bam:
             self.acc_to_length = OrderedDict(zip(bam.references, bam.lengths))
-            # TODO: The following 2 attributes are not required, and can be obsoleted
+            # TODO: The following 2 attributes are not required if we have self.acc_to_length, and can be obsoleted
             self.genome = bam.lengths, bam.references
             self.absolute_genome = np.insert(np.cumsum(bam.lengths), 0, 0)
             self.off_target_delim = -(self.absolute_genome[-1] + 1)
 
-    def parse_region(self, region:str) -> Union[dict, None]:
+    def parse_region(self, region: str) -> Union[dict, None]:
         # region can be chr:start-end where start and end are 1-indexed and inclusive
         region = region.replace(',', '')
         match = re.match(r'^(.*):(\d+)-(\d+)', region)
@@ -76,6 +78,8 @@ class GenomeStructure:
 
     def to_genomic_coordinates(self, pos):
         strand = 'positive' if pos > 0 else 'negative'
+        if EMULATE_BUG2:
+            pos = pos.astype(np.int32)
         x = abs(pos)
         i = 0
         while self.genome[0][i] <= x:
@@ -87,20 +91,28 @@ class GenomeStructure:
 
         return chrom, coord, strand
 
-    def query(self, chromosome, start_pos, end_pos, enzyme='cas9'):
+    def query(self, region, start_pos=None, end_pos=None, enzyme='cas9'):
+
+        results = []
+        if start_pos is None or end_pos is None:
+            region = self.parse_region(region)
+            if region is None:
+                return results
+            chromosome, start_pos, end_pos = region['coords']
+        else:
+            chromosome = region
 
         bam_dir = config.guidescan.grna_database_path_prefix
         bam_filename = getattr(getattr(config.guidescan.grna_database_path_map, self.organism), enzyme)
         bam_filepath = os.path.join(bam_dir, bam_filename)
 
-        results = []
         with pysam.AlignmentFile(bam_filepath, 'r') as bam:
             for i, read in enumerate(bam.fetch(chromosome, start_pos, end_pos)):
 
                 offtarget_hex = read.get_tag('of')
                 off_target_tuples = hex_to_offtarget_info(offtarget_hex, delim=self.off_target_delim)
 
-                if EMULATE_BUG:
+                if EMULATE_BUG1:
                     current_dist = None
                     new_off_target_tuples = []
                     for off_target_tuple in off_target_tuples:
@@ -116,26 +128,33 @@ class GenomeStructure:
                 for (dist, pos) in off_target_tuples:
                     genomic_chrom, genomic_coord, genomic_strand = self.to_genomic_coordinates(pos)
 
+                    # remove 'chr' prefix and return if chr is found, else return None
+                    # (if off-target is on a scaffold, for example)
+                    chr = self.acc_to_chr[genomic_chrom][3:] if genomic_chrom in self.acc_to_chr else None
+
                     off_target = {
-                        'original_pos': pos,
-                        'accession': genomic_chrom,
-                        'chromosome': self.acc_to_chr.get(genomic_chrom, genomic_chrom),
+                        'position': genomic_coord,
+                        'chromosome': chr,
                         'direction': genomic_strand,
                         'distance': dist,
-                        'position': genomic_coord
+                        'accession': genomic_chrom,
                     }
                     off_targets.append(off_target)
 
                 result = {
-                    'sequence': read.seq,
+                    'sequence': read.get_forward_sequence(),
                     'start': read.reference_start + 1,  # 0-indexed inclusive -> 1-indexed inclusive
                     'end': read.reference_end,          # 0-indexed exclusive -> 1-indexed inclusive
                     'direction': 'positive' if read.is_forward else 'negative',
                     'cutting-efficiency': read.get_tag('ds'),
                     'specificity': read.get_tag('cs'),
-                    'off-targets': off_targets
+                    'off-targets': off_targets,
+                    'n-off-targets': len(off_targets)
                 }
 
-                results.append(result)
+                if result['start'] >= start_pos and result['end'] <= end_pos:
+                    results.append(result)
 
-        return results
+        df = pd.DataFrame(results)
+        #df = df.sort_values(by=['n-off-targets'])
+        return df
