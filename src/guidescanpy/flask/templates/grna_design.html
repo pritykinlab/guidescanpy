@@ -4,7 +4,7 @@
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         var examples;
-        $.getJSON('http://localhost:5001/info/examples', (data) => {
+        $.getJSON(window.location.origin + '/info/examples', (data) => {
             examples = data;
             refreshExamples();
         });

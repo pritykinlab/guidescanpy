@@ -2,7 +2,7 @@ import logging
 import json
 from importlib.resources import read_text
 from flask import Blueprint, request, render_template, send_file, session, abort, redirect, url_for
-from guidescanpy.flask.blueprints.query import query
+from guidescanpy.flask.blueprints.query import query_endpoint
 
 
 bp = Blueprint('web', __name__)
@@ -43,7 +43,8 @@ def grna_design():
             form_data['ce-bounds-l'] = int(form['txtFilterAboveCE'])
             form_data['ce-bounds-u'] = 1
 
-        results = query(form_data)
+        results = query_endpoint(form_data)
+        return results
 
     return render_template('grna_design.html')
 

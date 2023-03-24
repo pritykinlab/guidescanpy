@@ -91,7 +91,7 @@ class GenomeStructure:
 
         return chrom, coord, strand
 
-    def query(self, region, start_pos=None, end_pos=None, enzyme='cas9'):
+    def query(self, region, start_pos=None, end_pos=None, enzyme='cas9', topn=None, as_dataframe=False):
 
         results = []
         if start_pos is None or end_pos is None:
@@ -133,10 +133,10 @@ class GenomeStructure:
                     chr = self.acc_to_chr[genomic_chrom][3:] if genomic_chrom in self.acc_to_chr else None
 
                     off_target = {
-                        'position': genomic_coord,
+                        'position': int(genomic_coord),
                         'chromosome': chr,
                         'direction': genomic_strand,
-                        'distance': dist,
+                        'distance': int(dist),
                         'accession': genomic_chrom,
                     }
                     off_targets.append(off_target)
@@ -155,6 +155,9 @@ class GenomeStructure:
                 if result['start'] >= start_pos and result['end'] <= end_pos:
                     results.append(result)
 
-        df = pd.DataFrame(results)
-        #df = df.sort_values(by=['n-off-targets'])
-        return df
+        # TODO: Implement sorting/filtering
+        results = results[:topn]
+
+        if as_dataframe:
+            results = pd.DataFrame(results)
+        return results

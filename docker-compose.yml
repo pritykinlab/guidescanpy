@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   db:
+    container_name: guidescan_db
     image: postgres:13-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -10,23 +11,77 @@ services:
       - POSTGRES_PASSWORD=tiger
       - POSTGRES_DB=guidescan
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
-  app:
+  redis:
+    container_name: guidescan_redis
+    image: redis:4.0.5-alpine
+    command: redis-server --appendonly yes
+
+  celery:
+    container_name: guidescan_celery
     build: .
     image: guidescan
     depends_on:
+      - redis
+    command: python -m celery -A guidescanpy.tasks.app worker -l INFO
+    environment:
+      - CELERY_BROKER=redis://guidescan_redis
+      - CELERY_BACKEND=redis://guidescan_redis
+      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_DB=guidescan
+      - POSTGRES_USER=scott
+      - POSTGRES_PASSWORD=tiger
+      - BAMS_PATH=/bam_dbs/
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    volumes:
+      - /media/vineetb/t5/ec2/guidescan/guidescan2_dbs/:/bam_dbs/
+
+  flower:
+    container_name: guidescan_flower
+    build: .
+    image: guidescan
+    environment:
+      - CELERY_BROKER=redis://guidescan_redis
+      - CELERY_BACKEND=redis://guidescan_redis
+      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_DB=guidescan
+      - POSTGRES_USER=scott
+      - POSTGRES_PASSWORD=tiger
+      - BAMS_PATH=/bam_dbs/
+    ports:
+      - "5001:5001"
+    command: python -m celery -A guidescanpy.tasks.app flower --port=5001
+    depends_on:
+      - celery
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    volumes:
+      - /media/vineetb/t5/ec2/guidescan/guidescan2_dbs/:/bam_dbs/
+
+  app:
+    build: .
+    image: guidescan_app
+    depends_on:
       - db
+      - flower
     ports:
       - "80:5000"
     command: python -m guidescanpy web
-
-  celery:
-    build: .
-    image: guidescan_celery
-    depends_on:
-      - app
-    command: python -m celery -A guidescanpy.tasks.app worker -l INFO
+    environment:
+      - CELERY_BROKER=redis://guidescan_redis
+      - CELERY_BACKEND=redis://guidescan_redis
+      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_DB=guidescan
+      - POSTGRES_USER=scott
+      - POSTGRES_PASSWORD=tiger
+      - BAMS_PATH=/bam_dbs/
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    volumes:
+      - /media/vineetb/t5/ec2/guidescan/guidescan2_dbs/:/bam_dbs/
 
 volumes:
   postgres_data:
+  bam_dbs:

@@ -14,7 +14,7 @@ def print_usage():
     print('\nThe following commands are supported:\n ' + '\n '.join(commands))
 
 
-def web(*args, **kwargs):
+def web(args):
     app = create_app()
     return app.run(host="0.0.0.0", port=5000, debug=True)
 

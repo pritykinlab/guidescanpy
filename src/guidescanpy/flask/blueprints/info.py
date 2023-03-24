@@ -12,7 +12,7 @@ def supported():
     guidescan_cli_version = result.stdout.decode('utf-8').strip()
 
     available = []
-    available_dbs = config.json_dict_['guidescan']['grna_database_path_map']
+    available_dbs = config.json['guidescan']['grna_database_path_map']
     for organism, v in available_dbs.items():
         for enzyme, _ in v.items():
             available.append({'organism': organism, 'enzyme': enzyme})
@@ -66,12 +66,12 @@ def examples():
     })
 
 
-@bp.route('/grna_query', methods=['GET'])
-def grna_query():
-    from guidescanpy.tasks import grna_query as f
-    x = request.args.get('x')
-    f.delay(x)
-    return 'query queued'
+@bp.route('/sleep', methods=['GET'])
+def sleep():
+    from guidescanpy.tasks import sleep as f
+    t = request.args.get('t', 1)
+    result = f.delay(t)
+    return jsonify({'job-id': result.id})
 
 
 

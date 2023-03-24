@@ -49,7 +49,7 @@ def test_genome_structure_query_manual():
 
 def test_genome_structure_query_Rad51():
     genome_structure = get_genome_structure(organism='mm10')
-    results = genome_structure.query('Rad51', enzyme='cas9')
+    results = genome_structure.query('Rad51', enzyme='cas9', as_dataframe=True)
 
     old_results = clj(organism='mm10', enzyme='cas9', query='Rad51')
     assert len(results) == len(old_results)
@@ -64,7 +64,7 @@ def test_genome_structure_query_Rad51():
 
 def test_genome_structure_query_bug1():
     genome_structure = get_genome_structure(organism='mm10')
-    results = genome_structure.query('chr2:119127007-119127029', enzyme='cas9')
+    results = genome_structure.query('chr2:119127007-119127029', enzyme='cas9', as_dataframe=True)
 
     old_results = clj(organism='mm10', enzyme='cas9', query='chr2:119127007-119127029')
     assert len(results) == len(old_results)

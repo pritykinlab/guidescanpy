@@ -44,7 +44,7 @@ def setup_config():
         raise RuntimeError(f'Environment variable {e.args[0]} missing')
 
     # Save the original dict in case it is easier to deal with it (e.g. when using json parsing libraries)
-    config.json_dict_ = d
+    config.json = d
 
     return config
 

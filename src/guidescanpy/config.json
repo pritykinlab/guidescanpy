@@ -1,7 +1,7 @@
 {
   "guidescan": {
     "bin": "guidescan",
-    "grna_database_path_prefix": "/media/vineetb/t5/ec2/guidescan/guidescan2_dbs/",
+    "grna_database_path_prefix": "{BAM_DBS}",
     "grna_database_path_map": {
       "ce11": {
         "cas9": "cas9/ce11.bam.sorted",
@@ -11,7 +11,7 @@
         "cas9": "cas9/mm10.bam.sorted"
       }
     },
-    "db": "host=db dbname=guidescan user=scott password=tiger"
+    "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}"
   },
 
   "flask": {
@@ -21,7 +21,8 @@
   },
 
   "celery": {
-    "broker_url": "pyamqp://guest@localhost//"
+    "broker": "{CELERY_BROKER}",
+    "backend": "{CELERY_BACKEND}"
   },
 
   "logging": {

@@ -11,34 +11,38 @@ def test_info(app):
 
 
 def test_query_gene_symbol(app):
-    # For the mm10 organism and Rad51 gene, find hits for the Mct2 enzyme
+    # For the mm10 organism and Rad51 gene, find hits for the cas9 enzyme
     # query-text can be a gene symbol, a chromosome region, or an entrez id
-    response = app.test_client().get('/query?organism=mm10&enzyme=Mct2&query-text=Rad51')
+    response = app.test_client().get('/query?organism=mm10&enzyme=cas9&query-text=Rad51')
     assert response.mimetype == 'application/json'
     data = json.loads(response.data)
-    assert len(data) == 1
+    assert len(data) == 1  # We passed in a single line in query-text, so we get a single result
+    assert len(data[0]) == 1430
 
 
 def test_query_entrez_id(app):
-    response = app.test_client().get('/query?organism=mm10&enzyme=Mct2&query-text=19361')
+    response = app.test_client().get('/query?organism=mm10&enzyme=cas9&query-text=19361')
     assert response.mimetype == 'application/json'
     data = json.loads(response.data)
     assert len(data) == 1
+    assert len(data[0]) == 1430
 
 
 def test_query_chr(app):
-    response = app.test_client().get('/query?organism=mm10&enzyme=Mct2&query-text=chr2:1000-2000')
+    response = app.test_client().get('/query?organism=mm10&enzyme=cas9&query-text=chr2:1000-2000')
     assert response.mimetype == 'application/json'
     data = json.loads(response.data)
     assert len(data) == 1
+    assert len(data[0]) == 0
 
 
 def test_query_chr_bad(app):
     # No such chromosome - chr44
-    response = app.test_client().get('/query?organism=mm10&enzyme=Mct2&query-text=chr44:1000-2000')
+    response = app.test_client().get('/query?organism=mm10&enzyme=cas9&query-text=chr44:1000-2000')
     assert response.mimetype == 'application/json'
     data = json.loads(response.data)
-    assert len(data) == 0
+    assert len(data) == 1
+    assert len(data[0]) == 0
 
 
 def test_query_chr_pos_bad(app):
@@ -46,4 +50,5 @@ def test_query_chr_pos_bad(app):
     response = app.test_client().get('/query?organism=mm10&enzyme=Mct2&query-text=chr2:182113225-182113225')
     assert response.mimetype == 'application/json'
     data = json.loads(response.data)
-    assert len(data) == 0
+    assert len(data) == 1
+    assert len(data[0]) == 0

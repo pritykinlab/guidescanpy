@@ -30,6 +30,7 @@ web = [
     "pandas",
     "psycopg2-binary",
     "pysam",
+    "Redis",
     "werkzeug"
 ]
 dev = [
