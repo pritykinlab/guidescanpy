@@ -9,6 +9,9 @@
       },
       "mm10": {
         "cas9": "cas9/mm10.bam.sorted"
+      },
+      "sacCer3": {
+        "cas9": "cas9/sacCer3.bam.sorted"
       }
     },
     "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}"

@@ -11,8 +11,8 @@ from guidescanpy.flask.core.utils import hex_to_offtarget_info
 from guidescanpy import config
 
 
-EMULATE_BUG1 = True
-EMULATE_BUG2 = True
+EMULATE_BUG1 = False
+EMULATE_BUG2 = False
 
 
 @lru_cache(maxsize=32)
@@ -91,7 +91,7 @@ class GenomeStructure:
 
         return chrom, coord, strand
 
-    def query(self, region, start_pos=None, end_pos=None, enzyme='cas9', topn=None, as_dataframe=False):
+    def query(self, region, start_pos=None, end_pos=None, enzyme='cas9', topn=None, min_specificity=None, min_ce=None, as_dataframe=False):
 
         results = []
         if start_pos is None or end_pos is None:
@@ -112,6 +112,10 @@ class GenomeStructure:
                 offtarget_hex = read.get_tag('of')
                 off_target_tuples = hex_to_offtarget_info(offtarget_hex, delim=self.off_target_delim)
 
+                # Remove off-target entries with distance = 0 (should be just the first, but we go through all anyway)
+                off_target_tuples = tuple(t for t in off_target_tuples if t[0] != 0)
+
+                # Remove the
                 if EMULATE_BUG1:
                     current_dist = None
                     new_off_target_tuples = []
@@ -155,9 +159,21 @@ class GenomeStructure:
                 if result['start'] >= start_pos and result['end'] <= end_pos:
                     results.append(result)
 
-        # TODO: Implement sorting/filtering
-        results = results[:topn]
+        results = pd.DataFrame(results)
+
+        if not results.empty:
+            if min_specificity is not None:
+                results = results[results['specificity'] >= min_specificity]
+
+            if min_ce is not None:
+                results = results[results['cutting-efficiency'] >= min_ce]
+
+            results = results[:topn]
+
+            results = results.rename_axis('iloc').sort_values(by=['n-off-targets', 'iloc'], ascending=[True, True])
+            results.reset_index(inplace=True)
 
         if as_dataframe:
-            results = pd.DataFrame(results)
-        return results
+            return results
+        else:
+            return results.to_dict('records')

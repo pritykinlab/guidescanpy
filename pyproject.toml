@@ -26,6 +26,7 @@ web = [
     "Flask",
     "flask-caching",
     "flower",
+    "intervaltree",
     "numpy",
     "pandas",
     "psycopg2-binary",

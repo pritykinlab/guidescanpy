@@ -36,12 +36,12 @@ def grna_design():
             form_data['query-file-upload'] = request.files['fileCoordinates']  # TODO: What should go here?
 
         if form.get('checkFilterAboveSpecificity', 'off') == 'on':
-            form_data['s-bounds-l'] = int(form['txtFilterAboveSpecificity'])
-            form_data['s-bounds-u'] = 1
+            form_data['s-bounds-l'] = float(form['txtFilterAboveSpecificity'])
+            form_data['s-bounds-u'] = 1.
 
         if form.get('checkFilterAboveCE', 'off') == 'on':
-            form_data['ce-bounds-l'] = int(form['txtFilterAboveCE'])
-            form_data['ce-bounds-u'] = 1
+            form_data['ce-bounds-l'] = float(form['txtFilterAboveCE'])
+            form_data['ce-bounds-u'] = 1.
 
         results = query_endpoint(form_data)
         return results

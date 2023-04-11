@@ -7,6 +7,30 @@ from guidescanpy import config
 conn = psycopg2.connect(config.guidescan.db)
 
 
+def insert_chromosome_query(**kwargs):
+    query = "INSERT INTO chromosomes (accession, name, organism) VALUES (%s, %s, %s)"
+    cur = conn.cursor()
+    cur.execute(query, (kwargs['accession'], kwargs['name'], kwargs['organism']))
+    conn.commit()
+    cur.close()
+
+
+def insert_gene_query(**kwargs):
+    query = "INSERT INTO genes (entrez_id, gene_symbol, chromosome, sense, start_pos, end_pos) VALUES (%s, %s, %s, %s, %s, %s)"
+    cur = conn.cursor()
+    cur.execute(query, (kwargs['entrez_id'], kwargs['gene_symbol'], kwargs['chromosome'], kwargs['sense'], kwargs['start_pos'], kwargs['end_pos']))
+    conn.commit()
+    cur.close()
+
+
+def insert_exon_query(**kwargs):
+    query = "INSERT INTO exons (entrez_id, exon_number, chromosome, product, sense, start_pos, end_pos) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    cur = conn.cursor()
+    cur.execute(query, (kwargs['entrez_id'], kwargs['exon_number'], kwargs['chromosome'], kwargs['product'], kwargs['sense'], kwargs['start_pos'], kwargs['end_pos']))
+    conn.commit()
+    cur.close()
+
+
 def create_region_query(organism, region):
     try:
         int(region)
