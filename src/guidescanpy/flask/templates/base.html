@@ -12,7 +12,7 @@
     <link href="{{ url_for('static', filename='vendor/fontawesome-free-6.3.0-web/css/fontawesome.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='vendor/fontawesome-free-6.3.0-web/css/regular.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='custom.css') }}" rel="stylesheet">
-    {% block css %}
+    {% block head %}
     {% endblock %}
 </head>
 
@@ -83,7 +83,7 @@
 <script src="{{ url_for('static', filename='vendor/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
 
-{% block javascript %}
+{% block js %}
 {% endblock %}
 </body>
 

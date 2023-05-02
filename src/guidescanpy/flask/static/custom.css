@@ -39,6 +39,14 @@ textarea {
   margin-bottom: 30px;
 }
 
+table.datatable th {
+  font-size: 0.8em;
+}
+
+table.datatable td {
+  font-size: 0.8em;
+}
+
 /* The following from current guidescan website */
 
 .question_style {

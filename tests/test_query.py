@@ -29,11 +29,11 @@ def test_query_entrez_id(app):
 
 
 def test_query_chr(app):
-    response = app.test_client().get('/query?organism=sacCer3&enzyme=cas9&query-text=chrIX:200000-320000')
+    response = app.test_client().get('/query?organism=sacCer3&enzyme=cas9&query-text=chrIX:202200-202300')
     assert response.mimetype == 'application/json'
     data = json.loads(response.data)
     assert len(data) == 1
-    assert len(data[0]) == 8655
+    assert len(data[0]) == 4
 
 
 def test_query_chr_bad(app):

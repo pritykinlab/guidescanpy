@@ -1,3 +1,4 @@
+from intervaltree import Interval, IntervalTree
 import psycopg2
 from psycopg2 import sql
 from psycopg2.extras import DictCursor
@@ -68,3 +69,22 @@ def get_chromosome_names(organism):
         return dict(result)
     else:
         return None
+
+
+def get_chromosome_interval_trees():
+    query = sql.SQL("SELECT chromosome, start_pos, end_pos, exon_number, product FROM exons")
+    cur = conn.cursor(cursor_factory=DictCursor)
+    cur.execute(query)
+    result = cur.fetchall()
+
+    chromosomes = {}
+    for (chr, start, end, exon_number, product) in result:
+        if chr not in chromosomes:
+            chromosomes[chr] = IntervalTree()
+        # Convert 1-indexed [start, end] to 0-indexed [start, end)
+        chromosomes[chr][start-1:end] = exon_number, product
+
+    return chromosomes
+
+
+chromosome_interval_trees = get_chromosome_interval_trees()

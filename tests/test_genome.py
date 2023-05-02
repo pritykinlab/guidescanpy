@@ -66,6 +66,21 @@ def test_genome_structure_query_CNE1():
     assert np.all(old_results['off-targets'] == results['off-targets'])
 
 
+def test_genome_structure_query_manual_filter_annotated():
+    genome_structure = get_genome_structure(organism='sacCer3')
+    results = genome_structure.query('chrII:5000-10000', enzyme='cas9', filter_annotated=True, as_dataframe=True)
+
+    old_results = clj(organism='sacCer3', enzyme='cas9', query='chrII:5000-10000', filter_annotated=True)
+    assert len(results) == len(old_results)
+    assert np.all(np.isclose(old_results['specificity'], results['specificity']))
+    assert np.all(np.isclose(old_results['cutting-efficiency'], results['cutting-efficiency']))
+    assert np.all(old_results['sequence'] == results['sequence'])
+    assert np.all(old_results['start'] == results['start'])
+    assert np.all(old_results['end'] == results['end'])
+
+    assert np.all(old_results['off-targets'] == results['off-targets'])
+
+
 def test_genome_structure_query_CNE1_min_specificity():
     genome_structure = get_genome_structure(organism='sacCer3')
     results = genome_structure.query('CNE1', enzyme='cas9', min_specificity=0.46, as_dataframe=True)
@@ -86,6 +101,21 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency():
     results = genome_structure.query('CNE1', enzyme='cas9', min_ce=0.3, as_dataframe=True)
 
     old_results = clj(organism='sacCer3', enzyme='cas9', query='CNE1', ce_bounds_l=0.3, ce_bounds_u=1.0)
+    assert len(results) == len(old_results)
+    assert np.all(np.isclose(old_results['specificity'], results['specificity']))
+    assert np.all(np.isclose(old_results['cutting-efficiency'], results['cutting-efficiency']))
+    assert np.all(old_results['sequence'] == results['sequence'])
+    assert np.all(old_results['start'] == results['start'])
+    assert np.all(old_results['end'] == results['end'])
+
+    assert np.all(old_results['off-targets'] == results['off-targets'])
+
+
+def test_genome_structure_query_offtarget_on_scaffold():
+    genome_structure = get_genome_structure(organism='sacCer3')
+    results = genome_structure.query('chrIX:202231-202253', enzyme='cas9', as_dataframe=True)
+
+    old_results = clj(organism='sacCer3', enzyme='cas9', query='chrIX:202231-202253')
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results['specificity'], results['specificity']))
     assert np.all(np.isclose(old_results['cutting-efficiency'], results['cutting-efficiency']))

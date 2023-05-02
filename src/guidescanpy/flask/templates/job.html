@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block main %}
+    {% if status == 'SUCCESS' %}
+        <div id="modal-off-targets" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div id="modal-title" class="modal-title"></div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="div-off-targets">
+                            <table id="table-off-targets" class="display datatable" style="width: 100%;"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">IGV Viewer</h5>
+                        <div class="card-body">
+                            <div id="igv-div"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for region, values in result['queries'].items() %}
+                {% if values['hits']|length > 0 %}
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <h5 class="card-header">{{ region }}</h5>
+                                <div class="card-body">
+                                    <table class="display datatable resulttable">
+                                        <thead>
+                                        <tr>
+                                            <th>coordinate</th>
+                                            <th>sequence</th>
+                                            <th>num-off-targets</th>
+                                            <th>off-target-summary</th>
+                                            <th>cutting-efficiency</th>
+                                            <th>specificity</th>
+                                            <th>annotations</th>
+                                            <th>off-targets-hidden</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for value in values['hits'] %}
+                                            <tr>
+                                                <td>{{ value['coordinate'] }}</td>
+                                                <td>{{ value['sequence'] }}</td>
+                                                <td>{{ value['n-off-targets'] }}</td>
+                                                {% if value['n-off-targets'] > 0 %}
+                                                    <td><a href="#">{{ value['off-target-summary'] }}</a>
+                                                    </td>
+                                                {% else %}
+                                                    <td>{{ value['off-target-summary'] }}</td>
+                                                {% endif %}
+                                                <td>{{ '%0.2f' | format(value['cutting-efficiency'] | float) }}</td>
+                                                <td>{{ '%0.2f' | format(value['specificity'] | float) }}</td>
+                                                <td>{{ value['annotations'] }}</td>
+                                                <td>{{ value['off-targets'] | tojson }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Job {{ job_id }}</h5>
+                        <div class="card-body">
+                            Job pending. This page will refresh in 5 seconds.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block head %}
+    {% if status == 'SUCCESS' %}
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"/>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    {% if status == 'SUCCESS' %}
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/igv@2.15.5/dist/igv.min.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                var igvDiv = document.getElementById("igv-div");
+                var options =
+                    {
+                        genome: "{{ result['organism'] }}",
+                        locus: "{{ first_region }}",
+                        tracks: [
+                            {
+                                "url": window.location.origin + "/job/result/bed/{{ job_id }}",
+                                "format": "bed"
+                            }
+                        ]
+                    };
+                igv.createBrowser(igvDiv, options);
+
+                var table = $('.resulttable').DataTable({
+                    searching: false,
+                    lengthChange: false,
+                    bInfo: false,
+                    pagingType: "numbers",
+                    columnDefs: [
+                        {
+                            target: 7,
+                            visible: false
+                        }
+                    ],
+                });
+
+                $('.datatable tbody').on('click', 'a', function () {
+                    var row = table.row($(this).parents('tr')).data();
+                    $('#modal-title').html('Off-targets for ' + row[0]);
+                    $('#table-off-targets').DataTable({
+                        data: JSON.parse(row[7]),
+                        columns: [
+                            {
+                                data: 'region-string', title: 'coordinates', render: function (data, type, row, meta) {
+                                    return '<a target="_blank" href="https://igv.org/app/?genome={{ result['organism'] }}&locus=' + data + '">' + data + '</a>';
+                                }
+                            },
+                            {data: 'distance', title: 'distance'}
+                        ],
+                        searching: false,
+                        lengthChange: false,
+                        bInfo: false,
+                        pagingType: "numbers",
+                        destroy: true
+                    });
+                    $('#modal-off-targets').modal('show');
+                });
+
+            });
+        </script>
+    {% else %}
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                setTimeout(function () {
+                    location.reload(true);
+                }, 5000);
+            });
+        </script>
+    {% endif %}
+{% endblock %}
