@@ -10,17 +10,17 @@ try:
     from guidescanpy._version import version as __version__  # type: ignore
 except ModuleNotFoundError:
     # We're likely running as a source package without installation
-    __version__ = 'src'
+    __version__ = "src"
 
 
 def setup_config():
-    s = read_text(guidescanpy, 'config.json')
+    s = read_text(guidescanpy, "config.json")
     d = json.loads(s)
 
     # logging.config doesn't support configuration from an object, but does support dictConfig,
     # so use the dict obtained from json.
-    if 'logging' in d:
-        logging.config.dictConfig(d['logging'])
+    if "logging" in d:
+        logging.config.dictConfig(d["logging"])
     else:
         logging.basicConfig(level=logging.INFO)
 
@@ -37,11 +37,14 @@ def setup_config():
         config = json.loads(
             s,
             object_hook=lambda d: SimpleNamespace(
-                **{k: (v.format(**os.environ) if isinstance(v, str) else v) for k, v in d.items()}
-            )
+                **{
+                    k: (v.format(**os.environ) if isinstance(v, str) else v)
+                    for k, v in d.items()
+                }
+            ),
         )
     except KeyError as e:
-        raise RuntimeError(f'Environment variable {e.args[0]} missing')
+        raise RuntimeError(f"Environment variable {e.args[0]} missing")
 
     # Save the original dict in case it is easier to deal with it (e.g. when using json parsing libraries)
     config.json = d
