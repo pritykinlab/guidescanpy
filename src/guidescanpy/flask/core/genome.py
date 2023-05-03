@@ -2,7 +2,7 @@ import os.path
 import re
 from functools import lru_cache
 from collections import OrderedDict, defaultdict
-from typing import Union
+from typing import List
 import numpy as np
 import pandas as pd
 import pysam
@@ -45,39 +45,63 @@ class GenomeStructure:
             self.absolute_genome = np.insert(np.cumsum(bam.lengths), 0, 0)
             self.off_target_delim = -(self.absolute_genome[-1] + 1)
 
-    def parse_region(self, region: str) -> Union[dict, None]:
+    def parse_regions(self, region_string: str, flanking: int = 0) -> List:
         # region can be chr:start-end where start and end are 1-indexed and inclusive
-        region = region.replace(",", "")
-        match = re.match(r"^(.*):(\d+)-(\d+)", region)
+        region_string = region_string.replace(",", "")
+        match = re.match(r"^(.*):(\d+)-(\d+)", region_string)
         if match is not None:
             chr, start, end = match.group(1), int(match.group(2)), int(match.group(3))
-            if chr not in self.chr_to_acc:
-                return None
+            acc = self.chr_to_acc.get(chr, chr)
+            if acc not in self.acc_to_length:
+                return []
+            acc_length = self.acc_to_length[acc]
+            if start > acc_length or end > acc_length or start > end:
+                return []
             else:
-                acc = self.chr_to_acc[chr]
-                acc_length = self.acc_to_length[acc]
-                if start > acc_length or end > acc_length or start > end:
-                    return None
-                else:
-                    retval = {
-                        "region-name": region,
-                        "chromosome-name": chr,
-                        "coords": (acc, start, end),
-                    }
+                region = {
+                    "region-name": region_string,
+                    "chromosome-name": chr,
+                    "coords": (acc, start, end),
+                }
         else:
-            region = create_region_query(self.organism, region)
-            if region is None:
-                return None
-            retval = {
-                "region-name": region["region_name"],
-                "chromosome-name": region["chromosome_name"],
+            parsed_region = create_region_query(self.organism, region_string)
+            if parsed_region is None:
+                return []
+            region = {
+                "region-name": parsed_region["region_name"],
+                "chromosome-name": parsed_region["chromosome_name"],
                 "coords": (
-                    region["chromosome_accession"],
-                    region["start_pos"],
-                    region["end_pos"],
+                    parsed_region["chromosome_accession"],
+                    parsed_region["start_pos"],
+                    parsed_region["end_pos"],
                 ),
             }
-        return retval
+
+        if flanking > 0:
+            chromosome_name = region["chromosome-name"]
+            chromosome_acc, start_pos, end_pos = region["coords"]
+            region_name = region["region-name"]
+
+            regions = [
+                {
+                    "region-name": f"{region_name}:left-flank",
+                    "chromosome-name": chromosome_name,
+                    "coords": (chromosome_acc, max(1, start_pos - flanking), start_pos),
+                },
+                {
+                    "region-name": f"{region_name}:right-flank",
+                    "chromosome-name": chromosome_name,
+                    "coords": (
+                        chromosome_acc,
+                        end_pos,
+                        min(self.acc_to_length[chromosome_acc], end_pos + flanking),
+                    ),
+                },
+            ]
+        else:
+            regions = [region]
+
+        return regions
 
     def find_position(self, absolute_coords):
         """
@@ -126,8 +150,6 @@ class GenomeStructure:
     def query(
         self,
         region,
-        start_pos=None,
-        end_pos=None,
         enzyme="cas9",
         topn=None,
         min_specificity=None,
@@ -135,14 +157,7 @@ class GenomeStructure:
         filter_annotated=False,
         as_dataframe=False,
     ):
-        results = []
-        if start_pos is None or end_pos is None:
-            region = self.parse_region(region)
-            if region is None:
-                return results
-            chromosome, start_pos, end_pos = region["coords"]
-        else:
-            chromosome = region
+        chromosome, start_pos, end_pos = region["coords"]
 
         bam_dir = config.guidescan.grna_database_path_prefix
         bam_filename = getattr(
@@ -150,6 +165,7 @@ class GenomeStructure:
         )
         bam_filepath = os.path.join(bam_dir, bam_filename)
 
+        results = []
         with pysam.AlignmentFile(bam_filepath, "r") as bam:
             for i, read in enumerate(bam.fetch(chromosome, start_pos, end_pos)):
                 annotations = []

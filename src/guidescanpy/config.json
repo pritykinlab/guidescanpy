@@ -28,22 +28,49 @@
         "cas9": "cas9/sacCer3.bam.sorted"
       }
     },
+    "examples": {
+      "dm6": {
+        "cas9": "spn-A\nAct5C\nCdk1\nTor\nZw",
+        "cpf1": "spn-A\nAct5C\nCdk1\nTor\nZw"
+      },
+      "ce11": {
+        "cas9": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1",
+        "cpf1": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1"
+      },
+      "rn6": {
+        "cas9": "rad51\nactb1\nCdk1\nMtor\nG6pd",
+        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+      },
+      "mm39": {
+        "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
+        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+      },
+      "sacCer3": {
+        "cas9": "RAD51\nACTB\nCDC28\nTOR1\nZWF1",
+        "cpf1": "RAD51\nACTB\nCDC28\nTOR1\nZWF1"
+      },
+      "hg38": {
+        "cas9": "RAD51\nACTB\nCDK1\nMTOR\nG6PD",
+        "cpf1": "RAD51\nACTB\nCDK1\nMTOR\nG6PD"
+      },
+      "mm10": {
+        "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
+        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+      }
+    },
     "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}",
     "cachedir": "/tmp"
   },
-
   "flask": {
     "DEBUG": 0,
     "SECRET_KEY": "Dfsf00_34aslaS~~t5))pVls0$aGkxlas[q%91;",
     "SQLALCHEMY_TRACK_MODIFICATIONS": 0,
     "SERVER_NAME": "127.0.0.1:5001"
   },
-
   "celery": {
     "broker": "{CELERY_BROKER}",
     "backend": "{CELERY_BACKEND}"
   },
-
   "logging_": {
     "version": 1,
     "formatters": {
@@ -63,7 +90,9 @@
     "loggers": {
       "guidescan": {
         "level": "DEBUG",
-        "handlers": ["console"]
+        "handlers": [
+          "console"
+        ]
       }
     }
   }

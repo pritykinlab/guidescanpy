@@ -23,16 +23,29 @@
         </div>
 
         <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <h5 class="card-header">IGV Viewer</h5>
-                        <div class="card-body">
-                            <div id="igv-div"></div>
+            {% if first_region != "" %}
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <h5 class="card-header">IGV Viewer</h5>
+                            <div class="card-body">
+                                <div id="igv-div"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <h5 class="card-header">Job {{ job_id }}</h5>
+                            <div class="card-body">
+                                No results for query region(s).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
 
             {% for region, values in result['queries'].items() %}
                 {% if values['hits']|length > 0 %}
@@ -107,61 +120,65 @@
 
 {% block js %}
     {% if status == 'SUCCESS' %}
-        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/igv@2.15.5/dist/igv.min.js"></script>
-        <script type="text/javascript" charset="utf-8">
-            $(document).ready(function () {
-                var igvDiv = document.getElementById("igv-div");
-                var options =
-                    {
-                        genome: "{{ result['organism'] }}",
-                        locus: "{{ first_region }}",
-                        tracks: [
-                            {
-                                "url": window.location.origin + "/job/result/bed/{{ job_id }}",
-                                "format": "bed"
-                            }
-                        ]
-                    };
-                igv.createBrowser(igvDiv, options);
-
-                var table = $('.resulttable').DataTable({
-                    searching: false,
-                    lengthChange: false,
-                    bInfo: false,
-                    pagingType: "numbers",
-                    columnDefs: [
+        {% if first_region != "" %}
+            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/igv@2.15.5/dist/igv.min.js"></script>
+            <script type="text/javascript" charset="utf-8">
+                $(document).ready(function () {
+                    var igvDiv = document.getElementById("igv-div");
+                    var options =
                         {
-                            target: 7,
-                            visible: false
-                        }
-                    ],
-                });
-
-                $('.datatable tbody').on('click', 'a', function () {
-                    var row = table.row($(this).parents('tr')).data();
-                    $('#modal-title').html('Off-targets for ' + row[0]);
-                    $('#table-off-targets').DataTable({
-                        data: JSON.parse(row[7]),
-                        columns: [
-                            {
-                                data: 'region-string', title: 'coordinates', render: function (data, type, row, meta) {
-                                    return '<a target="_blank" href="https://igv.org/app/?genome={{ result['organism'] }}&locus=' + data + '">' + data + '</a>';
+                            genome: "{{ result['organism'] }}",
+                            locus: "{{ first_region }}",
+                            tracks: [
+                                {
+                                    "url": window.location.origin + "/py/job/result/bed/{{ job_id }}",
+                                    "format": "bed"
                                 }
-                            },
-                            {data: 'distance', title: 'distance'}
-                        ],
+                            ]
+                        };
+                    igv.createBrowser(igvDiv, options);
+
+                    var table = $('.resulttable').DataTable({
                         searching: false,
                         lengthChange: false,
                         bInfo: false,
                         pagingType: "numbers",
-                        destroy: true
+                        columnDefs: [
+                            {
+                                target: 7,
+                                visible: false
+                            }
+                        ],
                     });
-                    $('#modal-off-targets').modal('show');
-                });
 
-            });
-        </script>
+                    $('.datatable tbody').on('click', 'a', function () {
+                        var row = table.row($(this).parents('tr')).data();
+                        $('#modal-title').html('Off-targets for ' + row[0]);
+                        $('#table-off-targets').DataTable({
+                            data: JSON.parse(row[7]),
+                            columns: [
+                                {
+                                    data: 'region-string',
+                                    title: 'coordinates',
+                                    render: function (data, type, row, meta) {
+                                        return '<a target="_blank" href="https://igv.org/app/?genome={{ result['organism'] }}&locus=' + data + '">' + data + '</a>';
+                                    }
+                                },
+                                {data: 'distance', title: 'distance'}
+                            ],
+                            searching: false,
+                            lengthChange: false,
+                            bInfo: false,
+                            pagingType: "numbers",
+                            destroy: true
+                        });
+                        $('#modal-off-targets').modal('show');
+                    });
+
+                });
+            </script>
+        {% endif %}
     {% else %}
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {

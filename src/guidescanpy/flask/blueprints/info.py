@@ -1,5 +1,5 @@
 import subprocess
-from flask import jsonify, Blueprint, request
+from flask import jsonify, Blueprint
 from guidescanpy import config, __version__
 
 bp = Blueprint("info", __name__)
@@ -27,50 +27,4 @@ def supported():
 
 @bp.route("/examples", methods=["GET"])
 def examples():
-    return jsonify(
-        {
-            "coords": {
-                "dm6": {
-                    "cas9": "spn-A\nAct5C\nCdk1\nTor\nZw",
-                    "cpf1": "spn-A\nAct5C\nCdk1\nTor\nZw",
-                },
-                "ce11": {
-                    "cas9": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1",
-                    "cpf1": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1",
-                },
-                "rn6": {
-                    "cas9": "rad51\nactb1\nCdk1\nMtor\nG6pd",
-                    "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd",
-                },
-                "mm39": {
-                    "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
-                    "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd",
-                },
-                "sacCer3": {
-                    "cas9": "RAD51\nACTB\nCDC28\nTOR1\nZWF1",
-                    "cpf1": "RAD51\nACTB\nCDC28\nTOR1\nZWF1",
-                },
-                "hg38": {
-                    "cas9": "RAD51\nACTB\nCDK1\nMTOR\nG6PD",
-                    "cpf1": "RAD51\nACTB\nCDK1\nMTOR\nG6PD",
-                },
-                "mm10": {
-                    "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
-                    "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd",
-                },
-            },
-            "library": {
-                "mm39": "Rad51\nActb\nCdk1\nMtor\nG6pd",
-                "hg38": "RAD51\nACTB\nCDK1\nMTOR\nG6PD",
-            },
-        }
-    )
-
-
-@bp.route("/sleep", methods=["GET"])
-def sleep():
-    from guidescanpy.tasks import sleep as f
-
-    t = request.args.get("t", 1)
-    result = f.delay(t)
-    return jsonify({"job-id": result.id})
+    return jsonify(config.json["guidescan"]["examples"])

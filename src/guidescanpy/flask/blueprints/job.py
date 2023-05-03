@@ -12,7 +12,7 @@ def job(job_id):
     res = tasks_app.AsyncResult(job_id)
     status = res.status
     result = res.result if status == "SUCCESS" else None
-    if result is not None:
+    if result is not None and result["queries"]:
         # TODO: Is there a cleaner way to do this?
         first_region = list(result["queries"].values())[0]["region"]
     else:

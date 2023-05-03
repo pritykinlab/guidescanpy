@@ -23,23 +23,28 @@ def query(args):
     topn = int(args["topn"]) if "topn" in args else None
     min_specificity = float(args.get("s-bounds-l", 0))
     min_ce = float(args.get("ce-bounds-l", 0))
-
-    results = {"organism": organism, "enzyme": enzyme}
+    filter_annotated = args.get("filter-annotated", False)
+    flanking = int(args.get("flanking", 0))
 
     queries = {}
     if "query-text" in args:
         genome_structure = get_genome_structure(organism)
         for line in args.get("query-text").split("\n"):
             line = line.strip()
-            result = genome_structure.query(
-                line,
-                enzyme=enzyme,
-                topn=topn,
-                min_specificity=min_specificity,
-                min_ce=min_ce,
-            )
-            if result:
-                queries[line] = {"region": result[0]["region-string"], "hits": result}
-    results["queries"] = queries
+            regions = genome_structure.parse_regions(line, flanking=flanking)
+            for region in regions:
+                result = genome_structure.query(
+                    region,
+                    enzyme=enzyme,
+                    topn=topn,
+                    min_specificity=min_specificity,
+                    min_ce=min_ce,
+                    filter_annotated=filter_annotated,
+                )
+                if result:
+                    queries[region["region-name"]] = {
+                        "region": result[0]["region-string"],
+                        "hits": result,
+                    }
 
-    return results
+    return {"organism": organism, "enzyme": enzyme, "queries": queries}
