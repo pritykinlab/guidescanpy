@@ -3,15 +3,13 @@ import guidescanpy
 from guidescanpy.flask import create_app
 
 
-commands = (
-    'web',
-)
+commands = ("web",)
 
 
 def print_usage():
-    print('Guidescanpy v' + guidescanpy.__version__)
-    print('Usage: guidescanpy <command> <arguments ..>')
-    print('\nThe following commands are supported:\n ' + '\n '.join(commands))
+    print("Guidescanpy v" + guidescanpy.__version__)
+    print("Usage: guidescanpy <command> <arguments ..>")
+    print("\nThe following commands are supported:\n " + "\n ".join(commands))
 
 
 def web(args):
@@ -20,7 +18,6 @@ def web(args):
 
 
 def main():
-
     if len(sys.argv) < 2:
         print_usage()
         sys.exit(0)
@@ -32,7 +29,7 @@ def main():
         print_usage()
         sys.exit(1)
 
-    command = command.replace('-', '_')
+    command = command.replace("-", "_")
     globals()[command](args)
 
 
