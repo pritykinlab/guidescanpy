@@ -5,7 +5,12 @@ from guidescanpy.flask.blueprints import cache
 
 
 def create_app(debug=False):
-    app = Flask('guidescanpy', static_url_path='/pystatic', static_folder='flask/static', template_folder='flask/templates')
+    app = Flask(
+        "guidescanpy",
+        static_url_path="/pystatic",
+        static_folder="flask/static",
+        template_folder="flask/templates",
+    )
     app.config.from_object(config.flask)
     cache.init_app(app, config={"CACHE_TYPE": "simple"})
 
@@ -16,10 +21,10 @@ def create_app(debug=False):
 
     from guidescanpy.flask.blueprints import web, info, query, job
 
-    app.register_blueprint(web.bp, url_prefix='/py')
-    app.register_blueprint(info.bp, url_prefix='/py/info')
-    app.register_blueprint(query.bp, url_prefix='/py/query')
-    app.register_blueprint(job.bp, url_prefix='/py/job')
+    app.register_blueprint(web.bp, url_prefix="/py")
+    app.register_blueprint(info.bp, url_prefix="/py/info")
+    app.register_blueprint(query.bp, url_prefix="/py/query")
+    app.register_blueprint(job.bp, url_prefix="/py/job")
 
     app.add_template_global(lambda: __version__, name="app_version")
     return app
