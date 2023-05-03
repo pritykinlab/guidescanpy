@@ -16,7 +16,7 @@ def print_usage():
 
 def web(args):
     app = create_app()
-    return app.run(host="0.0.0.0", port=5000, debug=True)
+    return app.run(host="0.0.0.0", port=5001, debug=True)
 
 
 def main():

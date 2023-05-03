@@ -1,4 +1,5 @@
 from intervaltree import Interval, IntervalTree
+from joblib import Memory
 import psycopg2
 from psycopg2 import sql
 from psycopg2.extras import DictCursor
@@ -6,6 +7,7 @@ from guidescanpy import config
 
 
 conn = psycopg2.connect(config.guidescan.db)
+memory = Memory(config.guidescan.cachedir, verbose=True)
 
 
 def insert_chromosome_query(**kwargs):
@@ -71,6 +73,7 @@ def get_chromosome_names(organism):
         return None
 
 
+@memory.cache
 def get_chromosome_interval_trees():
     query = sql.SQL("SELECT chromosome, start_pos, end_pos, exon_number, product FROM exons")
     cur = conn.cursor(cursor_factory=DictCursor)
