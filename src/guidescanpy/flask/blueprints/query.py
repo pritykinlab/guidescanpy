@@ -7,7 +7,7 @@ bp = Blueprint("query", __name__)
 @bp.route("", methods=["GET"])
 def query_endpoint(args={}):
     args = args or request.args
-    eager = False
+    eager = request.args.get('eager', "0") in ("1", "true", "True")
     if eager:
         return query(args)
     else:
@@ -26,25 +26,24 @@ def query(args):
     filter_annotated = args.get("filter-annotated", False)
     flanking = int(args.get("flanking", 0))
 
+    genome_structure = get_genome_structure(organism)
+
     queries = {}
-    if "query-text" in args:
-        genome_structure = get_genome_structure(organism)
-        for line in args.get("query-text").split("\n"):
-            line = line.strip()
-            regions = genome_structure.parse_regions(line, flanking=flanking)
-            for region in regions:
-                result = genome_structure.query(
-                    region,
-                    enzyme=enzyme,
-                    topn=topn,
-                    min_specificity=min_specificity,
-                    min_ce=min_ce,
-                    filter_annotated=filter_annotated,
-                )
-                if result:
-                    queries[region["region-name"]] = {
-                        "region": result[0]["region-string"],
-                        "hits": result,
-                    }
+    query_text_or_file = args.get("file") or args.get("query-text")
+    regions = genome_structure.parse_regions(query_text_or_file, flanking=flanking)
+    for region in regions:
+        result = genome_structure.query(
+            region,
+            enzyme=enzyme,
+            topn=topn,
+            min_specificity=min_specificity,
+            min_ce=min_ce,
+            filter_annotated=filter_annotated,
+        )
+        if result:
+            queries[region["region-name"]] = {
+                "region": result[0]["region-string"],
+                "hits": result,
+            }
 
     return {"organism": organism, "enzyme": enzyme, "queries": queries}

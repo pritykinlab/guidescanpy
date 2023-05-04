@@ -9,7 +9,7 @@ def test_create_region_query_CNE1():
     assert results["start_pos"] == 37464
     assert results["end_pos"] == 38972
     assert results["sense"] is True
-    assert results["chromosome_name"] == "I"
+    assert results["chromosome_name"] == "chrI"
     assert results["chromosome_accession"] == "NC_001133.9"
 
 
@@ -28,7 +28,7 @@ def test_create_region_query_entrez_id():
     assert results["start_pos"] == 343101
     assert results["end_pos"] == 344135
     assert results["sense"] is True
-    assert results["chromosome_name"] == "II"
+    assert results["chromosome_name"] == "chrII"
     assert results["chromosome_accession"] == "NC_001134.8"
 
 

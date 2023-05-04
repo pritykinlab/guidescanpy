@@ -7,12 +7,12 @@ import pandas as pd
 from guidescanpy.flask.core.genome import get_genome_structure
 
 
-def assert_equal_offtargets(a, b):
-    for x, y in zip(a["off-targets"], b["off-targets"]):
+def assert_equal_offtargets(legacy, new):
+    for x, y in zip(legacy["off-targets"], new["off-targets"]):
         for _x, _y in zip(x, y):
             assert _x["position"] == _y["position"]
             assert _x["chromosome"] == _y["chromosome"]
-            assert _x["direction"] == _y["direction"]
+            assert _x["direction"] == "positive" if _y["direction"] == "+" else "negative"
             assert _x["distance"] == _y["distance"]
             assert _x["accession"] == _y["accession"]
 
@@ -50,14 +50,14 @@ def test_genome_structure_parse_CNE1():
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("CNE1")[0]
     assert region["region-name"] == "CNE1"
-    assert region["chromosome-name"] == "I"
-    assert region["coords"] == ("NC_001133.9", 37464, 38972)
+    assert region["chromosome-name"] == "chrI"
+    assert region["coords"] == ("chrI", 37464, 38972)
 
 
 def test_genome_structure_query_manual():
     genome_structure = get_genome_structure(organism="sacCer3")
-    # manually selected region on chr2 for CNE1 gene
-    region = genome_structure.parse_regions("NC_001133.9:37464-38972")[0]
+    # manually selected region on chrI for CNE1 gene
+    region = genome_structure.parse_regions("chrI:37464-38972")[0]
     results = genome_structure.query(region, enzyme="cas9")
     assert len(results) == 150
 
@@ -65,7 +65,7 @@ def test_genome_structure_query_manual():
 def test_genome_structure_query_CNE1():
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("CNE1")[0]
-    results = genome_structure.query(region, enzyme="cas9", as_dataframe=True)
+    results = genome_structure.query(region, enzyme="cas9", as_dataframe=True, legacy_ordering=True)
 
     old_results = clj(organism="sacCer3", enzyme="cas9", query="CNE1")
     assert len(results) == len(old_results)
@@ -84,7 +84,7 @@ def test_genome_structure_query_manual_filter_annotated():
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("chrII:5000-10000")[0]
     results = genome_structure.query(
-        region, enzyme="cas9", filter_annotated=True, as_dataframe=True
+        region, enzyme="cas9", filter_annotated=True, as_dataframe=True, legacy_ordering=True
     )
 
     old_results = clj(
@@ -109,7 +109,7 @@ def test_genome_structure_query_CNE1_min_specificity():
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("CNE1")[0]
     results = genome_structure.query(
-        region, enzyme="cas9", min_specificity=0.46, as_dataframe=True
+        region, enzyme="cas9", min_specificity=0.46, as_dataframe=True, legacy_ordering=True
     )
 
     old_results = clj(
@@ -131,7 +131,7 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency():
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("CNE1")[0]
     results = genome_structure.query(
-        region, enzyme="cas9", min_ce=0.3, as_dataframe=True
+        region, enzyme="cas9", min_ce=0.3, as_dataframe=True, legacy_ordering=True
     )
 
     old_results = clj(
@@ -156,7 +156,7 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency():
 def test_genome_structure_query_offtarget_on_scaffold():
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("chrIX:202231-202253")[0]
-    results = genome_structure.query(region, enzyme="cas9", as_dataframe=True)
+    results = genome_structure.query(region, enzyme="cas9", as_dataframe=True, legacy_ordering=True)
 
     old_results = clj(organism="sacCer3", enzyme="cas9", query="chrIX:202231-202253")
     assert len(results) == len(old_results)

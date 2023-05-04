@@ -4,7 +4,7 @@
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         var examples;
-        $.getJSON(window.location.origin + '{{ url_for('info.examples') }}', (data) => {
+        $.getJSON(window.location.origin + '{{ url_for('info.example_queries') }}', (data) => {
             examples = data;
             refreshExamples();
         });

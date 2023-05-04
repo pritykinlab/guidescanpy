@@ -1,5 +1,5 @@
 import logging
-from flask import Blueprint, jsonify, render_template, make_response
+from flask import Blueprint, jsonify, render_template, make_response, abort
 from guidescanpy.tasks import app as tasks_app
 
 
@@ -38,21 +38,51 @@ def result(format, job_id):
     res = tasks_app.AsyncResult(job_id)
     result = res.result
 
-    if format == "json":
-        return jsonify(result)
-    elif format == "bed":
-        lines = ['track name="guideRNAs"']
-        for _, v in result["queries"].items():
-            for hit in v["hits"]:
-                coordinate = hit["coordinate"]
-                chr, start_end, strand = coordinate.split(":")
-                start, end = start_end.split("-")
-                start = (
-                    int(start) - 1
-                )  # convert from 1-indexed inclusive to 0-indexed inclusive; end remains unchanged
-                lines.append(f"{chr}\t{start}\t{end}\t{coordinate}\t0\t{strand}")
+    match format:
+        case "json":
+            return jsonify(result)
 
-        response = "\n".join(lines)
-        response = make_response(response, 200)
-        response.mimetype = "text/plain"
-        return response
+        case "bed":
+            lines = ['track name="guideRNAs"']
+
+            for _, v in result["queries"].items():
+                for hit in v["hits"]:
+                    chr = hit["coordinate"].split(":")[0]
+                    start, end = hit["start"], hit["end"]
+                    start -= 1  # convert from 1-indexed inclusive to 0-indexed inclusive; end remains unchanged
+                    strand = hit["direction"]
+                    region_string = hit["region-string"]
+                    lines.append(f"{chr}\t{start}\t{end}\t{region_string}\t0\t{strand}")
+
+            response = "\n".join(lines)
+            response = make_response(response, 200)
+            response.mimetype = "text/plain"
+            return response
+
+        case "csv":
+            lines = ["Region-name,gRNA-ID,gRNA-SeqNumber of off-targets,"
+                     "Off-target summary,Cutting efficiency,Specificity,Rank,Coordinates,Strand,Annotations"]
+
+            for _, v in result["queries"].items():
+                for i, hit in enumerate(v["hits"], start=1):
+                    lines.append(",".join(str(x) for x in [
+                        hit["region-string"],
+                        hit["region-string"] + f".{i}",
+                        hit["sequence"],
+                        hit["n-off-targets"],
+                        hit["off-target-summary"],
+                        hit["cutting-efficiency"],
+                        hit["specificity"],
+                        i,
+                        hit["coordinate"],
+                        hit["direction"],
+                        hit["annotations"]
+                    ]))
+
+            response = "\n".join(lines)
+            response = make_response(response, 200)
+            response.mimetype = "text/csv"
+            return response
+
+        case _:
+            abort(415)  # Unsupported Media Type

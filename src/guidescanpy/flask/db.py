@@ -65,7 +65,7 @@ def create_region_query(organism, region):
 
     query = (
         "SELECT genes.entrez_id, genes.gene_symbol AS region_name, genes.start_pos AS start_pos, genes.end_pos AS end_pos, "
-        "genes.sense, chromosomes.name AS chromosome_name, chromosomes.accession AS chromosome_accession FROM genes, chromosomes "
+        "genes.sense, 'chr' || chromosomes.name AS chromosome_name, chromosomes.accession AS chromosome_accession FROM genes, chromosomes "
         "WHERE genes.chromosome=chromosomes.accession AND chromosomes.organism = %s"
     )
 

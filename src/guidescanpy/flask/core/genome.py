@@ -13,6 +13,7 @@ from guidescanpy.flask.db import (
     chromosome_interval_trees,
 )
 from guidescanpy.flask.core.utils import hex_to_offtarget_info
+from guidescanpy.flask.core.parser import region_parser
 from guidescanpy import config
 
 
@@ -46,60 +47,37 @@ class GenomeStructure:
             self.off_target_delim = -(self.absolute_genome[-1] + 1)
 
     def parse_regions(self, region_string: str, flanking: int = 0) -> List:
-        # region can be chr:start-end where start and end are 1-indexed and inclusive
-        region_string = region_string.replace(",", "")
-        match = re.match(r"^(.*):(\d+)-(\d+)", region_string)
-        if match is not None:
-            chr, start, end = match.group(1), int(match.group(2)), int(match.group(3))
-            acc = self.chr_to_acc.get(chr, chr)
-            if acc not in self.acc_to_length:
-                return []
-            acc_length = self.acc_to_length[acc]
-            if start > acc_length or end > acc_length or start > end:
-                return []
-            else:
-                region = {
-                    "region-name": region_string,
-                    "chromosome-name": chr,
-                    "coords": (acc, start, end),
-                }
-        else:
-            parsed_region = create_region_query(self.organism, region_string)
-            if parsed_region is None:
-                return []
+        parser = region_parser(filepath_or_str=region_string, organism=self.organism)
+        for region_name, chr, start, end in parser:
             region = {
-                "region-name": parsed_region["region_name"],
-                "chromosome-name": parsed_region["chromosome_name"],
-                "coords": (
-                    parsed_region["chromosome_accession"],
-                    parsed_region["start_pos"],
-                    parsed_region["end_pos"],
-                ),
+                "region-name": region_name,
+                "chromosome-name": chr,
+                "coords": (chr, start, end)
             }
 
-        if flanking > 0:
-            chromosome_name = region["chromosome-name"]
-            chromosome_acc, start_pos, end_pos = region["coords"]
-            region_name = region["region-name"]
+            if flanking > 0:
+                chromosome_name = region["chromosome-name"]
+                chromosome_acc, start_pos, end_pos = region["coords"]
+                region_name = region["region-name"]
 
-            regions = [
-                {
-                    "region-name": f"{region_name}:left-flank",
-                    "chromosome-name": chromosome_name,
-                    "coords": (chromosome_acc, max(1, start_pos - flanking), start_pos),
-                },
-                {
-                    "region-name": f"{region_name}:right-flank",
-                    "chromosome-name": chromosome_name,
-                    "coords": (
-                        chromosome_acc,
-                        end_pos,
-                        min(self.acc_to_length[chromosome_acc], end_pos + flanking),
-                    ),
-                },
-            ]
-        else:
-            regions = [region]
+                regions = [
+                    {
+                        "region-name": f"{region_name}:left-flank",
+                        "chromosome-name": chromosome_name,
+                        "coords": (chromosome_acc, max(1, start_pos - flanking), start_pos),
+                    },
+                    {
+                        "region-name": f"{region_name}:right-flank",
+                        "chromosome-name": chromosome_name,
+                        "coords": (
+                            chromosome_acc,
+                            end_pos,
+                            min(self.acc_to_length[chromosome_acc], end_pos + flanking),
+                        ),
+                    },
+                ]
+            else:
+                regions = [region]
 
         return regions
 
@@ -112,7 +90,7 @@ class GenomeStructure:
         raise NotImplementedError
 
     def to_genomic_coordinates(self, pos):
-        strand = "positive" if pos > 0 else "negative"
+        strand = "+" if pos > 0 else "-"
         x = abs(pos)
         i = 0
         while self.genome[0][i] <= x:
@@ -134,7 +112,7 @@ class GenomeStructure:
         chr = "chr" + off_target_dict["chromosome"]
         # TODO: Just decide on '+' or 'positive' throughout!
         # TODO: Get rid of the magic 22 here
-        if off_target_dict["direction"] == "positive":
+        if off_target_dict["direction"] == "+":
             # For + strand, position denotes the (0-indexed, inclusive) end of the match
             # Convert this to (1-indexed, inclusive)
             end = off_target_dict["position"] + 1
@@ -156,8 +134,12 @@ class GenomeStructure:
         min_ce=None,
         filter_annotated=False,
         as_dataframe=False,
+        legacy_ordering=False
     ):
         chromosome, start_pos, end_pos = region["coords"]
+        if chromosome not in self.chr_to_acc:
+            return None
+        chromosome = self.chr_to_acc[chromosome]
 
         bam_dir = config.guidescan.grna_database_path_prefix
         bam_filename = getattr(
@@ -239,7 +221,7 @@ class GenomeStructure:
                     "start": read.reference_start
                     + 1,  # 0-indexed inclusive -> 1-indexed inclusive
                     "end": read.reference_end,  # 0-indexed exclusive -> 1-indexed inclusive
-                    "direction": "positive" if read.is_forward else "negative",
+                    "direction": "+" if read.is_forward else "-",
                     "cutting-efficiency": read.get_tag("ds"),
                     "specificity": read.get_tag("cs"),
                     "off-targets": off_targets,
@@ -266,12 +248,19 @@ class GenomeStructure:
             if filter_annotated:
                 results = results[results["annotations"] != ""]
 
-            results = results[:topn]
+            if legacy_ordering:
+                # legacy ordering only for unit testing purposes
+                # orders by n-off-targets, otherwise keeps the original order
+                results = results.rename_axis("iloc").sort_values(
+                    by=["n-off-targets", "iloc"], ascending=[True, True]
+                )
+            else:
+                results = results.sort_values(
+                    by=["specificity", "n-off-targets"], ascending=[False, True]
+                )
 
-            results = results.rename_axis("iloc").sort_values(
-                by=["n-off-targets", "iloc"], ascending=[True, True]
-            )
-            results.reset_index(inplace=True)
+            results = results[:topn]
+            results.reset_index(inplace=True, drop=True)
 
         if as_dataframe:
             return results

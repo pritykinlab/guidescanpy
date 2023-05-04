@@ -14,7 +14,7 @@ def test_query_gene_symbol(app):
     # For the sacCer3 organism and CNE1 gene, find hits for the cas9 enzyme
     # query-text can be a gene symbol, a chromosome region, or an entrez id
     response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=CNE1"
+        "py/query?organism=sacCer3&enzyme=cas9&query-text=CNE1&eager=1"
     )
     assert response.mimetype == "application/json"
     data = json.loads(response.data)
@@ -26,7 +26,7 @@ def test_query_gene_symbol(app):
 
 def test_query_entrez_id(app):
     response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=852343"
+        "py/query?organism=sacCer3&enzyme=cas9&query-text=852343&eager=1"
     )
     assert response.mimetype == "application/json"
     data = json.loads(response.data)
@@ -36,7 +36,7 @@ def test_query_entrez_id(app):
 
 def test_query_chr(app):
     response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=chrIX:202200-202300"
+        "py/query?organism=sacCer3&enzyme=cas9&query-text=chrIX:202200-202300&eager=1"
     )
     assert response.mimetype == "application/json"
     data = json.loads(response.data)
@@ -47,7 +47,7 @@ def test_query_chr(app):
 def test_query_chr_bad(app):
     # No such chromosome - chrXX
     response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=chrXX:1000-2000"
+        "py/query?organism=sacCer3&enzyme=cas9&query-text=chrXX:1000-2000&eager=1"
     )
     assert response.mimetype == "application/json"
     data = json.loads(response.data)
@@ -57,7 +57,7 @@ def test_query_chr_bad(app):
 def test_query_chr_pos_bad(app):
     # Positions don't exist on chrV, which is length 576874
     response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=chrV:182113225-182113225"
+        "py/query?organism=sacCer3&enzyme=cas9&query-text=chrV:182113225-182113225&eager=1"
     )
     assert response.mimetype == "application/json"
     data = json.loads(response.data)

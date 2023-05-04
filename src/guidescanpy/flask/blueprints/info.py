@@ -25,6 +25,11 @@ def supported():
     )
 
 
-@bp.route("/examples", methods=["GET"])
-def examples():
-    return jsonify(config.json["guidescan"]["examples"])
+@bp.route("/example_queries", methods=["GET"])
+def example_queries():
+    return jsonify(config.json["guidescan"]["example_queries"])
+
+
+@bp.route("/example_sequences", methods=["GET"])
+def example_sequences():
+    return jsonify(config.json["guidescan"]["example_sequences"])

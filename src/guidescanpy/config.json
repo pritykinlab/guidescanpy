@@ -28,7 +28,7 @@
         "cas9": "cas9/sacCer3.bam.sorted"
       }
     },
-    "examples": {
+    "example_queries": {
       "dm6": {
         "cas9": "spn-A\nAct5C\nCdk1\nTor\nZw",
         "cpf1": "spn-A\nAct5C\nCdk1\nTor\nZw"
@@ -58,6 +58,42 @@
         "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
       }
     },
+
+    "index_files_path_prefix": "{INDEX_PATH}",
+    "index_files_path_map": {
+      "sacCer3": "sacCer3/index/GCF_000146045.2_R64_genomic.fna.index"
+    },
+
+    "example_sequences": {
+      "dm6": {
+        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
+        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+      },
+      "ce11": {
+        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
+        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+      },
+      "rn6": {
+        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
+        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+      },
+      "mm39": {
+        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
+        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+      },
+      "sacCer3": {
+        "cas9": "AGAATATTTCGTACTTACACNGG\nATGTGACACTACTCATACGANGG",
+        "cpf1": "AGAATATTTCGTACTTACACNGG\nATGTGACACTACTCATACGANGG"
+      },
+      "hg38": {
+        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
+        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+      },
+      "mm10": {
+        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
+        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+      }
+    },
     "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}",
     "cachedir": "/tmp"
   },
@@ -65,6 +101,7 @@
     "DEBUG": 0,
     "SECRET_KEY": "Dfsf00_34aslaS~~t5))pVls0$aGkxlas[q%91;",
     "SQLALCHEMY_TRACK_MODIFICATIONS": 0,
+    "UPLOAD_FOLDER": "/tmp",
     "SERVER_NAME": "127.0.0.1:5001"
   },
   "celery": {

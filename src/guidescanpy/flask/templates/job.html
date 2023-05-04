@@ -23,6 +23,29 @@
         </div>
 
         <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Job {{ job_id }}</h5>
+                        <div class="card-body text-center">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Download Results
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item"
+                                       href="{{ url_for('job.result', format='json', job_id=job_id) }}">as json..</a>
+                                    <a class="dropdown-item"
+                                       href="{{ url_for('job.result', format='csv', job_id=job_id) }}">as csv..</a>
+                                    <a class="dropdown-item"
+                                       href="{{ url_for('job.result', format='bed', job_id=job_id) }}">as bed..</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% if first_region != "" %}
                 <div class="row">
                     <div class="col">

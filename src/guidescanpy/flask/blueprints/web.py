@@ -1,16 +1,24 @@
 import logging
+import os.path
 from flask import (
+    current_app,
     Blueprint,
     request,
     render_template,
     redirect,
     url_for,
 )
+from werkzeug.utils import secure_filename
 from guidescanpy.flask.blueprints.query import query_endpoint
+from guidescanpy.flask.blueprints.sequence import sequence_endpoint
 
 
 bp = Blueprint("web", __name__)
 logger = logging.getLogger(__name__)
+
+
+def allowed_file(filename):
+    return '.' in filename and os.path.splitext(filename)[-1] in ('.txt', '.bed', '.gtf', '.gff')
 
 
 @bp.route("/")
@@ -38,10 +46,12 @@ def grna_design():
         if form.get("checkTopN", "off") == "on":
             form_data["topn"] = int(form["txtTopN"])
 
-        if request.files["fileCoordinates"].read().decode("utf8"):
-            form_data["query-file-upload"] = request.files[
-                "fileCoordinates"
-            ]  # TODO: What should go here?
+        if file := request.files.get("fileCoordinates"):
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                file.save(filepath)
+                form_data['file'] = filepath
 
         if form.get("checkFilterAboveSpecificity", "off") == "on":
             form_data["s-bounds-l"] = float(form["txtFilterAboveSpecificity"])
@@ -62,8 +72,17 @@ def gene_targeting_library():
     return render_template("gene_targeting_library.html")
 
 
-@bp.route("/grna_sequence_search")
+@bp.route("/grna_sequence_search", methods=["GET", "POST"])
 def grna_sequence_search():
+    if request.method == "POST":
+        form = request.form
+        form_data = {
+            "organism": form["selectOrganism"],
+            "enzyme": form["selectEnzyme"],
+            "sequences": form["txtSequence"]
+        }
+        results = sequence_endpoint(form_data)
+        return results
     return render_template("grna_sequence_search.html")
 
 
