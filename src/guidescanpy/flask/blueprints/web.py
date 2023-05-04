@@ -18,7 +18,12 @@ logger = logging.getLogger(__name__)
 
 
 def allowed_file(filename):
-    return '.' in filename and os.path.splitext(filename)[-1] in ('.txt', '.bed', '.gtf', '.gff')
+    return "." in filename and os.path.splitext(filename)[-1] in (
+        ".txt",
+        ".bed",
+        ".gtf",
+        ".gff",
+    )
 
 
 @bp.route("/")
@@ -49,9 +54,9 @@ def grna_design():
         if file := request.files.get("fileCoordinates"):
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                filepath = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
                 file.save(filepath)
-                form_data['file'] = filepath
+                form_data["file"] = filepath
 
         if form.get("checkFilterAboveSpecificity", "off") == "on":
             form_data["s-bounds-l"] = float(form["txtFilterAboveSpecificity"])
@@ -79,7 +84,7 @@ def grna_sequence_search():
         form_data = {
             "organism": form["selectOrganism"],
             "enzyme": form["selectEnzyme"],
-            "sequences": form["txtSequence"]
+            "sequences": form["txtSequence"],
         }
         results = sequence_endpoint(form_data)
         return results

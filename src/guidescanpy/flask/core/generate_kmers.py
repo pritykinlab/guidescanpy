@@ -8,50 +8,44 @@ def parse_arguments():
     )
 
     parser.add_argument(
-        "fasta",
-        type=str,
-        help="FASTA file to use as a reference for kmer generation."
+        "fasta", type=str, help="FASTA file to use as a reference for kmer generation."
     )
 
     parser.add_argument(
-        "--pam",
-        help="Protospacer adjacent motif to match.",
-        default="NGG"
+        "--pam", help="Protospacer adjacent motif to match.", default="NGG"
     )
 
     parser.add_argument(
-        "--kmer-length",
-        help="Length of kmers to generate.",
-        type=int,
-        default=20
+        "--kmer-length", help="Length of kmers to generate.", type=int, default=20
     )
 
     parser.add_argument(
         "--min-chr-length",
         help="Minimum chromosome length to consider for kmer generation.",
         type=int,
-        default=0
+        default=0,
     )
 
     parser.add_argument(
-        "--prefix",
-        help="Prefix to use for kmer identifiers.",
-        default=""
+        "--prefix", help="Prefix to use for kmer identifiers.", default=""
     )
 
     parser.add_argument(
         "--start",
         help="Match PAM at start of kmer instead at end (default).",
-        action='store_true'
+        action="store_true",
     )
 
     return parser.parse_args()
 
+
 NUCS = list("ACTG")
 NUC_MAP = {"A": "T", "T": "A", "C": "G", "G": "C"}
 
+
 def revcom(dna):
     return "".join(list(map(lambda n: NUC_MAP[n], list(dna)))[::-1])
+
 
 def generate_pam_set(pam):
     pam_stack = [pam]
@@ -68,6 +62,7 @@ def generate_pam_set(pam):
 
     return pam_stack
 
+
 def find_kmers(pam, k, chrm, forward=True, end=True):
     index = 0
 
@@ -79,17 +74,17 @@ def find_kmers(pam, k, chrm, forward=True, end=True):
 
         if end:
             if forward:
-                kmer = chrm[index - k:index]
+                kmer = chrm[index - k : index]
                 position = index - k
             else:
-                kmer = chrm[index + len(pam):index + k + len(pam)]
+                kmer = chrm[index + len(pam) : index + k + len(pam)]
                 position = index
         else:
             if forward:
-                kmer = chrm[index + len(pam):index + k + len(pam)]
+                kmer = chrm[index + len(pam) : index + k + len(pam)]
                 position = index
             else:
-                kmer = chrm[index - k:index]
+                kmer = chrm[index - k : index]
                 position = index - k
 
         index += 1
@@ -98,7 +93,8 @@ def find_kmers(pam, k, chrm, forward=True, end=True):
             continue
 
         # Return the 1-indexed position to caller
-        yield kmer.upper(), position+1
+        yield kmer.upper(), position + 1
+
 
 def find_all_kmers(pam, k, chrm, end=True):
     pam_set = generate_pam_set(pam)
@@ -106,23 +102,33 @@ def find_all_kmers(pam, k, chrm, end=True):
 
     for p in pam_set:
         for kmer, pos in find_kmers(p, k, chrm, end=end):
-            if len(kmer) != k: continue
-            if not all(nuc in NUCS for nuc in kmer): continue
-            yield {"sequence" : kmer, "position" : pos, "pam" : pam, "sense": "+"}
+            if len(kmer) != k:
+                continue
+            if not all(nuc in NUCS for nuc in kmer):
+                continue
+            yield {"sequence": kmer, "position": pos, "pam": pam, "sense": "+"}
 
     for p in rev_pam_set:
         for kmer, pos in find_kmers(p, k, chrm, forward=False, end=end):
-            if len(kmer) != k: continue
-            if not all(nuc in NUCS for nuc in kmer): continue
-            yield {"sequence" : revcom(kmer), "position" : pos,
-                   "pam" : pam, "sense": "-"}
+            if len(kmer) != k:
+                continue
+            if not all(nuc in NUCS for nuc in kmer):
+                continue
+            yield {"sequence": revcom(kmer), "position": pos, "pam": pam, "sense": "-"}
+
 
 def output_kmer(prefix, chrm_name, kmer):
     identifier = f"{prefix}{chrm_name}:{kmer['position']}:{kmer['sense']}"
-    row = [identifier, str(kmer['sequence']),
-           kmer['pam'], chrm_name,
-           str(kmer['position']), kmer['sense']]
+    row = [
+        identifier,
+        str(kmer["sequence"]),
+        kmer["pam"],
+        chrm_name,
+        str(kmer["position"]),
+        kmer["sense"],
+    ]
     print(",".join(row))
+
 
 if __name__ == "__main__":
     args = parse_arguments()
@@ -132,5 +138,7 @@ if __name__ == "__main__":
         if len(record) < args.min_chr_length:
             continue
 
-        for kmer in find_all_kmers(args.pam, args.kmer_length, record.seq, end=not args.start):
+        for kmer in find_all_kmers(
+            args.pam, args.kmer_length, record.seq, end=not args.start
+        ):
             output_kmer(args.prefix, record.name, kmer)

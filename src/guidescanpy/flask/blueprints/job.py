@@ -60,24 +60,31 @@ def result(format, job_id):
             return response
 
         case "csv":
-            lines = ["Region-name,gRNA-ID,gRNA-SeqNumber of off-targets,"
-                     "Off-target summary,Cutting efficiency,Specificity,Rank,Coordinates,Strand,Annotations"]
+            lines = [
+                "Region-name,gRNA-ID,gRNA-SeqNumber of off-targets,"
+                "Off-target summary,Cutting efficiency,Specificity,Rank,Coordinates,Strand,Annotations"
+            ]
 
             for _, v in result["queries"].items():
                 for i, hit in enumerate(v["hits"], start=1):
-                    lines.append(",".join(str(x) for x in [
-                        hit["region-string"],
-                        hit["region-string"] + f".{i}",
-                        hit["sequence"],
-                        hit["n-off-targets"],
-                        hit["off-target-summary"],
-                        hit["cutting-efficiency"],
-                        hit["specificity"],
-                        i,
-                        hit["coordinate"],
-                        hit["direction"],
-                        hit["annotations"]
-                    ]))
+                    lines.append(
+                        ",".join(
+                            str(x)
+                            for x in [
+                                hit["region-string"],
+                                hit["region-string"] + f".{i}",
+                                hit["sequence"],
+                                hit["n-off-targets"],
+                                hit["off-target-summary"],
+                                hit["cutting-efficiency"],
+                                hit["specificity"],
+                                i,
+                                hit["coordinate"],
+                                hit["direction"],
+                                hit["annotations"],
+                            ]
+                        )
+                    )
 
             response = "\n".join(lines)
             response = make_response(response, 200)

@@ -7,7 +7,7 @@ bp = Blueprint("query", __name__)
 @bp.route("", methods=["GET"])
 def query_endpoint(args={}):
     args = args or request.args
-    eager = request.args.get('eager', "0") in ("1", "true", "True")
+    eager = request.args.get("eager", "0") in ("1", "true", "True")
     if eager:
         return query(args)
     else:

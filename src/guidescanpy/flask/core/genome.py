@@ -1,5 +1,4 @@
 import os.path
-import re
 from functools import lru_cache
 from collections import OrderedDict, defaultdict
 from typing import List
@@ -9,7 +8,6 @@ import pysam
 from intervaltree import Interval
 from guidescanpy.flask.db import (
     get_chromosome_names,
-    create_region_query,
     chromosome_interval_trees,
 )
 from guidescanpy.flask.core.utils import hex_to_offtarget_info
@@ -52,7 +50,7 @@ class GenomeStructure:
             region = {
                 "region-name": region_name,
                 "chromosome-name": chr,
-                "coords": (chr, start, end)
+                "coords": (chr, start, end),
             }
 
             if flanking > 0:
@@ -64,7 +62,11 @@ class GenomeStructure:
                     {
                         "region-name": f"{region_name}:left-flank",
                         "chromosome-name": chromosome_name,
-                        "coords": (chromosome_acc, max(1, start_pos - flanking), start_pos),
+                        "coords": (
+                            chromosome_acc,
+                            max(1, start_pos - flanking),
+                            start_pos,
+                        ),
                     },
                     {
                         "region-name": f"{region_name}:right-flank",
@@ -134,7 +136,7 @@ class GenomeStructure:
         min_ce=None,
         filter_annotated=False,
         as_dataframe=False,
-        legacy_ordering=False
+        legacy_ordering=False,
     ):
         chromosome, start_pos, end_pos = region["coords"]
         if chromosome not in self.chr_to_acc:
