@@ -35,11 +35,11 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item"
-                                       href="{{ url_for('job.result', format='json', job_id=job_id) }}">as json..</a>
+                                       href="{{ url_for('job_query.result', format='json', job_id=job_id) }}">as json..</a>
                                     <a class="dropdown-item"
-                                       href="{{ url_for('job.result', format='csv', job_id=job_id) }}">as csv..</a>
+                                       href="{{ url_for('job_query.result', format='csv', job_id=job_id) }}">as csv..</a>
                                     <a class="dropdown-item"
-                                       href="{{ url_for('job.result', format='bed', job_id=job_id) }}">as bed..</a>
+                                       href="{{ url_for('job_query.result', format='bed', job_id=job_id) }}">as bed..</a>
                                 </div>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                             locus: "{{ first_region }}",
                             tracks: [
                                 {
-                                    "url": window.location.origin + "/py/job/result/bed/{{ job_id }}",
+                                    "url": window.location.origin + "{{ url_for('job_query.result', format='bed', job_id=job_id) }}",
                                     "format": "bed"
                                 }
                             ]

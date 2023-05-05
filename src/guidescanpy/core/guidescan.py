@@ -10,7 +10,9 @@ from guidescanpy import config
 logger = logging.getLogger(__name__)
 
 
-def cmd_enumerate(kmers_with_pam: List[str], index_filepath_prefix: str) -> Dict:
+def cmd_enumerate(
+    kmers_with_pam: List[str], index_filepath_prefix: str, mismatches: int = 0
+) -> Dict:
     # Most of the columns we write here are never looked at by the enumerate command and thus not important!
     with tempfile.TemporaryDirectory() as tmp:
         with tempfile.NamedTemporaryFile(dir=tmp, mode="w", delete=False) as temp_file:
@@ -28,6 +30,8 @@ def cmd_enumerate(kmers_with_pam: List[str], index_filepath_prefix: str) -> Dict
             temp_file.name,
             "-o",
             output_path,
+            "--mismatches",
+            f"{mismatches}",
             index_filepath_prefix,
         ]
         cmd = " ".join(cmd_parts)

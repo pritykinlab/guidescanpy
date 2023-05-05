@@ -19,13 +19,21 @@ def create_app(debug=False):
 
         app.wsgi_app = DebuggedApplication(app.wsgi_app, True)
 
-    from guidescanpy.flask.blueprints import web, info, query, sequence, job
+    from guidescanpy.flask.blueprints import (
+        web,
+        info,
+        query,
+        sequence,
+        job_query,
+        job_sequence,
+    )
 
     app.register_blueprint(web.bp, url_prefix="/py")
     app.register_blueprint(info.bp, url_prefix="/py/info")
     app.register_blueprint(query.bp, url_prefix="/py/query")
     app.register_blueprint(sequence.bp, url_prefix="/py/sequence")
-    app.register_blueprint(job.bp, url_prefix="/py/job")
+    app.register_blueprint(job_query.bp, url_prefix="/py/job/query")
+    app.register_blueprint(job_sequence.bp, url_prefix="/py/job/sequence")
 
     app.add_template_global(lambda: __version__, name="app_version")
     return app

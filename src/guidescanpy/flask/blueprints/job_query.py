@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, render_template, make_response, abort
 from guidescanpy.tasks import app as tasks_app
 
 
-bp = Blueprint("job", __name__)
+bp = Blueprint("job_query", __name__)
 logger = logging.getLogger(__name__)
 
 
@@ -18,7 +18,7 @@ def job(job_id):
     else:
         first_region = ""
     return render_template(
-        "job.html",
+        "job_query.html",
         job_id=job_id,
         status=status,
         result=result,

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block main %}
+    {% if status == 'SUCCESS' %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Results</h5>
+                        <div class="card-body">
+                            <table class="display datatable resulttable">
+                                <thead>
+                                <tr>
+                                    <th>chromosome</th>
+                                    <th>position</th>
+                                    <th>sequence</th>
+                                    <th>strand</th>
+                                    <th>specificity</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for d in result['results'] %}
+                                    <tr>
+                                        <td>{{ d['match_chrm'] }}</td>
+                                        <td>{{ d['match_position'] }}</td>
+                                        <td>{{ d['match_sequence'] }}</td>
+                                        <td>{{ d['match_strand'] }}</td>
+                                        <td>{{ '%0.2f' | format(d['specificity'] | float) }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Job {{ job_id }}</h5>
+                        <div class="card-body">
+                            Job pending. This page will refresh in 5 seconds.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block head %}
+    {% if status == 'SUCCESS' %}
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"/>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    {% if status == 'SUCCESS' %}
+        {% if first_region != "" %}
+            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/igv@2.15.5/dist/igv.min.js"></script>
+            <script type="text/javascript" charset="utf-8">
+                $(document).ready(function () {
+                    var table = $('.resulttable').DataTable({
+                        searching: false,
+                        lengthChange: false,
+                        bInfo: false,
+                        pagingType: "numbers"
+                    });
+                });
+            </script>
+        {% endif %}
+    {% else %}
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                setTimeout(function () {
+                    location.reload(true);
+                }, 5000);
+            });
+        </script>
+    {% endif %}
+{% endblock %}

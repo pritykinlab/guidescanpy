@@ -10,14 +10,13 @@ bp = Blueprint("sequence", __name__)
 def sequence_endpoint(args={}):
     args = args or request.args
     eager = request.args.get("eager", "0") in ("1", "true", "True")
-    eager = True
     if eager:
         return sequence(args)
     else:
         from guidescanpy.tasks import sequence as f
 
         result = f.delay(args)
-        return redirect(url_for("job.job", job_id=result.task_id))
+        return redirect(url_for("job_sequence.job", job_id=result.task_id))
 
 
 def sequence(args):

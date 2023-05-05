@@ -14,7 +14,7 @@ def query_endpoint(args={}):
         from guidescanpy.tasks import query as f
 
         result = f.delay(args)
-        return redirect(url_for("job.job", job_id=result.task_id))
+        return redirect(url_for("job_query.job", job_id=result.task_id))
 
 
 def query(args):

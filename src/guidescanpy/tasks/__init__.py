@@ -17,3 +17,10 @@ def query(*args, **kwargs):
     from guidescanpy.flask.blueprints.query import query
 
     return query(*args, **kwargs)
+
+
+@app.task
+def sequence(*args, **kwargs):
+    from guidescanpy.flask.blueprints.sequence import sequence
+
+    return sequence(*args, **kwargs)
