@@ -1,0 +1,6 @@
+#!/bin/bash
+
+tmux new-session -d -s guidescan3 -n "Redis" 'redis-server';
+tmux new-window -t guidescan3 -n "Celery Worker" 'source .env && source ../.env/bin/activate && python -m celery -A guidescanpy.tasks.app worker -l INFO';
+tmux new-window -t guidescan3 -n "Celery Flower" 'source .env && source ../.env/bin/activate && python -m celery -A guidescanpy.tasks.app flower --url_prefix=pyflower';
+tmux new-window -t guidescan3 -n "Flask" 'source .env && source ../.env/bin/activate && python -m guidescanpy web';

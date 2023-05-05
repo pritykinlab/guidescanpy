@@ -1,6 +1,6 @@
 {
   "guidescan": {
-    "bin": "guidescan",
+    "bin": "/home/ec2-user/guidescan/bin/guidescan",
     "grna_database_path_prefix": "{BAMS_PATH}",
     "grna_database_path_map": {
       "ce11": {
@@ -29,25 +29,13 @@
       }
     },
     "example_queries": {
-      "dm6": {
-        "cas9": "spn-A\nAct5C\nCdk1\nTor\nZw",
-        "cpf1": "spn-A\nAct5C\nCdk1\nTor\nZw"
-      },
       "ce11": {
         "cas9": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1",
         "cpf1": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1"
       },
-      "rn6": {
-        "cas9": "rad51\nactb1\nCdk1\nMtor\nG6pd",
-        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
-      },
-      "mm39": {
-        "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
-        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
-      },
-      "sacCer3": {
-        "cas9": "RAD51\nACTB\nCDC28\nTOR1\nZWF1",
-        "cpf1": "RAD51\nACTB\nCDC28\nTOR1\nZWF1"
+      "dm6": {
+        "cas9": "spn-A\nAct5C\nCdk1\nTor\nZw",
+        "cpf1": "spn-A\nAct5C\nCdk1\nTor\nZw"
       },
       "hg38": {
         "cas9": "RAD51\nACTB\nCDK1\nMTOR\nG6PD",
@@ -56,34 +44,40 @@
       "mm10": {
         "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
         "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+      },
+      "mm39": {
+        "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
+        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+      },
+      "rn6": {
+        "cas9": "rad51\nactb1\nCdk1\nMtor\nG6pd",
+        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+      },
+      "sacCer3": {
+        "cas9": "RAD51\nACTB\nCDC28\nTOR1\nZWF1",
+        "cpf1": "RAD51\nACTB\nCDC28\nTOR1\nZWF1"
       }
     },
 
     "index_files_path_prefix": "{INDEX_PATH}",
     "index_files_path_map": {
-      "sacCer3": "sacCer3/index/GCF_000146045.2_R64_genomic.fna.index"
+      "ce11": "ce11.index",
+      "dm6": "dm6.index",
+      "hg38": "hg38.index",
+      "mm10": "mm10.index",
+      "mm39": "mm39.index",
+      "rn6": "rn6.index",
+      "sacCer3": "sacCer3.index"
     },
 
     "example_sequences": {
-      "dm6": {
-        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
-        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
-      },
       "ce11": {
         "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
         "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
       },
-      "rn6": {
+      "dm6": {
         "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
         "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
-      },
-      "mm39": {
-        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
-        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
-      },
-      "sacCer3": {
-        "cas9": "AGAATATTTCGTACTTACACNGG\nATGTGACACTACTCATACGANGG",
-        "cpf1": "AGAATATTTCGTACTTACACNGG\nATGTGACACTACTCATACGANGG"
       },
       "hg38": {
         "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
@@ -92,6 +86,18 @@
       "mm10": {
         "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
         "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+      },
+      "mm39": {
+        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
+        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+      },
+      "rn6": {
+        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
+        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+      },
+      "sacCer3": {
+        "cas9": "AGAATATTTCGTACTTACACNGG\nATGTGACACTACTCATACGANGG",
+        "cpf1": "AGAATATTTCGTACTTACACNGG\nATGTGACACTACTCATACGANGG"
       }
     },
     "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}",
