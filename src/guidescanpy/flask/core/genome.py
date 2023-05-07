@@ -1,7 +1,6 @@
 import os.path
 from functools import lru_cache
 from collections import OrderedDict, defaultdict
-from typing import List
 import numpy as np
 import pandas as pd
 import pysam
@@ -44,7 +43,7 @@ class GenomeStructure:
             self.absolute_genome = np.insert(np.cumsum(bam.lengths), 0, 0)
             self.off_target_delim = -(self.absolute_genome[-1] + 1)
 
-    def parse_regions(self, region_string: str, flanking: int = 0) -> List:
+    def parse_regions(self, region_string: str, flanking: int = 0) -> list:
         parser = region_parser(filepath_or_str=region_string, organism=self.organism)
         for region_name, chr, start, end in parser:
             region = {

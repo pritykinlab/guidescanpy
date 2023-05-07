@@ -200,7 +200,7 @@ def output_succinct(record, offtargets):
     cfd_sum = None
     if offtargets:
         if all(offtarget["cfd"] is not None for offtarget in offtargets):
-            cfd_sum = sum((offtarget["cfd"] for offtarget in offtargets))
+            cfd_sum = sum(offtarget["cfd"] for offtarget in offtargets)
 
         flag = False
 

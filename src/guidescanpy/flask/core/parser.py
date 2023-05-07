@@ -1,7 +1,6 @@
 import io
 import os.path
 import re
-from typing import Dict
 from guidescanpy.flask.db import create_region_query
 
 
@@ -41,7 +40,7 @@ class RegionFileParser:
                 if region is not None:
                     yield region
 
-    def parse_line(self, line: str) -> Dict | None:
+    def parse_line(self, line: str) -> dict | None:
         # Return a 4-tuple
         #   (region_name, chromosome_name, start, end),
         #   where start/end are 1-indexed and inclusive

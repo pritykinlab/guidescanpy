@@ -1,5 +1,4 @@
 import subprocess
-from typing import List, Dict
 import os
 import tempfile
 import logging
@@ -11,8 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 def cmd_enumerate(
-    kmers_with_pam: List[str], index_filepath_prefix: str, mismatches: int = 0
-) -> Dict:
+    kmers_with_pam: list[str], index_filepath_prefix: str, mismatches: int = 0
+) -> dict:
     # Most of the columns we write here are never looked at by the enumerate command and thus not important!
     with tempfile.TemporaryDirectory() as tmp:
         with tempfile.NamedTemporaryFile(dir=tmp, mode="w", delete=False) as temp_file:
