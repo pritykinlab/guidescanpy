@@ -1,152 +1,180 @@
 {% extends "base.html" %}
 
 {% block js %}
-<script type="text/javascript" charset="utf-8">
-    $(document).ready(function () {
-        var examples;
-        $.getJSON(window.location.origin + '{{ url_for('info.example_queries') }}', (data) => {
-            examples = data;
-            refreshExamples();
-        });
-        $('#checkFlanking').on('change', function () {
-            var checked = $(this).prop('checked');
-            $('#txtFlanking').prop('disabled', !checked);
-        });
-        $('#checkTopN').on('change', function () {
-            var checked = $(this).prop('checked');
-            $('#txtTopN').prop('disabled', !checked);
-        });
-        $('#checkFilterAboveCE').on('change', function () {
-            var checked = $(this).prop('checked');
-            $('#txtFilterAboveCE').prop('disabled', !checked);
-        });
-        $('#checkFilterAboveSpecificity').on('change', function () {
-            var checked = $(this).prop('checked');
-            $('#txtFilterAboveSpecificity').prop('disabled', !checked);
-        });
-        $('#selectOrganism').on('change', function () {
-            refreshExamples();
-        });
-        $('#selectEnzyme').on('change', function () {
-            refreshExamples();
-        });
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            var examples;
+            $.getJSON(window.location.origin + '{{ url_for('info.example_queries') }}', (data) => {
+                examples = data;
+                refreshExamples();
+            });
+            $('#checkFlanking').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtFlanking').prop('disabled', !checked);
+            });
+            $('#checkTopN').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtTopN').prop('disabled', !checked);
+            });
+            $('#checkFilterAboveCE').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtFilterAboveCE').prop('disabled', !checked);
+            });
+            $('#checkFilterAboveSpecificity').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtFilterAboveSpecificity').prop('disabled', !checked);
+            });
+            $('#selectOrganism').on('change', function () {
+                refreshExamples();
+            });
+            $('#selectEnzyme').on('change', function () {
+                refreshExamples();
+            });
 
-        function refreshExamples() {
-            var organism = $('#selectOrganism').find(":selected").text();
-            var enzyme = $('#selectEnzyme').find(":selected").text();
-            $('#txtCoordinates').val(examples[organism][enzyme]);
-        }
-    });
-</script>
+            function refreshExamples() {
+                var organism = $('#selectOrganism').find(":selected").text();
+                var enzyme = $('#selectEnzyme').find(":selected").text();
+                if (!(enzyme in examples[organism])) {
+                    var selectedOption = $('#selectEnzyme option:selected');
+                    var nextOption = selectedOption.next('option');
+                    enzyme = nextOption.val();
+                    if (nextOption.length) {
+                        $('#selectEnzyme').val(enzyme);
+                        refreshExamples();
+                    }
+                }
+                $('#txtCoordinates').val(examples[organism][enzyme]);
+            }
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <h5 class="card-header">gRNA Design Tool</h5>
-                <div class="card-body">
-                    <p class="card-text">Finds Guidescan2 vetted gRNAs for genomic regions and genes.</p>
-                    <form action="" method="post" enctype="multipart/form-data">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="selectOrganism">Organism</label>
-                                <select class="form-control" id="selectOrganism" name="selectOrganism">
-                                    <option>mm10</option>
-                                    <option>ce11</option>
-                                    <option>dm6</option>
-                                    <option>rn6</option>
-                                    <option>mm39</option>
-                                    <option>sacCer3</option>
-                                    <option>hg38</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="selectEnzyme">Enzyme</label>
-                                <select class="form-control" id="selectEnzyme" name="selectEnzyme">
-                                    <option>cpf1</option>
-                                    <option>cas9</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="checkFlanking" name="checkFlanking">
-                                    <label class="form-check-label" for="checkFlanking">
-                                        Flanking <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="top" title="Searches for gRNAs in a region surrounding the input genomic region on both the left and right sides."></i>
-                                    </label>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">gRNA Design Tool</h5>
+                    <div class="card-body">
+                        <p class="card-text">Finds Guidescan2 vetted gRNAs for genomic regions and genes.</p>
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="selectOrganism">Organism</label>
+                                    <select class="form-control" id="selectOrganism" name="selectOrganism">
+                                        <option>mm10</option>
+                                        <option>ce11</option>
+                                        <option>dm6</option>
+                                        <option>rn6</option>
+                                        <option>mm39</option>
+                                        <option>sacCer3</option>
+                                        <option>hg38</option>
+                                    </select>
                                 </div>
-                                <input type="number" class="form-control" id="txtFlanking" disabled value="1000"
-                                       min="0" name="txtFlanking">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="checkTopN" name="checkTopN">
-                                    <label class="form-check-label" for="checkTopN">
-                                        Top N gRNAs <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="top" title="Returns only the best N gRNAs as ranked by their specificity score."></i>
-                                    </label>
+                                <div class="form-group col-md-6">
+                                    <label for="selectEnzyme">Enzyme</label>
+                                    <select class="form-control" id="selectEnzyme" name="selectEnzyme">
+                                        <option>cpf1</option>
+                                        <option>cas9</option>
+                                    </select>
                                 </div>
-                                <input type="number" class="form-control" id="txtTopN" disabled value="5" min="0" name="txtTopN">
                             </div>
-                            <div class="form-group col-md-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="checkFilterAboveCE" name="checkFilterAboveCE">
-                                    <label class="form-check-label" for="checkFilterAboveCE">
-                                        Filter above cutting efficiency <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="top" title="Returns only gRNAs with cutting efficiency above this value."></i>
-                                    </label>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkFlanking"
+                                               name="checkFlanking">
+                                        <label class="form-check-label" for="checkFlanking">
+                                            Flanking <i class="fa-regular fa-circle-question" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Searches for gRNAs in a region surrounding the input genomic region on both the left and right sides."></i>
+                                        </label>
+                                    </div>
+                                    <input type="number" class="form-control" id="txtFlanking" disabled value="1000"
+                                           min="0" name="txtFlanking">
                                 </div>
-                                <input type="number" class="form-control" id="txtFilterAboveCE" disabled value="0"
-                                       min="0" max="1" step="0.1" name="txtFilterAboveCE">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="checkFilterAboveSpecificity" name="checkFilterAboveSpecificity">
-                                    <label class="form-check-label" for="checkFilterAboveSpecificity">
-                                        Filter above specificity <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="top" title="Returns only gRNAs with specificity above this value."></i>
-                                    </label>
+                                <div class="form-group col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkTopN" name="checkTopN">
+                                        <label class="form-check-label" for="checkTopN">
+                                            Top N gRNAs <i class="fa-regular fa-circle-question" data-toggle="tooltip"
+                                                           data-placement="top"
+                                                           title="Returns only the best N gRNAs as ranked by their specificity score."></i>
+                                        </label>
+                                    </div>
+                                    <input type="number" class="form-control" id="txtTopN" disabled value="5" min="0"
+                                           name="txtTopN">
                                 </div>
-                                <input type="number" class="form-control" id="txtFilterAboveSpecificity" disabled value="0"
-                                       min="0" max="1" step="0.1" name="txtFilterAboveSpecificity">
+                                <div class="form-group col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkFilterAboveCE"
+                                               name="checkFilterAboveCE">
+                                        <label class="form-check-label" for="checkFilterAboveCE">
+                                            Filter above cutting efficiency <i class="fa-regular fa-circle-question"
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top"
+                                                                               title="Returns only gRNAs with cutting efficiency above this value."></i>
+                                        </label>
+                                    </div>
+                                    <input type="number" class="form-control" id="txtFilterAboveCE" disabled value="0"
+                                           min="0" max="1" step="0.1" name="txtFilterAboveCE">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkFilterAboveSpecificity"
+                                               name="checkFilterAboveSpecificity">
+                                        <label class="form-check-label" for="checkFilterAboveSpecificity">
+                                            Filter above specificity <i class="fa-regular fa-circle-question"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Returns only gRNAs with specificity above this value."></i>
+                                        </label>
+                                    </div>
+                                    <input type="number" class="form-control" id="txtFilterAboveSpecificity" disabled
+                                           value="0"
+                                           min="0" max="1" step="0.1" name="txtFilterAboveSpecificity">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="checkExonic" name="checkExonic">
-                                    <label class="form-check-label" for="checkExonic">
-                                        Filter exonic cutting gRNAs <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="top" title="Returns only gRNAs that cut within RefSeq annotated exons."></i>
-                                    </label>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkExonic"
+                                               name="checkExonic">
+                                        <label class="form-check-label" for="checkExonic">
+                                            Filter exonic cutting gRNAs <i class="fa-regular fa-circle-question"
+                                                                           data-toggle="tooltip" data-placement="top"
+                                                                           title="Returns only gRNAs that cut within RefSeq annotated exons."></i>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="txtCoordinates">Input genomic coordinates as chromosome:start-end, organism
-                                    appropriate gene symbol, or Entrez GeneIDs. Submit one genomic coordinate per
-                                    line.</label>
-                                <textarea class="form-control" id="txtCoordinates" rows="4" name="txtCoordinates"></textarea>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="txtCoordinates">Input genomic coordinates as chromosome:start-end,
+                                        organism
+                                        appropriate gene symbol, or Entrez GeneIDs. Submit one genomic coordinate per
+                                        line.</label>
+                                    <textarea class="form-control" id="txtCoordinates" rows="4"
+                                              name="txtCoordinates"></textarea>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="fileCoordinates">Submit BED, GFF/GTF, or TXT files containing genomic
-                                    coordinates.</label>
-                                <input type="file" class="form-control-file" id="fileCoordinates"
-                                       name="fileCoordinates">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="fileCoordinates">Submit BED, GFF/GTF, or TXT files containing genomic
+                                        coordinates.</label>
+                                    <input type="file" class="form-control-file" id="fileCoordinates"
+                                           name="fileCoordinates">
+                                </div>
                             </div>
-                        </div>
 
-                        <button type="submit" class="btn btn-primary">Submit Query</button>
-                    </form>
+                            <button type="submit" class="btn btn-primary">Submit Query</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

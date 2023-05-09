@@ -18,6 +18,15 @@
             function refreshExamples() {
                 var organism = $('#selectOrganism').find(":selected").text();
                 var enzyme = $('#selectEnzyme').find(":selected").text();
+                if (!(enzyme in examples[organism])) {
+                    var selectedOption = $('#selectEnzyme option:selected');
+                    var nextOption = selectedOption.next('option');
+                    enzyme = nextOption.val();
+                    if (nextOption.length) {
+                        $('#selectEnzyme').val(enzyme);
+                        refreshExamples();
+                    }
+                }
                 $('#txtSequence').val(examples[organism][enzyme]);
             }
         });

@@ -34,8 +34,7 @@
         "cpf1": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1"
       },
       "dm6": {
-        "cas9": "spn-A\nAct5C\nCdk1\nTor\nZw",
-        "cpf1": "spn-A\nAct5C\nCdk1\nTor\nZw"
+        "cas9": "spn-A\nAct5C\nCdk1\nTor\nZw"
       },
       "hg38": {
         "cas9": "RAD51\nACTB\nCDK1\nMTOR\nG6PD",
@@ -46,16 +45,13 @@
         "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
       },
       "mm39": {
-        "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
-        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+        "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd"
       },
       "rn6": {
-        "cas9": "rad51\nactb1\nCdk1\nMtor\nG6pd",
-        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+        "cas9": "rad51\nactb1\nCdk1\nMtor\nG6pd"
       },
       "sacCer3": {
-        "cas9": "RAD51\nACTB\nCDC28\nTOR1\nZWF1",
-        "cpf1": "RAD51\nACTB\nCDC28\nTOR1\nZWF1"
+        "cas9": "RAD51\nACTB\nCDC28\nTOR1\nZWF1"
       }
     },
 
@@ -72,32 +68,28 @@
 
     "example_sequences": {
       "ce11": {
-        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
-        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+        "cas9": "GAACAGAGCAAATTGTAGTGNGG\nATGTATGTTGTCTCTCGCCCNGG",
+        "cpf1": "TTTNGAAGGATCTCGTCGAGTGTC\nTTTNTCGCACAAAATCTTGTTACT"
       },
       "dm6": {
-        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
-        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+        "cas9": "ATGGTTATCTTCATAATGTGNGG\nCATAACGATTTGGTGACAATNGG"
       },
       "hg38": {
-        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
-        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+        "cas9": "GGGATACGTTACGTCGACGCNGG\nCGTAACGTATCCCCGCCTCCNGG",
+        "cpf1": "TTTNGCGTGGCAGTGAGTTTTAGT\nTTTNAGGCATTGTCTTGTGCAGCA"
       },
       "mm10": {
-        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
-        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+        "cas9": "CAACGAAGCGCGTTCGAGCCNGG\nGTGGGTCAGTTAGCGTCGGTNGG",
+        "cpf1": "TTTNTGGTTCGAGCGTGGTGCCCT\nTTTNGAATACCGATACGAGTGTAC"
       },
       "mm39": {
-        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
-        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+        "cas9": "CATACGGACATTGCAAACGTNGG\nCCCAGGCGCGGATCTGCGCANGG"
       },
       "rn6": {
-        "cas9": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG",
-        "cpf1": "AACTTTAGTTACACATATGCNGG\nCCTCTATGGTAATTTGGTGTNGG"
+        "cas9": "GTCCAGACTCACGGCAATTGNGG\nGGAGTAGATCCGCCGGCCTANGG"
       },
       "sacCer3": {
-        "cas9": "AGAATATTTCGTACTTACACNGG\nATGTGACACTACTCATACGANGG",
-        "cpf1": "AGAATATTTCGTACTTACACNGG\nATGTGACACTACTCATACGANGG"
+        "cas9": "TACAAAAGACTTGAGAAAGTNGG\nAATCTAAAACTAGGTGATTTNGG"
       }
     },
     "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}",
