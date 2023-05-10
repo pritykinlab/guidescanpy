@@ -10,10 +10,8 @@ logger = logging.getLogger(__name__)
 @bp.route("/<job_id>")
 def job(job_id):
     res = tasks_app.AsyncResult(job_id)
-    status = res.status
-    result = res.result if status == "SUCCESS" else None
     return render_template(
-        "job_sequence.html", job_id=job_id, status=status, result=result
+        "job_sequence.html", job_id=job_id, status=res.status, result=res.result
     )
 
 

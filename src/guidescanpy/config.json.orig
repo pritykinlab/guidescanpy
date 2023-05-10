@@ -1,6 +1,6 @@
 {
   "guidescan": {
-    "bin": "guidescan",
+    "bin": "/home/ec2-user/guidescan/bin/guidescan",
     "grna_database_path_prefix": "{BAMS_PATH}",
     "grna_database_path_map": {
       "ce11": {
@@ -28,22 +28,84 @@
         "cas9": "cas9/sacCer3.bam.sorted"
       }
     },
+    "example_queries": {
+      "ce11": {
+        "cas9": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1",
+        "cpf1": "rad-51\nact-3\ncdk-1\nlet-363\ngspd-1"
+      },
+      "dm6": {
+        "cas9": "spn-A\nAct5C\nCdk1\nTor\nZw"
+      },
+      "hg38": {
+        "cas9": "RAD51\nACTB\nCDK1\nMTOR\nG6PD",
+        "cpf1": "RAD51\nACTB\nCDK1\nMTOR\nG6PD"
+      },
+      "mm10": {
+        "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd",
+        "cpf1": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+      },
+      "mm39": {
+        "cas9": "Rad51\nActb\nCdk1\nMtor\nG6pd"
+      },
+      "rn6": {
+        "cas9": "rad51\nactb1\nCdk1\nMtor\nG6pd"
+      },
+      "sacCer3": {
+        "cas9": "RAD51\nACTB\nCDC28\nTOR1\nZWF1"
+      }
+    },
+
+    "index_files_path_prefix": "{INDEX_PATH}",
+    "index_files_path_map": {
+      "ce11": "ce11.index",
+      "dm6": "dm6.index",
+      "hg38": "hg38.index",
+      "mm10": "mm10.index",
+      "mm39": "mm39.index",
+      "rn6": "rn6.index",
+      "sacCer3": "sacCer3.index"
+    },
+
+    "example_sequences": {
+      "ce11": {
+        "cas9": "GAACAGAGCAAATTGTAGTGNGG\nATGTATGTTGTCTCTCGCCCNGG",
+        "cpf1": "TTTNGAAGGATCTCGTCGAGTGTC\nTTTNTCGCACAAAATCTTGTTACT"
+      },
+      "dm6": {
+        "cas9": "ATGGTTATCTTCATAATGTGNGG\nCATAACGATTTGGTGACAATNGG"
+      },
+      "hg38": {
+        "cas9": "GGGATACGTTACGTCGACGCNGG\nCGTAACGTATCCCCGCCTCCNGG",
+        "cpf1": "TTTNGCGTGGCAGTGAGTTTTAGT\nTTTNAGGCATTGTCTTGTGCAGCA"
+      },
+      "mm10": {
+        "cas9": "CAACGAAGCGCGTTCGAGCCNGG\nGTGGGTCAGTTAGCGTCGGTNGG",
+        "cpf1": "TTTNTGGTTCGAGCGTGGTGCCCT\nTTTNGAATACCGATACGAGTGTAC"
+      },
+      "mm39": {
+        "cas9": "CATACGGACATTGCAAACGTNGG\nCCCAGGCGCGGATCTGCGCANGG"
+      },
+      "rn6": {
+        "cas9": "GTCCAGACTCACGGCAATTGNGG\nGGAGTAGATCCGCCGGCCTANGG"
+      },
+      "sacCer3": {
+        "cas9": "TACAAAAGACTTGAGAAAGTNGG\nAATCTAAAACTAGGTGATTTNGG"
+      }
+    },
     "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}",
     "cachedir": "/tmp"
   },
-
   "flask": {
     "DEBUG": 0,
     "SECRET_KEY": "Dfsf00_34aslaS~~t5))pVls0$aGkxlas[q%91;",
     "SQLALCHEMY_TRACK_MODIFICATIONS": 0,
+    "UPLOAD_FOLDER": "/tmp",
     "SERVER_NAME": "127.0.0.1:5001"
   },
-
   "celery": {
     "broker": "{CELERY_BROKER}",
     "backend": "{CELERY_BACKEND}"
   },
-
   "logging_": {
     "version": 1,
     "formatters": {
@@ -63,7 +125,9 @@
     "loggers": {
       "guidescan": {
         "level": "DEBUG",
-        "handlers": ["console"]
+        "handlers": [
+          "console"
+        ]
       }
     }
   }

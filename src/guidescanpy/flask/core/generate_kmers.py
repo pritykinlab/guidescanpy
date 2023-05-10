@@ -41,6 +41,7 @@ def parse_arguments():
 
 NUCS = list("ACTG")
 NUC_MAP = {"A": "T", "T": "A", "C": "G", "G": "C"}
+WILDCARD_TO_NUC = {"N": "ACTG", "V": "ACG"}
 
 
 def revcom(dna):
@@ -50,15 +51,16 @@ def revcom(dna):
 def generate_pam_set(pam):
     pam_stack = [pam]
 
-    while any(["N" in pam for pam in pam_stack]):
-        pam = pam_stack.pop(0)
+    for wildcard in WILDCARD_TO_NUC:
+        while any([wildcard in pam for pam in pam_stack]):
+            pam = pam_stack.pop(0)
 
-        if "N" not in pam:
-            pam_stack.append(pam)
-            continue
+            if wildcard not in pam:
+                pam_stack.append(pam)
+                continue
 
-        for nuc in NUCS:
-            pam_stack.append(pam.replace("N", nuc, 1))
+            for nuc in WILDCARD_TO_NUC[wildcard]:
+                pam_stack.append(pam.replace(wildcard, nuc, 1))
 
     return pam_stack
 

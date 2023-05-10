@@ -10,15 +10,17 @@ logger = logging.getLogger(__name__)
 
 
 def cmd_enumerate(
-    kmers_with_pam: list[str], index_filepath_prefix: str, mismatches: int = 0
+    kmers: list[str],
+    pam: str,
+    index_filepath_prefix: str,
+    mismatches: int = 0,
+    start: bool = False,
 ) -> dict:
     # Most of the columns we write here are never looked at by the enumerate command and thus not important!
     with tempfile.TemporaryDirectory() as tmp:
         with tempfile.NamedTemporaryFile(dir=tmp, mode="w", delete=False) as temp_file:
             temp_file.write("id,sequence,pam,chromosome,position,sense\n")
-            for i, kmer_with_pam in enumerate(kmers_with_pam):
-                # TODO: Find a robust way to do this!
-                kmer, pam = kmer_with_pam[:20], kmer_with_pam[20:]
+            for i, kmer in enumerate(kmers):
                 temp_file.write(f"id_{i:08},{kmer},{pam},chrI,0,+\n")
         output_path = os.path.join(tmp, "enumerate_output.txt")
 
@@ -31,8 +33,13 @@ def cmd_enumerate(
             output_path,
             "--mismatches",
             f"{mismatches}",
-            index_filepath_prefix,
         ]
+
+        if start:
+            cmd_parts.append("--start")
+
+        cmd_parts.append(index_filepath_prefix)
+
         cmd = " ".join(cmd_parts)
         logger.info(f"Running command: {cmd}")
 
