@@ -24,3 +24,10 @@ def sequence(*args, **kwargs):
     from guidescanpy.flask.blueprints.sequence import sequence
 
     return sequence(*args, **kwargs)
+
+
+@app.task
+def library(*args, **kwargs):
+    from guidescanpy.flask.blueprints.library import library
+
+    return library(*args, **kwargs)

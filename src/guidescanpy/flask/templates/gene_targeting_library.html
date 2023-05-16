@@ -1,16 +1,143 @@
 {% extends "base.html" %}
 
+{% block js %}
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            var examples;
+            $.getJSON(window.location.origin + '{{ url_for('info.example_queries') }}', (data) => {
+                examples = data;
+                refreshExamples();
+            });
+            $('#checkPool').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtPool').prop('disabled', !checked);
+            });
+            $('#checkNGuides').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtNGuides').prop('disabled', !checked);
+            });
+            $('#checkPEG').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtPEG').prop('disabled', !checked);
+            });
+            $('#checkPCG').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtPCG').prop('disabled', !checked);
+            });
+            $('#selectOrganism').on('change', function () {
+                refreshExamples();
+            });
+
+            function refreshExamples() {
+                var organism = $('#selectOrganism').find(":selected").text();
+                $('#txtGenes').val(examples[organism]["cas9"]);
+            }
+        });
+    </script>
+{% endblock %}
+
 {% block main %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <h5 class="card-header">Gene Targeting Library</h5>
-                <div class="card-body">
-                    coming soon
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">Gene-targeting Library</h5>
+                    <div class="card-body">
+                        <p class="card-text">Search within GuideScan2 pre-constructed experimentally validated gene-targeting library for mouse or human.</p>
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="selectOrganism">Organism</label>
+                                    <select class="form-control" id="selectOrganism" name="selectOrganism">
+                                        <option>mm39</option>
+                                        <option>hg38</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkPool"
+                                               name="checkPool">
+                                        <label class="form-check-label" for="checkPool">
+                                            Number of Pools <i class="fa-regular fa-circle-question" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Split genes across different pools each flanked by a different barcode for easy identification."></i>
+                                        </label>
+                                    </div>
+                                    <input type="number" class="form-control" id="txtPool" disabled value="1"
+                                           min="0" max="16" name="txtPool">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkNGuides" name="checkNGuides">
+                                        <label class="form-check-label" for="checkNGuides">
+                                            Number of Guides Per Gene <i class="fa-regular fa-circle-question" data-toggle="tooltip"
+                                                           data-placement="top"
+                                                           title="Number of gRNAs that target each gene. The value must be between 1 and 6 as the Guidescan2 library saturates each gene with 6 guides."></i>
+                                        </label>
+                                    </div>
+                                    <input type="number" class="form-control" id="txtNGuides" disabled value="6" min="1" max="6"
+                                           name="txtNGuides">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkPEG"
+                                               name="checkPEG">
+                                        <label class="form-check-label" for="checkPEG">
+                                            Percentage of Essential Genes (Per Pool) <i class="fa-regular fa-circle-question"
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top"
+                                                                               title="Creates a set of essential control genes. The number of essential genes is expressed as a fraction of total library size."></i>
+                                        </label>
+                                    </div>
+                                    <input type="number" class="form-control" id="txtPEG" disabled value="0"
+                                           min="0" max="1" step="0.05" name="txtPEG">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkPCG"
+                                               name="checkPCG">
+                                        <label class="form-check-label" for="checkPCG">
+                                            Percentage of Control Guides (Per Pool) <i class="fa-regular fa-circle-question"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Creates a set of non-targeting and safe-targeting control guides. The number of control guides is expressed as a fraction of total library size."></i>
+                                        </label>
+                                    </div>
+                                    <input type="number" class="form-control" id="txtPCG" disabled
+                                           value="0"
+                                           min="0" max="1" step="0.05" name="txtPCG">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkAppend5"
+                                               name="checkAppend5">
+                                        <label class="form-check-label" for="checkAppend5">
+                                            Append 5' G to gRNA <i class="fa-regular fa-circle-question"
+                                                                           data-toggle="tooltip" data-placement="top"
+                                                                           title="Replace 5' nucleotide of gRNAs with G for U6 promoter compatibility."></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="txtCoordinates">Input genes to design gRNA library against.</label>
+                                    <textarea class="form-control" id="txtGenes" rows="4"
+                                              name="txtGenes"></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit Query</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

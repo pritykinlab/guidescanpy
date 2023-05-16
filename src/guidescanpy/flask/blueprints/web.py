@@ -11,6 +11,7 @@ from flask import (
 from werkzeug.utils import secure_filename
 from guidescanpy.flask.blueprints.query import query_endpoint
 from guidescanpy.flask.blueprints.sequence import sequence_endpoint
+from guidescanpy.flask.blueprints.library import library_endpoint
 
 
 bp = Blueprint("web", __name__)
@@ -72,8 +73,13 @@ def grna_design():
     return render_template("grna_design.html")
 
 
-@bp.route("/gene_targeting_library")
+@bp.route("/gene_targeting_library", methods=["GET", "POST"])
 def gene_targeting_library():
+    if request.method == "POST":
+        form = request.form
+        form_data = {"organism": form["selectOrganism"]}
+        results = library_endpoint(form_data)
+        return results
     return render_template("gene_targeting_library.html")
 
 
