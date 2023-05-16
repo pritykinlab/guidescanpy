@@ -1,11 +1,11 @@
 {
   "guidescan": {
-    "bin": "guidescan",
+    "bin": "/home/ec2-user/guidescan/bin/guidescan",
     "grna_database_path_prefix": "{BAMS_PATH}",
     "grna_database_path_map": {
       "ce11": {
-        "cas9": "ce11/cas9/ce11.bam.sorted",
-        "cpf1": "ce11/cpf1/ce11.bam.sorted"
+        "cas9": "cas9/ce11.bam.sorted",
+        "cpf1": "cpf1/ce11.bam.sorted"
       },
       "dm6": {
         "cas9": "cas9/dm6.bam.sorted"
@@ -25,7 +25,7 @@
         "cas9": "cas9/rn6.bam.sorted"
       },
       "sacCer3": {
-        "cas9": "sacCer3/cas9/sacCer3.bam.sorted"
+        "cas9": "cas9/sacCer3.bam.sorted"
       }
     },
     "example_queries": {
@@ -63,7 +63,7 @@
       "mm10": "mm10.index",
       "mm39": "mm39.index",
       "rn6": "rn6.index",
-      "sacCer3": "sacCer3/index/GCF_000146045.2_R64_genomic.fna.index"
+      "sacCer3": "sacCer3.index"
     },
 
     "example_sequences": {
