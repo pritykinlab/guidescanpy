@@ -33,6 +33,8 @@ def cmd_enumerate(
             output_path,
             "--mismatches",
             f"{mismatches}",
+            "--threads",
+            "1",
         ]
 
         if start:
