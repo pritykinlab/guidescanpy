@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block main %}
+    {% if status == 'SUCCESS' %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Job {{ job_id }}</h5>
+                        <div class="card-body text-center">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Download Results
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item"
+                                       href="{{ url_for('job_library.result', format='json', job_id=job_id) }}">as json..</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Job {{ job_id }}</h5>
+                        <div class="card-body">
+                            Job pending. This page will refresh in 5 seconds.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    {% if status == 'PENDING' %}
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                setTimeout(function () {
+                    location.reload(true);
+                }, 5000);
+            });
+        </script>
+    {% endif %}
+{% endblock %}

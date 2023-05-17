@@ -77,9 +77,24 @@ def grna_design():
 def gene_targeting_library():
     if request.method == "POST":
         form = request.form
-        form_data = {"organism": form["selectOrganism"]}
+        form_data = {
+            "organism": form["selectOrganism"],
+            "append5": form.get("checkAppend5", "off") == "on",
+            "genes": form["txtGenes"],
+        }
+
+        if form.get("checkPool", "off") == "on":
+            form_data["n_pools"] = int(form["txtPool"])
+        if form.get("checkNGuides", "off") == "on":
+            form_data["n_guides"] = int(form["txtNGuides"])
+        if form.get("checkPEG", "off") == "on":
+            form_data["frac_essential"] = float(form["txtPEG"])
+        if form.get("checkPCG", "off") == "on":
+            form_data["frac_control"] = float(form["txtPCG"])
+
         results = library_endpoint(form_data)
         return results
+
     return render_template("gene_targeting_library.html")
 
 
@@ -94,6 +109,7 @@ def grna_sequence_search():
         }
         results = sequence_endpoint(form_data)
         return results
+
     return render_template("grna_sequence_search.html")
 
 

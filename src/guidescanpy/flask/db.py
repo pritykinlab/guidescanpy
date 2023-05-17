@@ -2,7 +2,7 @@ from intervaltree import IntervalTree
 from joblib import Memory
 import psycopg2
 from psycopg2 import sql
-from psycopg2.extras import DictCursor
+from psycopg2.extras import DictCursor, RealDictCursor
 from guidescanpy import config
 
 
@@ -95,6 +95,46 @@ def get_chromosome_names(organism):
         return dict(result)
     else:
         return None
+
+
+def get_library_info_by_gene(organism, genes, n_guides=6):
+    # TODO: Do we need an ORDER BY here?
+    #   See https://github.com/pritykinlab/guidescan-web/blob/master/src/guidescan_web/query/library_design.clj#L150
+    query = sql.SQL(
+        "SELECT * FROM libraries WHERE organism = %s AND gene_symbol IN (SELECT gene_symbol FROM genes WHERE entrez_id IN (SELECT entrez_id FROM genes WHERE gene_symbol = %s)) LIMIT %s"
+    )
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+
+    return_value = {}
+    for gene in genes:
+        return_value[gene] = []
+        cur.execute(query, (organism, gene, n_guides))
+        results = cur.fetchall()
+        for row in results:
+            return_value[gene].append(dict(row))
+
+    return return_value
+
+
+def get_essential_genes(organism, n=1):
+    query = sql.SQL(
+        "SELECT gene_symbol FROM essential_genes WHERE organism = %s LIMIT %s"
+    )
+    cur = conn.cursor(cursor_factory=DictCursor)
+    cur.execute(query, (organism, n))
+    result = cur.fetchall()
+    return [r[0] for r in result]  # TODO: Ugly!
+
+
+def get_control_guides(organism, n=1):
+    # TODO: Order by?
+    query = sql.SQL(
+        "SELECT * FROM libraries WHERE organism = %s AND (grna_type='safe_targeting_control' OR grna_type='non_targeting_control') LIMIT %s"
+    )
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute(query, (organism, n))
+    result = cur.fetchall()
+    return [dict(row) for row in result]
 
 
 @memory.cache

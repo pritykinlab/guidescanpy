@@ -27,6 +27,7 @@ def create_app(debug=False):
         sequence,
         job_query,
         job_sequence,
+        job_library,
     )
 
     app.register_blueprint(web.bp, url_prefix="/py")
@@ -36,6 +37,7 @@ def create_app(debug=False):
     app.register_blueprint(sequence.bp, url_prefix="/py/sequence")
     app.register_blueprint(job_query.bp, url_prefix="/py/job/query")
     app.register_blueprint(job_sequence.bp, url_prefix="/py/job/sequence")
+    app.register_blueprint(job_library.bp, url_prefix="/py/job/library")
 
     app.add_template_global(lambda: __version__, name="app_version")
     return app
