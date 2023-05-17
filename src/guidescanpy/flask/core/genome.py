@@ -7,7 +7,7 @@ import pysam
 from intervaltree import Interval
 from guidescanpy.flask.db import (
     get_chromosome_names,
-    chromosome_interval_trees,
+    get_chromosome_interval_trees,
 )
 from guidescanpy.flask.core.utils import hex_to_offtarget_info
 from guidescanpy.flask.core.parser import region_parser
@@ -152,7 +152,7 @@ class GenomeStructure:
         with pysam.AlignmentFile(bam_filepath, "r") as bam:
             for i, read in enumerate(bam.fetch(chromosome, start_pos, end_pos)):
                 annotations = []
-                interval_tree = chromosome_interval_trees[chromosome]
+                interval_tree = get_chromosome_interval_trees()[chromosome]
 
                 this_interval = Interval(read.reference_start - 1, read.reference_end)
                 if ANNOTATION_MAGIC:

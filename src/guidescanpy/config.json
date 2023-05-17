@@ -1,7 +1,7 @@
 {
   "guidescan": {
-    "bin": "/home/ec2-user/guidescan/bin/guidescan",
-    "grna_database_path_prefix": "{BAMS_PATH}",
+    "bin": "guidescan",
+    "grna_database_path_prefix": "/media/vineetb/t5/guidescan/data",
     "grna_database_path_map": {
       "ce11": {
         "cas9": "cas9/ce11.bam.sorted",
@@ -25,7 +25,7 @@
         "cas9": "cas9/rn6.bam.sorted"
       },
       "sacCer3": {
-        "cas9": "cas9/sacCer3.bam.sorted"
+        "cas9": "sacCer3/cas9/sacCer3.bam.sorted"
       }
     },
     "example_queries": {
@@ -55,7 +55,7 @@
       }
     },
 
-    "index_files_path_prefix": "{INDEX_PATH}",
+    "index_files_path_prefix": "/media/vineetb/t5/guidescan/data",
     "index_files_path_map": {
       "ce11": "ce11.index",
       "dm6": "dm6.index",
@@ -63,7 +63,7 @@
       "mm10": "mm10.index",
       "mm39": "mm39.index",
       "rn6": "rn6.index",
-      "sacCer3": "sacCer3.index"
+      "sacCer3": "sacCer3/index/GCF_000146045.2_R64_genomic.fna.index"
     },
 
     "example_sequences": {
@@ -92,7 +92,7 @@
         "cas9": "TACAAAAGACTTGAGAAAGT\nAATCTAAAACTAGGTGATTT"
       }
     },
-    "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}",
+    "db": "host=localhost dbname=guidescan user=scott password=tiger",
     "cachedir": "/tmp"
   },
   "flask": {
@@ -103,8 +103,9 @@
     "SERVER_NAME": "127.0.0.1:5001"
   },
   "celery": {
-    "broker": "{CELERY_BROKER}",
-    "backend": "{CELERY_BACKEND}"
+    "broker": "redis://localhost",
+    "backend": "redis://localhost",
+    "eager": true
   },
   "logging_": {
     "version": 1,

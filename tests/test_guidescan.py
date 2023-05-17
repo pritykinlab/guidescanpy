@@ -31,3 +31,37 @@ def test_enumerate_cas9(index_prefix):
             "specificity": 1.0,
         },
     ]
+
+
+def test_enumerate_cpf1(index_prefix):
+    kmers = ["GCATATAATATCAATTAATT", "ATTTATGCCGTCTGGGATTG"]
+    results = cmd_enumerate(
+        kmers=kmers, pam="TTTN", index_filepath_prefix=index_prefix, start=True
+    )
+    assert isinstance(results, list)
+    assert results == [
+        {
+            "id": "id_00000000",
+            "sequence": "TTTNGCATATAATATCAATTAATT",
+            "match_chrm": "NC_001224.1",
+            "match_position": 12184,
+            "match_strand": "-",
+            "match_distance": 0,
+            "match_sequence": "AATTAATTGATATTATATGCCAAA",
+            "rna_bulges": 0,
+            "dna_bulges": 0,
+            "specificity": 1.0,
+        },
+        {
+            "id": "id_00000001",
+            "sequence": "TTTNATTTATGCCGTCTGGGATTG",
+            "match_chrm": "NC_001146.8",
+            "match_position": 72199,
+            "match_strand": "+",
+            "match_distance": 0,
+            "match_sequence": "CAATCCCAGACGGCATAAATGAAA",
+            "rna_bulges": 0,
+            "dna_bulges": 0,
+            "specificity": 1.0,
+        },
+    ]

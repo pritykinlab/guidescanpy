@@ -1,4 +1,5 @@
 from flask import json
+from guidescanpy import config
 
 
 def test_info(app):
@@ -13,9 +14,10 @@ def test_info(app):
 def test_query_gene_symbol(app):
     # For the sacCer3 organism and CNE1 gene, find hits for the cas9 enzyme
     # query-text can be a gene symbol, a chromosome region, or an entrez id
-    response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=CNE1&eager=1"
-    )
+    with config({"celery.eager": True}):
+        response = app.test_client().get(
+            "py/query?organism=sacCer3&enzyme=cas9&query-text=CNE1"
+        )
     assert response.mimetype == "application/json"
     data = json.loads(response.data)
     assert (

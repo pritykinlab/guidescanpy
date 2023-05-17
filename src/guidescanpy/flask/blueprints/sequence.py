@@ -9,8 +9,7 @@ bp = Blueprint("sequence", __name__)
 @bp.route("", methods=["GET"])
 def sequence_endpoint(args={}):
     args = args or request.args
-    eager = request.args.get("eager", "0") in ("1", "true", "True")
-    if eager:
+    if config.celery.eager:
         return sequence(args)
     else:
         from guidescanpy.tasks import sequence as f
@@ -29,7 +28,7 @@ def sequence(args):
     start = False  # match PAM at start instead of at end?
     if enzyme == "cpf1":
         start = True
-        pam = "TTTV"
+        pam = "TTTN"
     elif enzyme == "cas9":
         pam = "NGG"
     else:

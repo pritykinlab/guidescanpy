@@ -154,6 +154,3 @@ def get_chromosome_interval_trees():
         chromosomes[chr][start - 1 : end] = exon_number, product
 
     return chromosomes
-
-
-chromosome_interval_trees = get_chromosome_interval_trees()
