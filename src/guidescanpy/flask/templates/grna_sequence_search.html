@@ -20,7 +20,7 @@
                 var enzyme = $('#selectEnzyme').find(":selected").text();
                 if (!(enzyme in examples[organism])) {
                     var selectedOption = $('#selectEnzyme option:selected');
-                    var nextOption = selectedOption.next('option');
+                    var nextOption = selectedOption.prev('option');
                     enzyme = nextOption.val();
                     if (nextOption.length) {
                         $('#selectEnzyme').val(enzyme);
