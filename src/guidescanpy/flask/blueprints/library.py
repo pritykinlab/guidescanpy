@@ -63,7 +63,6 @@ def library(
     genes_by_pool_index = np.array_split(np.array(genes), n_pools)
     results = []
     for i, genes in enumerate(genes_by_pool_index):
-
         n_essential_genes = round(frac_essential * len(genes))
         # TODO: randomize
         essential_genes = get_essential_genes(organism, n_essential_genes)

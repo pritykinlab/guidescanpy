@@ -13,7 +13,6 @@ from guidescanpy.flask.blueprints.query import query_endpoint
 from guidescanpy.flask.blueprints.sequence import sequence_endpoint
 from guidescanpy.flask.blueprints.library import library_endpoint
 
-
 bp = Blueprint("web", __name__)
 logger = logging.getLogger(__name__)
 

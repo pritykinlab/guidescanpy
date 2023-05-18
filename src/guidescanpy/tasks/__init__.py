@@ -1,15 +1,7 @@
-import time
 from celery import Celery
 from guidescanpy import config
 
-
 app = Celery("tasks", broker=config.celery.broker, backend=config.celery.backend)
-
-
-@app.task
-def sleep(t):
-    time.sleep(int(t))
-    return int(t) + 1
 
 
 @app.task

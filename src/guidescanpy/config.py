@@ -35,6 +35,7 @@ class Config:
         self.namespace = json.loads(
             json_string, object_hook=lambda d: SimpleNamespace(**d)
         )
+        self.namespace.json = json.loads(json_string)
 
     def __getattr__(self, item):
         return getattr(self.namespace, item)

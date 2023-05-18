@@ -1,5 +1,7 @@
 from intervaltree import Interval
-from guidescanpy.flask.db import chromosome_interval_trees as interval_trees
+from guidescanpy.flask.db import get_chromosome_interval_trees
+
+interval_trees = get_chromosome_interval_trees()
 
 
 def test_interval_tree_exists():

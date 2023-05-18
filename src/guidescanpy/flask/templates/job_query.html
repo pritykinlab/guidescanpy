@@ -1,7 +1,8 @@
-{% extends "base.html" %}
+{% extends "job.html" %}
 
 {% block main %}
-    {% if status == 'SUCCESS' %}
+    {{ super() }}
+    {% if result.status == 'SUCCESS' %}
         <div id="modal-off-targets" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -26,7 +27,7 @@
             <div class="row">
                 <div class="col">
                     <div class="card">
-                        <h5 class="card-header">Job {{ job_id }}</h5>
+                        <h5 class="card-header">Job {{ result.task_id }}</h5>
                         <div class="card-body text-center">
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -35,11 +36,14 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item"
-                                       href="{{ url_for('job_query.result', format='json', job_id=job_id) }}">as json..</a>
+                                       href="{{ url_for('job_query.result', format='json', job_id=result.task_id) }}">as
+                                        json..</a>
                                     <a class="dropdown-item"
-                                       href="{{ url_for('job_query.result', format='csv', job_id=job_id) }}">as csv..</a>
+                                       href="{{ url_for('job_query.result', format='csv', job_id=result.task_id) }}">as
+                                        csv..</a>
                                     <a class="dropdown-item"
-                                       href="{{ url_for('job_query.result', format='bed', job_id=job_id) }}">as bed..</a>
+                                       href="{{ url_for('job_query.result', format='bed', job_id=result.task_id) }}">as
+                                        bed..</a>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +65,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="card">
-                            <h5 class="card-header">Job {{ job_id }}</h5>
+                            <h5 class="card-header">Job {{ result.task_id }}</h5>
                             <div class="card-body">
                                 No results for query region(s).
                             </div>
@@ -70,7 +74,7 @@
                 </div>
             {% endif %}
 
-            {% for region, values in result['queries'].items() %}
+            {% for region, values in result.result['queries'].items() %}
                 {% if values['hits']|length > 0 %}
                     <div class="row">
                         <div class="col">
@@ -119,30 +123,20 @@
 
         </div>
 
-    {% else %}
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <h5 class="card-header">Job {{ job_id }}</h5>
-                        <div class="card-body">
-                            Job pending. This page will refresh in 5 seconds.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     {% endif %}
 {% endblock %}
 
 {% block head %}
-    {% if status == 'SUCCESS' %}
+    {{ super() }}
+    {% if result.status == 'SUCCESS' %}
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"/>
     {% endif %}
 {% endblock %}
 
 {% block js %}
-    {% if status == 'SUCCESS' %}
+    {{ super() }}
+    {% if result.status == 'SUCCESS' %}
         {% if first_region != "" %}
             <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/igv@2.15.5/dist/igv.min.js"></script>
@@ -151,11 +145,11 @@
                     var igvDiv = document.getElementById("igv-div");
                     var options =
                         {
-                            genome: "{{ result['organism'] }}",
+                            genome: "{{ result.result['organism'] }}",
                             locus: "{{ first_region }}",
                             tracks: [
                                 {
-                                    "url": window.location.origin + "{{ url_for('job_query.result', format='bed', job_id=job_id) }}",
+                                    "url": window.location.origin + "{{ url_for('job_query.result', format='bed', job_id=result.task_id) }}",
                                     "format": "bed"
                                 }
                             ]
@@ -185,7 +179,7 @@
                                     data: 'region-string',
                                     title: 'coordinates',
                                     render: function (data, type, row, meta) {
-                                        return '<a target="_blank" href="https://igv.org/app/?genome={{ result['organism'] }}&locus=' + data + '">' + data + '</a>';
+                                        return '<a target="_blank" href="https://igv.org/app/?genome={{ result.result['organism'] }}&locus=' + data + '">' + data + '</a>';
                                     }
                                 },
                                 {data: 'distance', title: 'distance'}
@@ -202,13 +196,5 @@
                 });
             </script>
         {% endif %}
-    {% else %}
-        <script type="text/javascript" charset="utf-8">
-            $(document).ready(function () {
-                setTimeout(function () {
-                    location.reload(true);
-                }, 5000);
-            });
-        </script>
     {% endif %}
 {% endblock %}

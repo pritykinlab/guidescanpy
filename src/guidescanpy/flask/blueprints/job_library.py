@@ -9,10 +9,8 @@ logger = logging.getLogger(__name__)
 
 @bp.route("/<job_id>")
 def job(job_id):
-    res = tasks_app.AsyncResult(job_id)
-    return render_template(
-        "job_library.html", job_id=job_id, status=res.status, result=res.result
-    )
+    result = tasks_app.AsyncResult(job_id)
+    return render_template("job_library.html", result=result)
 
 
 @bp.route("/status/<job_id>")
