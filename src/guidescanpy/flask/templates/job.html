@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block main %}
+    {% if result.status == 'PENDING' %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Job {{ result.task_id }}</h5>
+                        <div class="card-body">
+                            Job pending. This page will refresh in 5 seconds.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% elif result.status == 'FAILURE' %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Job {{ result.task_id }}</h5>
+                        <div class="card-body">
+                            Job failed. This likely indicates a problem with the code.
+                            Please submit an <a href="https://github.com/pritykinlab/guidescanpy/issues/new">issue</a>
+                            with the following traceback, and we'll try to fix this as soon as possible.
+                            <p><pre><code>{{ result.traceback }}</code></pre></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    {% if result.status == 'PENDING' %}
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                setTimeout(function () {
+                    location.reload(true);
+                }, 5000);
+            });
+        </script>
+    {% endif %}
+{% endblock %}

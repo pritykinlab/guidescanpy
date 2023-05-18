@@ -1,7 +1,8 @@
-{% extends "base.html" %}
+{% extends "job.html" %}
 
 {% block main %}
-    {% if status == 'SUCCESS' %}
+    {{ super() }}
+    {% if result.status == 'SUCCESS' %}
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
@@ -19,7 +20,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for d in result['results'] %}
+                                {% for d in result.result['results'] %}
                                     <tr>
                                         <td>{{ d['match_chrm'] }}</td>
                                         <td>{{ d['match_position'] }}</td>
@@ -35,37 +36,19 @@
                 </div>
             </div>
         </div>
-
-    {% else %}
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <h5 class="card-header">Job {{ job_id }}</h5>
-                        <div class="card-body">
-                            {% if status == 'PENDING' %}
-                                <div class="alert alert-warning" role="alert">
-                                    Job pending. This page will refresh in 5 seconds.
-                                </div>
-                            {% elif status == 'FAILURE' %}
-                                <div class="alert alert-danger" role="alert">
-                                    {{ result }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     {% endif %}
 {% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"/>
+    {{ super() }}
+    {% if result.status == 'SUCCESS' %}
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"/>
+    {% endif %}
 {% endblock %}
 
 {% block js %}
-    {% if status != 'PENDING' %}
+    {{ super() }}
+    {% if result.status == 'SUCCESS' %}
         {% if first_region != "" %}
             <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/igv@2.15.5/dist/igv.min.js"></script>
@@ -80,13 +63,5 @@
                 });
             </script>
         {% endif %}
-    {% else %}
-        <script type="text/javascript" charset="utf-8">
-            $(document).ready(function () {
-                setTimeout(function () {
-                    location.reload(true);
-                }, 5000);
-            });
-        </script>
     {% endif %}
 {% endblock %}

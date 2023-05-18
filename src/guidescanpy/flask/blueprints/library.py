@@ -5,6 +5,7 @@ from guidescanpy.flask.db import (
     get_essential_genes,
     get_control_guides,
 )
+from guidescanpy import config
 
 bp = Blueprint("library", __name__)
 
@@ -36,9 +37,7 @@ OLIGO_OVERHANGS = {"5_prime": "CACC", "3_prime": "CAAA"}
 @bp.route("", methods=["GET"])
 def library_endpoint(args={}):
     args = args or request.args
-    eager = request.args.get("eager", "0") in ("1", "true", "True")
-    eager = True
-    if eager:
+    if config.celery.eager:
         return library(**args)
     else:
         from guidescanpy.tasks import library as f
@@ -64,7 +63,6 @@ def library(
     genes_by_pool_index = np.array_split(np.array(genes), n_pools)
     results = []
     for i, genes in enumerate(genes_by_pool_index):
-
         n_essential_genes = round(frac_essential * len(genes))
         # TODO: randomize
         essential_genes = get_essential_genes(organism, n_essential_genes)

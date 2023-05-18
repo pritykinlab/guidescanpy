@@ -9,21 +9,14 @@ logger = logging.getLogger(__name__)
 
 @bp.route("/<job_id>")
 def job(job_id):
-    res = tasks_app.AsyncResult(job_id)
-    status = res.status
-    result = res.result if status == "SUCCESS" else None
-    if result is not None and result["queries"]:
+    result = tasks_app.AsyncResult(job_id)
+    if result.status == "SUCCESS" and result.result["queries"]:
         # TODO: Is there a cleaner way to do this?
-        first_region = list(result["queries"].values())[0]["region"]
+        first_region = list(result.result["queries"].values())[0]["region"]
     else:
         first_region = ""
-    return render_template(
-        "job_query.html",
-        job_id=job_id,
-        status=status,
-        result=result,
-        first_region=first_region,
-    )
+
+    return render_template("job_query.html", result=result, first_region=first_region)
 
 
 @bp.route("/status/<job_id>")

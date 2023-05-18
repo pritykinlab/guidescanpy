@@ -1,4 +1,5 @@
 from flask import json
+from guidescanpy import config
 
 
 def test_info(app):
@@ -13,52 +14,57 @@ def test_info(app):
 def test_query_gene_symbol(app):
     # For the sacCer3 organism and CNE1 gene, find hits for the cas9 enzyme
     # query-text can be a gene symbol, a chromosome region, or an entrez id
-    response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=CNE1&eager=1"
-    )
-    assert response.mimetype == "application/json"
-    data = json.loads(response.data)
-    assert (
-        len(data["queries"]) == 1
-    )  # We passed in a single line in query-text, so we get a single result
-    assert len(data["queries"]["CNE1"]["hits"]) == 150
+    with config({"celery.eager": True}):
+        response = app.test_client().get(
+            "py/query?organism=sacCer3&enzyme=cas9&query-text=CNE1"
+        )
+        assert response.mimetype == "application/json"
+        data = json.loads(response.data)
+        assert (
+            len(data["queries"]) == 1
+        )  # We passed in a single line in query-text, so we get a single result
+        assert len(data["queries"]["CNE1"]["hits"]) == 150
 
 
 def test_query_entrez_id(app):
-    response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=852343&eager=1"
-    )
-    assert response.mimetype == "application/json"
-    data = json.loads(response.data)
-    assert len(data["queries"]) == 1
-    assert len(data["queries"]["YRO2"]["hits"]) == 89
+    with config({"celery.eager": True}):
+        response = app.test_client().get(
+            "py/query?organism=sacCer3&enzyme=cas9&query-text=852343"
+        )
+        assert response.mimetype == "application/json"
+        data = json.loads(response.data)
+        assert len(data["queries"]) == 1
+        assert len(data["queries"]["YRO2"]["hits"]) == 89
 
 
 def test_query_chr(app):
-    response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=chrIX:202200-202300&eager=1"
-    )
-    assert response.mimetype == "application/json"
-    data = json.loads(response.data)
-    assert len(data["queries"]) == 1
-    assert len(data["queries"]["chrIX:202200-202300"]["hits"]) == 4
+    with config({"celery.eager": True}):
+        response = app.test_client().get(
+            "py/query?organism=sacCer3&enzyme=cas9&query-text=chrIX:202200-202300"
+        )
+        assert response.mimetype == "application/json"
+        data = json.loads(response.data)
+        assert len(data["queries"]) == 1
+        assert len(data["queries"]["chrIX:202200-202300"]["hits"]) == 4
 
 
 def test_query_chr_bad(app):
-    # No such chromosome - chrXX
-    response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=chrXX:1000-2000&eager=1"
-    )
-    assert response.mimetype == "application/json"
-    data = json.loads(response.data)
-    assert len(data["queries"]) == 0
+    with config({"celery.eager": True}):
+        # No such chromosome - chrXX
+        response = app.test_client().get(
+            "py/query?organism=sacCer3&enzyme=cas9&query-text=chrXX:1000-2000"
+        )
+        assert response.mimetype == "application/json"
+        data = json.loads(response.data)
+        assert len(data["queries"]) == 0
 
 
 def test_query_chr_pos_bad(app):
-    # Positions don't exist on chrV, which is length 576874
-    response = app.test_client().get(
-        "py/query?organism=sacCer3&enzyme=cas9&query-text=chrV:182113225-182113225&eager=1"
-    )
-    assert response.mimetype == "application/json"
-    data = json.loads(response.data)
-    assert len(data["queries"]) == 0
+    with config({"celery.eager": True}):
+        # Positions don't exist on chrV, which is length 576874
+        response = app.test_client().get(
+            "py/query?organism=sacCer3&enzyme=cas9&query-text=chrV:182113225-182113225"
+        )
+        assert response.mimetype == "application/json"
+        data = json.loads(response.data)
+        assert len(data["queries"]) == 0

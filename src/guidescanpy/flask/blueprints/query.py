@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, url_for, request
 from guidescanpy.flask.core.genome import get_genome_structure
+from guidescanpy import config
 
 bp = Blueprint("query", __name__)
 
@@ -7,8 +8,7 @@ bp = Blueprint("query", __name__)
 @bp.route("", methods=["GET"])
 def query_endpoint(args={}):
     args = args or request.args
-    eager = request.args.get("eager", "0") in ("1", "true", "True")
-    if eager:
+    if config.celery.eager:
         return query(args)
     else:
         from guidescanpy.tasks import query as f

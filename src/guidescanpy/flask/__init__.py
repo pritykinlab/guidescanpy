@@ -1,7 +1,5 @@
 from flask import Flask
-
 from guidescanpy import __version__, config
-from guidescanpy.flask.blueprints import cache
 
 
 def create_app(debug=False):
@@ -12,7 +10,6 @@ def create_app(debug=False):
         template_folder="flask/templates",
     )
     app.config.from_object(config.flask)
-    cache.init_app(app, config={"CACHE_TYPE": "simple"})
 
     if debug:
         from werkzeug.debug import DebuggedApplication

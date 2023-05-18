@@ -7,7 +7,7 @@ import pysam
 from intervaltree import Interval
 from guidescanpy.flask.db import (
     get_chromosome_names,
-    chromosome_interval_trees,
+    get_chromosome_interval_trees,
 )
 from guidescanpy.flask.core.utils import hex_to_offtarget_info
 from guidescanpy.flask.core.parser import region_parser
@@ -45,6 +45,7 @@ class GenomeStructure:
 
     def parse_regions(self, region_string: str, flanking: int = 0) -> list:
         parser = region_parser(filepath_or_str=region_string, organism=self.organism)
+        regions = []
         for region_name, chr, start, end in parser:
             region = {
                 "region-name": region_name,
@@ -54,15 +55,15 @@ class GenomeStructure:
 
             if flanking > 0:
                 chromosome_name = region["chromosome-name"]
-                chromosome_acc, start_pos, end_pos = region["coords"]
+                _, start_pos, end_pos = region["coords"]
                 region_name = region["region-name"]
 
-                regions = [
+                _regions = [
                     {
                         "region-name": f"{region_name}:left-flank",
                         "chromosome-name": chromosome_name,
                         "coords": (
-                            chromosome_acc,
+                            chromosome_name,
                             max(1, start_pos - flanking),
                             start_pos,
                         ),
@@ -71,14 +72,18 @@ class GenomeStructure:
                         "region-name": f"{region_name}:right-flank",
                         "chromosome-name": chromosome_name,
                         "coords": (
-                            chromosome_acc,
+                            chromosome_name,
                             end_pos,
-                            min(self.acc_to_length[chromosome_acc], end_pos + flanking),
+                            min(
+                                self.acc_to_length[self.chr_to_acc[chromosome_name]],
+                                end_pos + flanking,
+                            ),
                         ),
                     },
                 ]
+                regions.extend(_regions)
             else:
-                regions = [region]
+                regions.append(region)
 
         return regions
 
@@ -152,7 +157,7 @@ class GenomeStructure:
         with pysam.AlignmentFile(bam_filepath, "r") as bam:
             for i, read in enumerate(bam.fetch(chromosome, start_pos, end_pos)):
                 annotations = []
-                interval_tree = chromosome_interval_trees[chromosome]
+                interval_tree = get_chromosome_interval_trees()[chromosome]
 
                 this_interval = Interval(read.reference_start - 1, read.reference_end)
                 if ANNOTATION_MAGIC:
