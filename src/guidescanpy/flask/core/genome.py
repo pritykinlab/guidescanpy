@@ -221,6 +221,14 @@ class GenomeStructure:
                     off_targets.append(off_target)
                     off_targets_by_distance[dist] += 1
 
+                cutting_efficiency = specificity = None
+                if read.has_tag("ds"):
+                    cutting_efficiency = read.get_tag("ds")
+                if read.has_tag("sp"):  # new guidescan BAM format
+                    specificity = read.get_tag("sp")
+                elif read.has_tag("cs"):  # old guidescan BAM format
+                    specificity = read.get_tag("cs")
+
                 result = {
                     "coordinate": self.to_coordinate_string(read),
                     "sequence": read.get_forward_sequence(),
@@ -228,8 +236,8 @@ class GenomeStructure:
                     + 1,  # 0-indexed inclusive -> 1-indexed inclusive
                     "end": read.reference_end,  # 0-indexed exclusive -> 1-indexed inclusive
                     "direction": "+" if read.is_forward else "-",
-                    "cutting-efficiency": read.get_tag("ds"),
-                    "specificity": read.get_tag("cs"),
+                    "cutting-efficiency": cutting_efficiency,
+                    "specificity": specificity,
                     "off-targets": off_targets,
                     "off-target-summary": f"2:{off_targets_by_distance[2]}|3:{off_targets_by_distance[3]}",
                     "n-off-targets": len(off_targets),
