@@ -19,22 +19,11 @@ def assert_equal_offtargets(legacy, new):
             assert _x["accession"] == _y["accession"]
 
 
-def clj(organism, enzyme, query, filter_annotated=False, mode="within", **kwargs):
-    filter_annotated = "true" if filter_annotated else "false"
-    url = f"http://guidescan.com/backend/query?organism={organism}&enzyme={enzyme}&query-text={query}&filter-annotated={filter_annotated}&mode={mode}"
-    for key, val in kwargs.items():
-        key = key.replace("_", "-")
-        url += f"&{key}={val}"
 
-    r = urllib.request.urlopen(url)
-    data = json.loads(r.read().decode("utf-8"))
-    job_id = data["job-id"]
-    time.sleep(5)
-    url = f"http://guidescan.com/backend/job/result/json/{job_id}?type=all&key={{}}"
-    r = urllib.request.urlopen(url)
-    data = json.loads(r.read().decode("utf-8"))
+def load_saved_data(data_path):
+    with open(data_path, "r") as file:
+        data = json.load(file)
     return pd.DataFrame(data[0][1])
-
 
 def test_genome_structure():
     genome_structure = get_genome_structure(organism="sacCer3")
@@ -71,7 +60,7 @@ def test_genome_structure_query_CNE1():
         region, enzyme="cas9", as_dataframe=True, legacy_ordering=True
     )
 
-    old_results = clj(organism="sacCer3", enzyme="cas9", query="CNE1")
+    old_results = load_saved_data("./genome_data/test_genome_structure_query_CNE1.json")
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
     assert np.all(
@@ -94,13 +83,8 @@ def test_genome_structure_query_manual_filter_annotated():
         as_dataframe=True,
         legacy_ordering=True,
     )
+    old_results = load_saved_data("./genome_data/test_genome_structure_query_manual_filter_annotated.json")
 
-    old_results = clj(
-        organism="sacCer3",
-        enzyme="cas9",
-        query="chrII:5000-10000",
-        filter_annotated=True,
-    )
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
     assert np.all(
@@ -123,10 +107,8 @@ def test_genome_structure_query_CNE1_min_specificity():
         as_dataframe=True,
         legacy_ordering=True,
     )
+    old_results = load_saved_data("./genome_data/test_genome_structure_query_CNE1_min_specificity.json")
 
-    old_results = clj(
-        organism="sacCer3", enzyme="cas9", query="CNE1", s_bounds_l=0.46, s_bounds_u=1.0
-    )
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
     assert np.all(
@@ -146,13 +128,7 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency():
         region, enzyme="cas9", min_ce=0.3, as_dataframe=True, legacy_ordering=True
     )
 
-    old_results = clj(
-        organism="sacCer3",
-        enzyme="cas9",
-        query="CNE1",
-        ce_bounds_l=0.3,
-        ce_bounds_u=1.0,
-    )
+    old_results = load_saved_data("./genome_data/test_genome_structure_query_CNE1_min_cutting_efficiency.json")
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
     assert np.all(
@@ -171,8 +147,7 @@ def test_genome_structure_query_offtarget_on_scaffold():
     results = genome_structure.query(
         region, enzyme="cas9", as_dataframe=True, legacy_ordering=True
     )
-
-    old_results = clj(organism="sacCer3", enzyme="cas9", query="chrIX:202231-202253")
+    old_results = load_saved_data("./genome_data/test_genome_structure_query_offtarget_on_scaffold.json")
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
     assert np.all(
