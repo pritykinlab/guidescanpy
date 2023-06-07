@@ -1,8 +1,13 @@
 import json
 import numpy as np
 import pandas as pd
+import os
 
 from guidescanpy.flask.core.genome import get_genome_structure
+
+path_to_test_data = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "genome_data"
+)
 
 
 def assert_equal_offtargets(legacy, new):
@@ -57,7 +62,10 @@ def test_genome_structure_query_CNE1():
     results = genome_structure.query(
         region, enzyme="cas9", as_dataframe=True, legacy_ordering=True
     )
-    old_results = load_saved_data("./genome_data/test_genome_structure_query_CNE1.json")
+
+    old_results = load_saved_data(
+        os.path.join(path_to_test_data, "test_genome_structure_query_CNE1.json")
+    )
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
     assert np.all(
@@ -81,7 +89,10 @@ def test_genome_structure_query_manual_filter_annotated():
         legacy_ordering=True,
     )
     old_results = load_saved_data(
-        "./genome_data/test_genome_structure_query_manual_filter_annotated.json"
+        os.path.join(
+            path_to_test_data,
+            "test_genome_structure_query_manual_filter_annotated.json",
+        )
     )
 
     assert len(results) == len(old_results)
@@ -107,7 +118,9 @@ def test_genome_structure_query_CNE1_min_specificity():
         legacy_ordering=True,
     )
     old_results = load_saved_data(
-        "./genome_data/test_genome_structure_query_CNE1_min_specificity.json"
+        os.path.join(
+            path_to_test_data, "test_genome_structure_query_CNE1_min_specificity.json"
+        )
     )
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
@@ -128,7 +141,10 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency():
         region, enzyme="cas9", min_ce=0.3, as_dataframe=True, legacy_ordering=True
     )
     old_results = load_saved_data(
-        "./genome_data/test_genome_structure_query_CNE1_min_cutting_efficiency.json"
+        os.path.join(
+            path_to_test_data,
+            "test_genome_structure_query_CNE1_min_cutting_efficiency.json",
+        )
     )
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
@@ -149,7 +165,9 @@ def test_genome_structure_query_offtarget_on_scaffold():
         region, enzyme="cas9", as_dataframe=True, legacy_ordering=True
     )
     old_results = load_saved_data(
-        "./genome_data/test_genome_structure_query_offtarget_on_scaffold.json"
+        os.path.join(
+            path_to_test_data, "test_genome_structure_query_offtarget_on_scaffold.json"
+        )
     )
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
