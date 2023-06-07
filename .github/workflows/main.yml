@@ -36,7 +36,7 @@ jobs:
         run: |
           pre-commit run --all-files
 
-      - name: Pun pytest
+      - name: Run pytest
         run: |
           pytest tests/test_config.py
           pytest tests/test_genome.py
