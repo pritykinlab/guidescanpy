@@ -1,13 +1,9 @@
 import json
 import numpy as np
 import pandas as pd
-import os
+import os.path
 
 from guidescanpy.flask.core.genome import get_genome_structure
-
-path_to_test_data = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "genome_data"
-)
 
 
 def assert_equal_offtargets(legacy, new):
@@ -56,16 +52,14 @@ def test_genome_structure_query_manual():
     assert len(results) == 150
 
 
-def test_genome_structure_query_CNE1():
+def test_genome_structure_query_CNE1(data_folder):
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("CNE1")[0]
     results = genome_structure.query(
         region, enzyme="cas9", as_dataframe=True, legacy_ordering=True
     )
 
-    old_results = load_saved_data(
-        os.path.join(path_to_test_data, "test_genome_structure_query_CNE1.json")
-    )
+    old_results = load_saved_data(os.path.join(data_folder, "query_CNE1.json"))
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
     assert np.all(
@@ -78,7 +72,7 @@ def test_genome_structure_query_CNE1():
     assert_equal_offtargets(old_results, results)
 
 
-def test_genome_structure_query_manual_filter_annotated():
+def test_genome_structure_query_manual_filter_annotated(data_folder):
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("chrII:5000-10000")[0]
     results = genome_structure.query(
@@ -90,8 +84,8 @@ def test_genome_structure_query_manual_filter_annotated():
     )
     old_results = load_saved_data(
         os.path.join(
-            path_to_test_data,
-            "test_genome_structure_query_manual_filter_annotated.json",
+            data_folder,
+            "query_manual_filter_annotated.json",
         )
     )
 
@@ -107,7 +101,7 @@ def test_genome_structure_query_manual_filter_annotated():
     assert_equal_offtargets(old_results, results)
 
 
-def test_genome_structure_query_CNE1_min_specificity():
+def test_genome_structure_query_CNE1_min_specificity(data_folder):
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("CNE1")[0]
     results = genome_structure.query(
@@ -118,9 +112,7 @@ def test_genome_structure_query_CNE1_min_specificity():
         legacy_ordering=True,
     )
     old_results = load_saved_data(
-        os.path.join(
-            path_to_test_data, "test_genome_structure_query_CNE1_min_specificity.json"
-        )
+        os.path.join(data_folder, "query_CNE1_min_specificity.json")
     )
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
@@ -134,7 +126,7 @@ def test_genome_structure_query_CNE1_min_specificity():
     assert_equal_offtargets(old_results, results)
 
 
-def test_genome_structure_query_CNE1_min_cutting_efficiency():
+def test_genome_structure_query_CNE1_min_cutting_efficiency(data_folder):
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("CNE1")[0]
     results = genome_structure.query(
@@ -142,8 +134,8 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency():
     )
     old_results = load_saved_data(
         os.path.join(
-            path_to_test_data,
-            "test_genome_structure_query_CNE1_min_cutting_efficiency.json",
+            data_folder,
+            "query_CNE1_min_cutting_efficiency.json",
         )
     )
     assert len(results) == len(old_results)
@@ -158,16 +150,14 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency():
     assert_equal_offtargets(old_results, results)
 
 
-def test_genome_structure_query_offtarget_on_scaffold():
+def test_genome_structure_query_offtarget_on_scaffold(data_folder):
     genome_structure = get_genome_structure(organism="sacCer3")
     region = genome_structure.parse_regions("chrIX:202231-202253")[0]
     results = genome_structure.query(
         region, enzyme="cas9", as_dataframe=True, legacy_ordering=True
     )
     old_results = load_saved_data(
-        os.path.join(
-            path_to_test_data, "test_genome_structure_query_offtarget_on_scaffold.json"
-        )
+        os.path.join(data_folder, "query_offtarget_on_scaffold.json")
     )
     assert len(results) == len(old_results)
     assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
