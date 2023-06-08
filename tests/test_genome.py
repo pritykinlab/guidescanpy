@@ -26,7 +26,7 @@ def load_saved_data(data_path):
 
 
 @patch("guidescanpy.flask.core.genome.get_chromosome_names")
-def test_genome_structure(patched_fn):
+def test_genome_structure(patched_fn, bam_file):
     patched_fn.return_value = {
         "NC_001133.9": "chrI",
         "NC_001134.8": "chrII",
@@ -45,7 +45,7 @@ def test_genome_structure(patched_fn):
         "NC_001147.6": "chrXV",
         "NC_001148.4": "chrXVI",
     }
-    genome_structure = get_genome_structure(organism="sacCer3")
+    genome_structure = get_genome_structure(organism="sacCer3", bam_filepath=bam_file)
 
     genome = genome_structure.genome
     assert genome[0][0:3] == (230218, 813184, 316620)
@@ -58,7 +58,7 @@ def test_genome_structure(patched_fn):
 
 @patch("guidescanpy.flask.core.parser.create_region_query")
 @patch("guidescanpy.flask.core.genome.get_chromosome_names")
-def test_genome_structure_parse_CNE1(patched_fn1, patched_fn2):
+def test_genome_structure_parse_CNE1(patched_fn1, patched_fn2, bam_file):
     patched_fn1.return_value = {
         "NC_001133.9": "chrI",
         "NC_001134.8": "chrII",
@@ -86,7 +86,7 @@ def test_genome_structure_parse_CNE1(patched_fn1, patched_fn2):
         "chromosome_name": "chrI",
         "chromosome_accession": "NC_001133.9",
     }
-    genome_structure = get_genome_structure(organism="sacCer3")
+    genome_structure = get_genome_structure(organism="sacCer3", bam_filepath=bam_file)
     region = genome_structure.parse_regions("CNE1")[0]
     assert region["region-name"] == "CNE1"
     assert region["chromosome-name"] == "chrI"
@@ -95,7 +95,7 @@ def test_genome_structure_parse_CNE1(patched_fn1, patched_fn2):
 
 @patch("guidescanpy.flask.core.genome.get_chromosome_interval_trees")
 @patch("guidescanpy.flask.core.genome.get_chromosome_names")
-def test_genome_structure_query_manual(patched_fn1, patched_fn2, data_folder):
+def test_genome_structure_query_manual(patched_fn1, patched_fn2, data_folder, bam_file):
     patched_fn1.return_value = {
         "NC_001133.9": "chrI",
         "NC_001134.8": "chrII",
@@ -117,10 +117,10 @@ def test_genome_structure_query_manual(patched_fn1, patched_fn2, data_folder):
     patched_fn2.return_value = pickle.load(
         open(os.path.join(data_folder, "sacCer3_chrI_II_IX_itrees.pkl"), "rb")
     )
-    genome_structure = get_genome_structure(organism="sacCer3")
+    genome_structure = get_genome_structure(organism="sacCer3", bam_filepath=bam_file)
     # manually selected region on chrI for CNE1 gene
     region = genome_structure.parse_regions("chrI:37464-38972")[0]
-    results = genome_structure.query(region, enzyme="cas9")
+    results = genome_structure.query(region, enzyme="cas9", bam_filepath=bam_file)
     assert len(results) == 150
 
 
@@ -128,7 +128,7 @@ def test_genome_structure_query_manual(patched_fn1, patched_fn2, data_folder):
 @patch("guidescanpy.flask.core.parser.create_region_query")
 @patch("guidescanpy.flask.core.genome.get_chromosome_names")
 def test_genome_structure_query_CNE1(
-    patched_fn1, patched_fn2, patched_fn3, data_folder
+    patched_fn1, patched_fn2, patched_fn3, data_folder, bam_file
 ):
     patched_fn1.return_value = {
         "NC_001133.9": "chrI",
@@ -160,10 +160,14 @@ def test_genome_structure_query_CNE1(
     patched_fn3.return_value = pickle.load(
         open(os.path.join(data_folder, "sacCer3_chrI_II_IX_itrees.pkl"), "rb")
     )
-    genome_structure = get_genome_structure(organism="sacCer3")
+    genome_structure = get_genome_structure(organism="sacCer3", bam_filepath=bam_file)
     region = genome_structure.parse_regions("CNE1")[0]
     results = genome_structure.query(
-        region, enzyme="cas9", as_dataframe=True, legacy_ordering=True
+        region,
+        enzyme="cas9",
+        as_dataframe=True,
+        legacy_ordering=True,
+        bam_filepath=bam_file,
     )
 
     old_results = load_saved_data(os.path.join(data_folder, "query_CNE1.json"))
@@ -182,7 +186,7 @@ def test_genome_structure_query_CNE1(
 @patch("guidescanpy.flask.core.genome.get_chromosome_interval_trees")
 @patch("guidescanpy.flask.core.genome.get_chromosome_names")
 def test_genome_structure_query_manual_filter_annotated(
-    patched_fn1, patched_fn2, data_folder
+    patched_fn1, patched_fn2, data_folder, bam_file
 ):
     patched_fn1.return_value = {
         "NC_001133.9": "chrI",
@@ -205,7 +209,7 @@ def test_genome_structure_query_manual_filter_annotated(
     patched_fn2.return_value = pickle.load(
         open(os.path.join(data_folder, "sacCer3_chrI_II_IX_itrees.pkl"), "rb")
     )
-    genome_structure = get_genome_structure(organism="sacCer3")
+    genome_structure = get_genome_structure(organism="sacCer3", bam_filepath=bam_file)
     region = genome_structure.parse_regions("chrII:5000-10000")[0]
     results = genome_structure.query(
         region,
@@ -213,6 +217,7 @@ def test_genome_structure_query_manual_filter_annotated(
         filter_annotated=True,
         as_dataframe=True,
         legacy_ordering=True,
+        bam_filepath=bam_file,
     )
     old_results = load_saved_data(
         os.path.join(
@@ -237,7 +242,7 @@ def test_genome_structure_query_manual_filter_annotated(
 @patch("guidescanpy.flask.core.parser.create_region_query")
 @patch("guidescanpy.flask.core.genome.get_chromosome_names")
 def test_genome_structure_query_CNE1_min_specificity(
-    patched_fn1, patched_fn2, patched_fn3, data_folder
+    patched_fn1, patched_fn2, patched_fn3, data_folder, bam_file
 ):
     patched_fn1.return_value = {
         "NC_001133.9": "chrI",
@@ -269,7 +274,7 @@ def test_genome_structure_query_CNE1_min_specificity(
     patched_fn3.return_value = pickle.load(
         open(os.path.join(data_folder, "sacCer3_chrI_II_IX_itrees.pkl"), "rb")
     )
-    genome_structure = get_genome_structure(organism="sacCer3")
+    genome_structure = get_genome_structure(organism="sacCer3", bam_filepath=bam_file)
     region = genome_structure.parse_regions("CNE1")[0]
     results = genome_structure.query(
         region,
@@ -277,6 +282,7 @@ def test_genome_structure_query_CNE1_min_specificity(
         min_specificity=0.46,
         as_dataframe=True,
         legacy_ordering=True,
+        bam_filepath=bam_file,
     )
     old_results = load_saved_data(
         os.path.join(data_folder, "query_CNE1_min_specificity.json")
@@ -297,7 +303,7 @@ def test_genome_structure_query_CNE1_min_specificity(
 @patch("guidescanpy.flask.core.parser.create_region_query")
 @patch("guidescanpy.flask.core.genome.get_chromosome_names")
 def test_genome_structure_query_CNE1_min_cutting_efficiency(
-    patched_fn1, patched_fn2, patched_fn3, data_folder
+    patched_fn1, patched_fn2, patched_fn3, data_folder, bam_file
 ):
     patched_fn1.return_value = {
         "NC_001133.9": "chrI",
@@ -329,10 +335,15 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency(
     patched_fn3.return_value = pickle.load(
         open(os.path.join(data_folder, "sacCer3_chrI_II_IX_itrees.pkl"), "rb")
     )
-    genome_structure = get_genome_structure(organism="sacCer3")
+    genome_structure = get_genome_structure(organism="sacCer3", bam_filepath=bam_file)
     region = genome_structure.parse_regions("CNE1")[0]
     results = genome_structure.query(
-        region, enzyme="cas9", min_ce=0.3, as_dataframe=True, legacy_ordering=True
+        region,
+        enzyme="cas9",
+        min_ce=0.3,
+        as_dataframe=True,
+        legacy_ordering=True,
+        bam_filepath=bam_file,
     )
     old_results = load_saved_data(
         os.path.join(
@@ -356,7 +367,7 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency(
 @patch("guidescanpy.flask.core.parser.create_region_query")
 @patch("guidescanpy.flask.core.genome.get_chromosome_names")
 def test_genome_structure_query_offtarget_on_scaffold(
-    patched_fn1, patched_fn2, patched_fn3, data_folder
+    patched_fn1, patched_fn2, patched_fn3, data_folder, bam_file
 ):
     patched_fn1.return_value = {
         "NC_001133.9": "chrI",
@@ -388,10 +399,14 @@ def test_genome_structure_query_offtarget_on_scaffold(
     patched_fn3.return_value = pickle.load(
         open(os.path.join(data_folder, "sacCer3_chrI_II_IX_itrees.pkl"), "rb")
     )
-    genome_structure = get_genome_structure(organism="sacCer3")
+    genome_structure = get_genome_structure(organism="sacCer3", bam_filepath=bam_file)
     region = genome_structure.parse_regions("chrIX:202231-202253")[0]
     results = genome_structure.query(
-        region, enzyme="cas9", as_dataframe=True, legacy_ordering=True
+        region,
+        enzyme="cas9",
+        as_dataframe=True,
+        legacy_ordering=True,
+        bam_filepath=bam_file,
     )
     old_results = load_saved_data(
         os.path.join(data_folder, "query_offtarget_on_scaffold.json")

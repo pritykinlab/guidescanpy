@@ -4,6 +4,7 @@ from collections import OrderedDict, defaultdict
 import numpy as np
 import pandas as pd
 import pysam
+import logging
 from intervaltree import Interval
 from guidescanpy.flask.db import (
     get_chromosome_names,
@@ -18,24 +19,27 @@ from guidescanpy import config
 #   https://github.com/pritykinlab/guidescan-web/blob/f22066ac15dbb42ad1ee6cad2cfdc553518f6ae9/src/guidescan_web/query/process.clj#L58
 ANNOTATION_MAGIC = True
 
+logger = logging.getLogger(__name__)
+
 
 @lru_cache(maxsize=32)
-def get_genome_structure(organism):
-    return GenomeStructure(organism=organism)
+def get_genome_structure(organism, bam_filepath=None):
+    return GenomeStructure(organism=organism, bam_filepath=bam_filepath)
 
 
 class GenomeStructure:
-    def __init__(self, organism=None):
+    def __init__(self, organism=None, bam_filepath=None):
         self.organism = organism
-
-        bam_dir = config.guidescan.grna_database_path_prefix
-        bam_filename = getattr(
-            getattr(config.guidescan.grna_database_path_map, organism), "cas9"
-        )
         self.acc_to_chr = get_chromosome_names(organism)
         self.chr_to_acc = {v: k for k, v in self.acc_to_chr.items()}
 
-        bam_filepath = os.path.join(bam_dir, bam_filename)
+        if bam_filepath is None:
+            bam_dir = config.guidescan.grna_database_path_prefix
+            bam_filename = getattr(
+                getattr(config.guidescan.grna_database_path_map, organism), "cas9"
+            )
+            bam_filepath = os.path.join(bam_dir, bam_filename)
+
         with pysam.AlignmentFile(bam_filepath, "r") as bam:
             self.acc_to_length = OrderedDict(zip(bam.references, bam.lengths))
             # TODO: The following 2 attributes are not required if we have self.acc_to_length, and can be obsoleted
@@ -141,19 +145,27 @@ class GenomeStructure:
         filter_annotated=False,
         as_dataframe=False,
         legacy_ordering=False,
+        bam_filepath=None,
     ):
         chromosome, start_pos, end_pos = region["coords"]
         if chromosome not in self.chr_to_acc:
             return None
         chromosome = self.chr_to_acc[chromosome]
 
-        bam_dir = config.guidescan.grna_database_path_prefix
-        bam_filename = getattr(
-            getattr(config.guidescan.grna_database_path_map, self.organism), enzyme
-        )
-        bam_filepath = os.path.join(bam_dir, bam_filename)
+        if bam_filepath is None:
+            bam_dir = config.guidescan.grna_database_path_prefix
+            bam_filename = getattr(
+                getattr(config.guidescan.grna_database_path_map, self.organism), enzyme
+            )
+            bam_filepath = os.path.join(bam_dir, bam_filename)
 
         results = []
+
+        with pysam.AlignmentFile(bam_filepath, "r") as bam:
+            if not bam.has_index():
+                logger.warning("Index not found! Attempting to create index.")
+                pysam.index(bam_filepath)
+
         with pysam.AlignmentFile(bam_filepath, "r") as bam:
             for i, read in enumerate(bam.fetch(chromosome, start_pos, end_pos)):
                 annotations = []
