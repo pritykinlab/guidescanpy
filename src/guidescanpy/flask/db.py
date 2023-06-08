@@ -1,14 +1,28 @@
+import logging
+
 from intervaltree import IntervalTree
 from functools import cache
 import psycopg2
-from psycopg2 import sql
+from psycopg2 import sql, OperationalError
 from psycopg2.extras import DictCursor, RealDictCursor
 from guidescanpy import config
 
-conn = psycopg2.connect(config.guidescan.db)
+conn = None
+logger = logging.getLogger(__name__)
+
+
+def get_connection():
+    global conn
+    if conn is None:
+        try:
+            conn = psycopg2.connect(config.guidescan.db)
+        except OperationalError as e:
+            logger.error(str(e))
+    return conn
 
 
 def insert_chromosome_query(**kwargs):
+    conn = get_connection()
     query = "INSERT INTO chromosomes (accession, name, organism) VALUES (%s, %s, %s)"
     cur = conn.cursor()
     cur.execute(query, (kwargs["accession"], kwargs["name"], kwargs["organism"]))
@@ -17,6 +31,7 @@ def insert_chromosome_query(**kwargs):
 
 
 def insert_gene_query(**kwargs):
+    conn = get_connection()
     query = "INSERT INTO genes (entrez_id, gene_symbol, chromosome, sense, start_pos, end_pos) VALUES (%s, %s, %s, %s, %s, %s)"
     cur = conn.cursor()
     cur.execute(
@@ -35,6 +50,7 @@ def insert_gene_query(**kwargs):
 
 
 def insert_exon_query(**kwargs):
+    conn = get_connection()
     query = "INSERT INTO exons (entrez_id, exon_number, chromosome, product, sense, start_pos, end_pos) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     cur = conn.cursor()
     cur.execute(
@@ -54,6 +70,7 @@ def insert_exon_query(**kwargs):
 
 
 def create_region_query(organism, region):
+    conn = get_connection()
     try:
         int(region)
     except ValueError:
@@ -83,6 +100,7 @@ def create_region_query(organism, region):
 
 
 def get_chromosome_names(organism):
+    conn = get_connection()
     query = sql.SQL(
         "SELECT accession, CONCAT('chr', name) FROM chromosomes " "WHERE organism = %s"
     )
@@ -96,6 +114,7 @@ def get_chromosome_names(organism):
 
 
 def get_library_info_by_gene(organism, genes, n_guides=6):
+    conn = get_connection()
     # TODO: Do we need an ORDER BY here?
     #   See https://github.com/pritykinlab/guidescan-web/blob/master/src/guidescan_web/query/library_design.clj#L150
     query = sql.SQL(
@@ -115,6 +134,7 @@ def get_library_info_by_gene(organism, genes, n_guides=6):
 
 
 def get_essential_genes(organism, n=1):
+    conn = get_connection()
     query = sql.SQL(
         "SELECT gene_symbol FROM essential_genes WHERE organism = %s LIMIT %s"
     )
@@ -125,6 +145,7 @@ def get_essential_genes(organism, n=1):
 
 
 def get_control_guides(organism, n=1):
+    conn = get_connection()
     # TODO: Order by?
     query = sql.SQL(
         "SELECT * FROM libraries WHERE organism = %s AND (grna_type='safe_targeting_control' OR grna_type='non_targeting_control') LIMIT %s"
@@ -137,6 +158,7 @@ def get_control_guides(organism, n=1):
 
 @cache
 def get_chromosome_interval_trees():
+    conn = get_connection()
     query = sql.SQL(
         "SELECT chromosome, start_pos, end_pos, exon_number, product FROM exons"
     )
