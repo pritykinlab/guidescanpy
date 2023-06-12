@@ -6,6 +6,7 @@
             var examples;
             $.getJSON(window.location.origin + '{{ url_for('info.example_queries') }}', (data) => {
                 examples = data;
+                refreshMenu();
                 refreshExamples();
             });
             $('#checkFlanking').on('change', function () {
@@ -25,26 +26,31 @@
                 $('#txtFilterAboveSpecificity').prop('disabled', !checked);
             });
             $('#selectOrganism').on('change', function () {
+                refreshMenu();
                 refreshExamples();
             });
             $('#selectEnzyme').on('change', function () {
                 refreshExamples();
             });
 
+
+            function refreshMenu() {
+                var organism = $('#selectOrganism').find(":selected").text();
+                var enzymeOptions = examples[organism];
+                $('#selectEnzyme').empty();
+                if (enzymeOptions) {
+                    for (var enzyme in enzymeOptions) {
+                        $('#selectEnzyme').append("<option value='"+enzyme+"'>"+enzyme+"</option>");
+                    }
+                }
+            }
+
             function refreshExamples() {
                 var organism = $('#selectOrganism').find(":selected").text();
                 var enzyme = $('#selectEnzyme').find(":selected").text();
-                if (!(enzyme in examples[organism])) {
-                    var selectedOption = $('#selectEnzyme option:selected');
-                    var nextOption = selectedOption.prev('option');
-                    enzyme = nextOption.val();
-                    if (nextOption.length) {
-                        $('#selectEnzyme').val(enzyme);
-                        refreshExamples();
-                    }
-                }
                 $('#txtCoordinates').val(examples[organism][enzyme]);
             }
+
         });
     </script>
 {% endblock %}
@@ -66,6 +72,7 @@
                                         <option>hg38</option>
                                         <option>ce11</option>
                                         <option>dm6</option>
+
                                         <option>mm10</option>
                                         <option>mm39</option>
                                         <option>rn6</option>
