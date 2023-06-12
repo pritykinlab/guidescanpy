@@ -1,11 +1,8 @@
 import pysam
 from guidescanpy.flask.core.utils import hex_to_offtarget_info
-import os.path
 
 
 def test_bam_header(bam_file):
-    if not os.path.exists(bam_file + ".bai"):
-        pysam.index(bam_file)
     bam = pysam.AlignmentFile(bam_file, "r")
     assert len(bam.references) == 17
     assert bam.references[0:3] == ("NC_001133.9", "NC_001134.8", "NC_001135.5")
@@ -13,8 +10,6 @@ def test_bam_header(bam_file):
 
 
 def test_bam_view(bam_file):
-    if not os.path.exists(bam_file + ".bai"):
-        pysam.index(bam_file)
     bam = pysam.AlignmentFile(bam_file, "r")
     n_reads = 0
     for read in bam.fetch("NC_001134.8", 1, 813184):
