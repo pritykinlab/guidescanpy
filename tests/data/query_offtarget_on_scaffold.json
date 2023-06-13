@@ -1,1 +1,38 @@
-[[{"region-name": "chrIX:202231-202253", "chromosome-name": "chrIX", "coords": ["NC_001141.2", 202231, 202253], "organism": "sacCer3"}, [{"organism": "sacCer3", "off-target-summary": {"3": 1}, "cutting-efficiency": 0.462437, "start": 202231, "sequence": "AATATAATACAAAGTTAAAGNGG", "annotations": [], "off-targets": [{"position": 1168647, "chromosome": "IV", "direction": "negative", "distance": 3, "accession": "NC_001136.10"}], "end": 202253, "specificity": 0.900124, "direction": "positive"}]]]
+[
+  [
+    {
+      "region-name": "chrIX:202231-202253",
+      "chromosome-name": "chrIX",
+      "coords": [
+        "NC_001141.2",
+        202231,
+        202253
+      ],
+      "organism": "sacCer3"
+    },
+    [
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.462437,
+        "start": 202231,
+        "sequence": "AATATAATACAAAGTTAAAGNGG",
+        "annotations": [],
+        "off-targets": [
+          {
+            "position": 1168647,
+            "chromosome": "IV",
+            "direction": "negative",
+            "distance": 3,
+            "accession": "NC_001136.10"
+          }
+        ],
+        "end": 202253,
+        "specificity": 0.900124,
+        "direction": "positive"
+      }
+    ]
+  ]
+]

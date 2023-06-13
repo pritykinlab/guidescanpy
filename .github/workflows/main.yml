@@ -37,5 +37,7 @@ jobs:
           pre-commit run --all-files
 
       - name: Run pytest
+        # Not all tests currently work on the CI. Once they do, we can simply run 'pytest'
         run: |
           pytest tests/test_config.py
+          pytest tests/test_genome.py
