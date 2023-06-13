@@ -97,11 +97,11 @@
                                         <tbody>
                                         {% for value in values['hits'] %}
                                             <tr>
-                                                <td>{{ value['coordinate'] }}</td>
+                                                <td><a href="#" id="coordinate">{{ value['coordinate'] }}</a></td>
                                                 <td>{{ value['sequence'] }}</td>
                                                 <td>{{ value['n-off-targets'] }}</td>
                                                 {% if value['n-off-targets'] > 0 %}
-                                                    <td><a href="#">{{ value['off-target-summary'] }}</a>
+                                                    <td><a href="#" id="off_target">{{ value['off-target-summary'] }}</a>
                                                     </td>
                                                 {% else %}
                                                     <td>{{ value['off-target-summary'] }}</td>
@@ -169,7 +169,7 @@
                         ],
                     });
 
-                    $('.datatable tbody').on('click', 'a', function () {
+                    $('.datatable tbody').on('click', 'a[id="off_target"]', function () {
                         var row = table.row($(this).parents('tr')).data();
                         $('#modal-title').html('Off-targets for ' + row[0]);
                         $('#table-off-targets').DataTable({
@@ -191,6 +191,13 @@
                             destroy: true
                         });
                         $('#modal-off-targets').modal('show');
+                    });
+
+                    $('.datatable tbody').on('click', 'a[id="coordinate"]', function () {
+                        var row = table.row($(this).parents('tr')).data();
+                        var data = row[0].match(/>(.*?)<\/a>/)[1];
+                        var url = 'https://igv.org/app/?genome={{ result.result['organism'] }}&locus=' + data;
+                        window.open(url, '_blank');
                     });
 
                 });
