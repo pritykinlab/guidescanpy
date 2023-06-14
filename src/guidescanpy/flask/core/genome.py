@@ -112,11 +112,9 @@ class GenomeStructure:
 
         return chrom, coord, strand
 
-    def to_coordinate_string(self, read, enzyme="cas9"):
+    def to_coordinate_string(self, read, offset=0):
         direction = "+" if read.is_forward else "-"
         chr = self.acc_to_chr[read.reference_name]
-        offset_map = config.guidescan.grna_db_offset_map
-        offset = getattr(offset_map, self.organism + ":" + enzyme, 0)
         # Convert from 0-indexed (start, end] to 1-indexed [start, end]
         # Fix offset for certain databases
         return f"{chr}:{read.reference_start+1+offset}-{read.reference_end+offset}:{direction}"
@@ -161,6 +159,12 @@ class GenomeStructure:
                 getattr(config.guidescan.grna_database_path_map, self.organism), enzyme
             )
             bam_filepath = os.path.join(bam_dir, bam_filename)
+
+        # Certain legacy .bam files have incorrect POS fields. We maintain an offset
+        # to add to any alignment read we get from the .bam file
+        read_offset = getattr(
+            config.guidescan.grna_db_offset_map, self.organism + ":" + enzyme, 0
+        )
 
         results = []
 
@@ -244,17 +248,14 @@ class GenomeStructure:
                 elif read.has_tag("cs"):  # old guidescan BAM format
                     specificity = read.get_tag("cs")
 
-                offset_map = config.guidescan.grna_db_offset_map
-                offset = getattr(offset_map, self.organism + ":" + enzyme, 0)
-
                 result = {
-                    "coordinate": self.to_coordinate_string(read),
+                    "coordinate": self.to_coordinate_string(read, offset=read_offset),
                     "sequence": read.get_forward_sequence(),
                     "start": read.reference_start
                     + 1
-                    + offset,  # 0-indexed inclusive -> 1-indexed inclusive, fix offset for certain databases
+                    + read_offset,  # 0-indexed inclusive -> 1-indexed inclusive
                     "end": read.reference_end
-                    + offset,  # 0-indexed exclusive -> 1-indexed inclusive
+                    + read_offset,  # 0-indexed exclusive -> 1-indexed inclusive
                     "direction": "+" if read.is_forward else "-",
                     "cutting-efficiency": cutting_efficiency,
                     "specificity": specificity,
