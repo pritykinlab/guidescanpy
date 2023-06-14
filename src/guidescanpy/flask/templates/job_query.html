@@ -101,7 +101,7 @@
                                                 <td>{{ value['sequence'] }}</td>
                                                 <td>{{ value['n-off-targets'] }}</td>
                                                 {% if value['n-off-targets'] > 0 %}
-                                                    <td><a href="#">{{ value['off-target-summary'] }}</a>
+                                                    <td><a href="#" class="off_target">{{ value['off-target-summary'] }}</a>
                                                     </td>
                                                 {% else %}
                                                     <td>{{ value['off-target-summary'] }}</td>
@@ -162,6 +162,13 @@
                         bInfo: false,
                         pagingType: "numbers",
                         columnDefs: [
+
+                            {
+                                target: 0,
+                                render: function(data, type, row, meta) {
+                                    return '<a target="_blank" href="https://igv.org/app/?genome={{ result.result['organism'] }}&locus=' + data + '">' + data + '</a>';
+                                }
+                            },
                             {
                                 target: 7,
                                 visible: false
@@ -169,7 +176,7 @@
                         ],
                     });
 
-                    $('.datatable tbody').on('click', 'a', function () {
+                    $('.datatable tbody').on('click', 'a[class="off_target"]', function () {
                         var row = table.row($(this).parents('tr')).data();
                         $('#modal-title').html('Off-targets for ' + row[0]);
                         $('#table-off-targets').DataTable({
