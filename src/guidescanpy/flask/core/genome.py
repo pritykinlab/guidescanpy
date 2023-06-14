@@ -275,11 +275,11 @@ class GenomeStructure:
 
         if not results.empty:
             # Only filter on specificity when enzyme is cas9, since specificity values are NA otherwise
-            if min_specificity is not None and enzyme == 'cas9':
+            if min_specificity is not None and enzyme == "cas9":
                 results = results[results["specificity"] >= min_specificity]
 
             # Only filter on cutting efficiency when enzyme is cas9, since specificity values are NA otherwise
-            if min_ce is not None and enzyme == 'cas9':
+            if min_ce is not None and enzyme == "cas9":
                 results = results[results["cutting-efficiency"] >= min_ce]
 
             if filter_annotated:
