@@ -1,7 +1,7 @@
 {
   "guidescan": {
     "bin": "guidescan",
-    "grna_database_path_prefix": "{BAM_PATH}",
+    "grna_database_path_prefix": "{BAMS_PATH}",
     "grna_database_path_map": {
       "ce11": {
         "cas9": "cas9/ce11.bam.sorted",
