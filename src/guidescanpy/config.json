@@ -69,7 +69,7 @@
       "hg38:cas9": 1,
       "hg38:cpf1": 1,
       "ce11:cpf1": 1,
-      "mm10:cpf1": 1,
+      "mm10:cpf1": 1
     },
     "example_sequences": {
       "ce11": {
