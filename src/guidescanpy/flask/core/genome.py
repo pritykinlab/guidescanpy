@@ -176,7 +176,7 @@ class GenomeStructure:
         with pysam.AlignmentFile(bam_filepath, "r") as bam:
             for i, read in enumerate(bam.fetch(chromosome, start_pos, end_pos)):
                 annotations = []
-                interval_tree = get_chromosome_interval_trees()[chromosome]
+                interval_tree = get_chromosome_interval_trees().get(chromosome)
 
                 this_interval = Interval(read.reference_start - 1, read.reference_end)
                 if ANNOTATION_MAGIC:
@@ -192,7 +192,7 @@ class GenomeStructure:
                             read.reference_start + cut_offset + 1,
                         )
 
-                if interval_tree.overlap(this_interval):
+                if interval_tree is not None and interval_tree.overlap(this_interval):
                     overlaps = interval_tree[this_interval.begin : this_interval.end]
                     for overlap in overlaps:
                         exon, product = overlap.data
@@ -274,10 +274,12 @@ class GenomeStructure:
         ] = f"{self.acc_to_chr[chromosome]}:{start_pos}-{end_pos}"
 
         if not results.empty:
-            if min_specificity is not None:
+            # Only filter on specificity when enzyme is cas9, since specificity values are NA otherwise
+            if min_specificity is not None and enzyme == "cas9":
                 results = results[results["specificity"] >= min_specificity]
 
-            if min_ce is not None:
+            # Only filter on cutting efficiency when enzyme is cas9, since specificity values are NA otherwise
+            if min_ce is not None and enzyme == "cas9":
                 results = results[results["cutting-efficiency"] >= min_ce]
 
             if filter_annotated:
