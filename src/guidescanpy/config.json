@@ -1,7 +1,7 @@
 {
   "guidescan": {
     "bin": "guidescan",
-    "grna_database_path_prefix": "{BAMS_PATH}",
+    "grna_database_path_prefix": "{BAM_PATH}",
     "grna_database_path_map": {
       "ce11": {
         "cas9": "cas9/ce11.bam.sorted",
@@ -65,7 +65,12 @@
       "rn6": "rn6.index",
       "sacCer3": "sacCer3/index/GCF_000146045.2_R64_genomic.fna.index"
     },
-
+    "grna_db_offset_map": {
+      "hg38:cas9": 1,
+      "hg38:cpf1": 1,
+      "ce11:cpf1": 1,
+      "mm10:cpf1": 1,
+    },
     "example_sequences": {
       "ce11": {
         "cas9": "GAACAGAGCAAATTGTAGTG\nATGTATGTTGTCTCTCGCCC",

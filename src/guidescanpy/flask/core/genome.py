@@ -112,11 +112,14 @@ class GenomeStructure:
 
         return chrom, coord, strand
 
-    def to_coordinate_string(self, read):
+    def to_coordinate_string(self, read, enzyme="cas9"):
         direction = "+" if read.is_forward else "-"
         chr = self.acc_to_chr[read.reference_name]
+        offset_map = config.guidescan.grna_db_offset_map
+        offset = getattr(offset_map, self.organism + ":" + enzyme, 0)
         # Convert from 0-indexed (start, end] to 1-indexed [start, end]
-        return f"{chr}:{read.reference_start+1}-{read.reference_end}:{direction}"
+        # Fix offset for certain databases
+        return f"{chr}:{read.reference_start+1+offset}-{read.reference_end+offset}:{direction}"
 
     def off_target_region_string(self, off_target_dict):
         chr = "chr" + off_target_dict["chromosome"]
@@ -241,12 +244,17 @@ class GenomeStructure:
                 elif read.has_tag("cs"):  # old guidescan BAM format
                     specificity = read.get_tag("cs")
 
+                offset_map = config.guidescan.grna_db_offset_map
+                offset = getattr(offset_map, self.organism + ":" + enzyme, 0)
+
                 result = {
                     "coordinate": self.to_coordinate_string(read),
                     "sequence": read.get_forward_sequence(),
                     "start": read.reference_start
-                    + 1,  # 0-indexed inclusive -> 1-indexed inclusive
-                    "end": read.reference_end,  # 0-indexed exclusive -> 1-indexed inclusive
+                    + 1
+                    + offset,  # 0-indexed inclusive -> 1-indexed inclusive, fix offset for certain databases
+                    "end": read.reference_end
+                    + offset,  # 0-indexed exclusive -> 1-indexed inclusive
                     "direction": "+" if read.is_forward else "-",
                     "cutting-efficiency": cutting_efficiency,
                     "specificity": specificity,
