@@ -30,7 +30,7 @@
         ],
         "off-targets": [],
         "end": 9592,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -52,7 +52,7 @@
         ],
         "off-targets": [],
         "end": 9994,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {

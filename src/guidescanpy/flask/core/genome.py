@@ -172,7 +172,6 @@ class GenomeStructure:
         min_ce=None,
         filter_annotated=False,
         as_dataframe=False,
-        legacy_ordering=False,
         bam_filepath=None,
         reorder=True,
     ):
@@ -320,17 +319,10 @@ class GenomeStructure:
             if filter_annotated:
                 results = results[results["annotations"] != ""]
 
-            if legacy_ordering:
-                # legacy ordering only for unit testing purposes
-                # orders by n-off-targets, otherwise keeps the original order
-                results = results.rename_axis("iloc").sort_values(
-                    by=["n-off-targets", "iloc"], ascending=[True, True]
+            if reorder:
+                results = results.sort_values(
+                    by=["specificity", "n-off-targets"], ascending=[False, True]
                 )
-            else:
-                if reorder:
-                    results = results.sort_values(
-                        by=["specificity", "n-off-targets"], ascending=[False, True]
-                    )
 
             results = results[:topn]
             results.reset_index(inplace=True, drop=True)
