@@ -80,14 +80,10 @@ def calc_cfd_e(sg, wt, pam, mm_scores, pam_scores):
     wt_list = list(wt)
     sg_list = list(sg)
     for i, wl in enumerate(wt_list):
-        if sg_list[i] == wl:
-            score *= 1
-        else:
-            try:
-                key = "r" + sg_list[i] + ":d" + revcom(wl) + "," + str(i + 1)
+        if sg_list[i] != wl:
+            key = "r" + sg_list[i] + ":d" + revcom(wl) + "," + str(i + 1)
+            if key in mm_scores:
                 score *= mm_scores[key]
-            except KeyError:
-                continue
     score *= pam_scores[pam]
     return score
 
@@ -286,9 +282,9 @@ if __name__ == "__main__":
 
     if args.mode == "succinct":
         print(SUCCINCT_HEADER)
-        for sam_record in sam_db:
+        for i, sam_record in enumerate(sam_db):
             output_succinct(sam_record, list(decode_ot(sam_record)))
     elif args.mode == "complete":
         print(COMPLETE_HEADER)
-        for sam_record in sam_db:
+        for i, sam_record in enumerate(sam_db):
             output_complete(decode_ot(sam_record))

@@ -162,6 +162,8 @@ def get_chromosome_interval_trees():
     query = sql.SQL(
         "SELECT chromosome, start_pos, end_pos, exon_number, product FROM exons"
     )
+    if conn is None:
+        return {}
     cur = conn.cursor(cursor_factory=DictCursor)
     cur.execute(query)
     result = cur.fetchall()

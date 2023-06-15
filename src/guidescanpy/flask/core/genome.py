@@ -28,9 +28,21 @@ def get_genome_structure(organism, bam_filepath=None):
 
 
 class GenomeStructure:
-    def __init__(self, organism=None, bam_filepath=None):
+    def __init__(self, organism=None, bam_filepath=None, chr2acc_filepath=None):
         self.organism = organism
-        self.acc_to_chr = get_chromosome_names(organism)
+
+        if chr2acc_filepath is None:
+            assert (
+                organism is not None
+            ), "Need to specify organism in constructor to get chr2acc mapping from db"
+            self.acc_to_chr = get_chromosome_names(organism)
+        else:
+            chr2acc = pd.read_csv(chr2acc_filepath, sep="\t")
+            assert "#Chromosome" in chr2acc.columns
+            assert "Accession.version" in chr2acc.columns
+            chr2acc["chr"] = "chr" + chr2acc["#Chromosome"]
+            self.acc_to_chr = chr2acc.set_index("Accession.version")["chr"].to_dict()
+
         self.chr_to_acc = {v: k for k, v in self.acc_to_chr.items()}
 
         if bam_filepath is None:
@@ -47,8 +59,23 @@ class GenomeStructure:
             self.absolute_genome = np.insert(np.cumsum(bam.lengths), 0, 0)
             self.off_target_delim = -(self.absolute_genome[-1] + 1)
 
-    def parse_regions(self, region_string: str, flanking: int = 0) -> list:
-        parser = region_parser(filepath_or_str=region_string, organism=self.organism)
+    def _all_regions(self):
+        regions = []
+        for chr, acc in self.chr_to_acc.items():
+            start, end = 1, self.acc_to_length[acc]
+            regions.append((f"{chr}:{start}-{end}", chr, start, end))
+        return regions
+
+    def parse_regions(
+        self, region_string: str | None = None, flanking: int = 0
+    ) -> list:
+        if region_string is None:
+            parser = self._all_regions()
+        else:
+            parser = region_parser(
+                filepath_or_str=region_string, organism=self.organism
+            )
+
         regions = []
         for region_name, chr, start, end in parser:
             region = {
@@ -147,6 +174,7 @@ class GenomeStructure:
         as_dataframe=False,
         legacy_ordering=False,
         bam_filepath=None,
+        reorder=True,
     ):
         chromosome, start_pos, end_pos = region["coords"]
         if chromosome not in self.chr_to_acc:
@@ -162,9 +190,12 @@ class GenomeStructure:
 
         # Certain legacy .bam files have incorrect POS fields. We maintain an offset
         # to add to any alignment read we get from the .bam file
-        read_offset = getattr(
-            config.guidescan.grna_db_offset_map, self.organism + ":" + enzyme, 0
-        )
+        if self.organism is not None:
+            read_offset = getattr(
+                config.guidescan.grna_db_offset_map, self.organism + ":" + enzyme, 0
+            )
+        else:
+            read_offset = 0
 
         results = []
 
@@ -249,6 +280,10 @@ class GenomeStructure:
                     specificity = read.get_tag("cs")
 
                 result = {
+                    "id": read.query_name,
+                    "query-sequence": read.query_sequence,
+                    "reference-name": read.reference_name,
+                    "offtargets-by-distance": off_targets_by_distance,
                     "coordinate": self.to_coordinate_string(read, offset=read_offset),
                     "sequence": read.get_forward_sequence(),
                     "start": read.reference_start
@@ -292,9 +327,10 @@ class GenomeStructure:
                     by=["n-off-targets", "iloc"], ascending=[True, True]
                 )
             else:
-                results = results.sort_values(
-                    by=["specificity", "n-off-targets"], ascending=[False, True]
-                )
+                if reorder:
+                    results = results.sort_values(
+                        by=["specificity", "n-off-targets"], ascending=[False, True]
+                    )
 
             results = results[:topn]
             results.reset_index(inplace=True, drop=True)
