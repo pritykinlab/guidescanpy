@@ -34,6 +34,7 @@ web = [
     "werkzeug"
 ]
 dev = [
+    "biopython",
     "build",
     "pre-commit",
     "pyright",
