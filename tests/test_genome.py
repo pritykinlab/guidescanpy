@@ -229,6 +229,8 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency(
         )
     )
 
+    assert_equal_offtargets(old_results, results)
+
 
 @patch("guidescanpy.flask.core.genome.get_chromosome_interval_trees")
 @patch("guidescanpy.flask.core.parser.create_region_query")
