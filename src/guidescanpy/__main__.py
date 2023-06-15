@@ -1,9 +1,9 @@
 import sys
 import guidescanpy
 from guidescanpy.flask import create_app
+from guidescanpy.commands.decode import main as decode  # noqa: F401
 
-
-commands = ("web",)
+commands = ("web", "decode")
 
 
 def print_usage():
