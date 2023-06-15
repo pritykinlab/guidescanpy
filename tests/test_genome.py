@@ -92,19 +92,18 @@ def test_genome_structure_query_CNE1(
         region,
         enzyme="cas9",
         as_dataframe=True,
-        legacy_ordering=True,
         bam_filepath=bam_file,
     )
-
     old_results = load_saved_data(os.path.join(data_folder, "query_CNE1.json"))
-    assert len(results) == len(old_results)
-    assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
+    columns_to_compare = ["sequence", "start", "end"]
+
+    assert results[columns_to_compare].equals(old_results[columns_to_compare])
     assert np.all(
-        np.isclose(old_results["cutting-efficiency"], results["cutting-efficiency"])
+        np.isclose(
+            old_results[["specificity", "cutting-efficiency"]],
+            results[["specificity", "cutting-efficiency"]],
+        )
     )
-    assert np.all(old_results["sequence"] == results["sequence"])
-    assert np.all(old_results["start"] == results["start"])
-    assert np.all(old_results["end"] == results["end"])
 
     assert_equal_offtargets(old_results, results)
 
@@ -125,7 +124,6 @@ def test_genome_structure_query_manual_filter_annotated(
         enzyme="cas9",
         filter_annotated=True,
         as_dataframe=True,
-        legacy_ordering=True,
         bam_filepath=bam_file,
     )
     old_results = load_saved_data(
@@ -134,15 +132,15 @@ def test_genome_structure_query_manual_filter_annotated(
             "query_manual_filter_annotated.json",
         )
     )
+    columns_to_compare = ["sequence", "start", "end"]
 
-    assert len(results) == len(old_results)
-    assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
+    assert results[columns_to_compare].equals(old_results[columns_to_compare])
     assert np.all(
-        np.isclose(old_results["cutting-efficiency"], results["cutting-efficiency"])
+        np.isclose(
+            old_results[["specificity", "cutting-efficiency"]],
+            results[["specificity", "cutting-efficiency"]],
+        )
     )
-    assert np.all(old_results["sequence"] == results["sequence"])
-    assert np.all(old_results["start"] == results["start"])
-    assert np.all(old_results["end"] == results["end"])
 
     assert_equal_offtargets(old_results, results)
 
@@ -171,20 +169,20 @@ def test_genome_structure_query_CNE1_min_specificity(
         enzyme="cas9",
         min_specificity=0.46,
         as_dataframe=True,
-        legacy_ordering=True,
         bam_filepath=bam_file,
     )
     old_results = load_saved_data(
         os.path.join(data_folder, "query_CNE1_min_specificity.json")
     )
-    assert len(results) == len(old_results)
-    assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
+    columns_to_compare = ["sequence", "start", "end"]
+
+    assert results[columns_to_compare].equals(old_results[columns_to_compare])
     assert np.all(
-        np.isclose(old_results["cutting-efficiency"], results["cutting-efficiency"])
+        np.isclose(
+            old_results[["specificity", "cutting-efficiency"]],
+            results[["specificity", "cutting-efficiency"]],
+        )
     )
-    assert np.all(old_results["sequence"] == results["sequence"])
-    assert np.all(old_results["start"] == results["start"])
-    assert np.all(old_results["end"] == results["end"])
 
     assert_equal_offtargets(old_results, results)
 
@@ -213,7 +211,6 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency(
         enzyme="cas9",
         min_ce=0.3,
         as_dataframe=True,
-        legacy_ordering=True,
         bam_filepath=bam_file,
     )
     old_results = load_saved_data(
@@ -222,14 +219,15 @@ def test_genome_structure_query_CNE1_min_cutting_efficiency(
             "query_CNE1_min_cutting_efficiency.json",
         )
     )
-    assert len(results) == len(old_results)
-    assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
+    columns_to_compare = ["sequence", "start", "end"]
+
+    assert results[columns_to_compare].equals(old_results[columns_to_compare])
     assert np.all(
-        np.isclose(old_results["cutting-efficiency"], results["cutting-efficiency"])
+        np.isclose(
+            old_results[["specificity", "cutting-efficiency"]],
+            results[["specificity", "cutting-efficiency"]],
+        )
     )
-    assert np.all(old_results["sequence"] == results["sequence"])
-    assert np.all(old_results["start"] == results["start"])
-    assert np.all(old_results["end"] == results["end"])
 
     assert_equal_offtargets(old_results, results)
 
@@ -257,19 +255,19 @@ def test_genome_structure_query_offtarget_on_scaffold(
         region,
         enzyme="cas9",
         as_dataframe=True,
-        legacy_ordering=True,
         bam_filepath=bam_file,
     )
     old_results = load_saved_data(
         os.path.join(data_folder, "query_offtarget_on_scaffold.json")
     )
-    assert len(results) == len(old_results)
-    assert np.all(np.isclose(old_results["specificity"], results["specificity"]))
+    columns_to_compare = ["sequence", "start", "end"]
+
+    assert results[columns_to_compare].equals(old_results[columns_to_compare])
     assert np.all(
-        np.isclose(old_results["cutting-efficiency"], results["cutting-efficiency"])
+        np.isclose(
+            old_results[["specificity", "cutting-efficiency"]],
+            results[["specificity", "cutting-efficiency"]],
+        )
     )
-    assert np.all(old_results["sequence"] == results["sequence"])
-    assert np.all(old_results["start"] == results["start"])
-    assert np.all(old_results["end"] == results["end"])
 
     assert_equal_offtargets(old_results, results)

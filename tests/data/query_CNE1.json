@@ -30,7 +30,7 @@
         ],
         "off-targets": [],
         "end": 37490,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -52,7 +52,7 @@
         ],
         "off-targets": [],
         "end": 37512,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -74,7 +74,7 @@
         ],
         "off-targets": [],
         "end": 37519,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -96,7 +96,7 @@
         ],
         "off-targets": [],
         "end": 37556,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -118,7 +118,7 @@
         ],
         "off-targets": [],
         "end": 37565,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -140,7 +140,7 @@
         ],
         "off-targets": [],
         "end": 37566,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -162,7 +162,7 @@
         ],
         "off-targets": [],
         "end": 37578,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -184,7 +184,7 @@
         ],
         "off-targets": [],
         "end": 37613,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -206,7 +206,7 @@
         ],
         "off-targets": [],
         "end": 37626,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -228,7 +228,7 @@
         ],
         "off-targets": [],
         "end": 37642,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -250,7 +250,7 @@
         ],
         "off-targets": [],
         "end": 37649,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -272,7 +272,7 @@
         ],
         "off-targets": [],
         "end": 37657,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -294,7 +294,7 @@
         ],
         "off-targets": [],
         "end": 37667,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -316,7 +316,7 @@
         ],
         "off-targets": [],
         "end": 37680,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -338,7 +338,7 @@
         ],
         "off-targets": [],
         "end": 37681,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -360,7 +360,7 @@
         ],
         "off-targets": [],
         "end": 37693,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -382,7 +382,7 @@
         ],
         "off-targets": [],
         "end": 37703,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -404,7 +404,7 @@
         ],
         "off-targets": [],
         "end": 37704,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -426,7 +426,7 @@
         ],
         "off-targets": [],
         "end": 37711,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -448,7 +448,7 @@
         ],
         "off-targets": [],
         "end": 37718,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -470,7 +470,7 @@
         ],
         "off-targets": [],
         "end": 37729,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -492,7 +492,7 @@
         ],
         "off-targets": [],
         "end": 37750,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -514,7 +514,7 @@
         ],
         "off-targets": [],
         "end": 37757,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -536,7 +536,7 @@
         ],
         "off-targets": [],
         "end": 37761,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -558,7 +558,7 @@
         ],
         "off-targets": [],
         "end": 37797,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -580,7 +580,7 @@
         ],
         "off-targets": [],
         "end": 37814,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -602,7 +602,7 @@
         ],
         "off-targets": [],
         "end": 37821,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -624,7 +624,7 @@
         ],
         "off-targets": [],
         "end": 37840,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -646,7 +646,7 @@
         ],
         "off-targets": [],
         "end": 37843,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -668,7 +668,7 @@
         ],
         "off-targets": [],
         "end": 37914,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -690,7 +690,7 @@
         ],
         "off-targets": [],
         "end": 37915,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -712,7 +712,7 @@
         ],
         "off-targets": [],
         "end": 37924,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -734,7 +734,7 @@
         ],
         "off-targets": [],
         "end": 37925,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -756,7 +756,7 @@
         ],
         "off-targets": [],
         "end": 37933,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -778,7 +778,7 @@
         ],
         "off-targets": [],
         "end": 37938,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -800,7 +800,7 @@
         ],
         "off-targets": [],
         "end": 37972,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -822,7 +822,7 @@
         ],
         "off-targets": [],
         "end": 37997,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -844,7 +844,7 @@
         ],
         "off-targets": [],
         "end": 38056,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -866,7 +866,7 @@
         ],
         "off-targets": [],
         "end": 38057,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -888,7 +888,7 @@
         ],
         "off-targets": [],
         "end": 38058,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -910,7 +910,7 @@
         ],
         "off-targets": [],
         "end": 38078,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -932,7 +932,7 @@
         ],
         "off-targets": [],
         "end": 38133,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -954,7 +954,7 @@
         ],
         "off-targets": [],
         "end": 38139,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -976,7 +976,7 @@
         ],
         "off-targets": [],
         "end": 38169,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -998,7 +998,7 @@
         ],
         "off-targets": [],
         "end": 38203,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1020,7 +1020,7 @@
         ],
         "off-targets": [],
         "end": 38206,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1042,7 +1042,7 @@
         ],
         "off-targets": [],
         "end": 38207,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1064,7 +1064,7 @@
         ],
         "off-targets": [],
         "end": 38215,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1086,7 +1086,7 @@
         ],
         "off-targets": [],
         "end": 38218,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1108,7 +1108,7 @@
         ],
         "off-targets": [],
         "end": 38230,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1130,7 +1130,7 @@
         ],
         "off-targets": [],
         "end": 38240,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1152,7 +1152,7 @@
         ],
         "off-targets": [],
         "end": 38241,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1174,7 +1174,7 @@
         ],
         "off-targets": [],
         "end": 38251,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1196,7 +1196,7 @@
         ],
         "off-targets": [],
         "end": 38271,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1218,7 +1218,7 @@
         ],
         "off-targets": [],
         "end": 38274,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1240,7 +1240,7 @@
         ],
         "off-targets": [],
         "end": 38274,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1262,7 +1262,7 @@
         ],
         "off-targets": [],
         "end": 38280,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1284,7 +1284,7 @@
         ],
         "off-targets": [],
         "end": 38281,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1306,7 +1306,7 @@
         ],
         "off-targets": [],
         "end": 38287,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1328,7 +1328,7 @@
         ],
         "off-targets": [],
         "end": 38291,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1350,7 +1350,7 @@
         ],
         "off-targets": [],
         "end": 38292,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1372,7 +1372,7 @@
         ],
         "off-targets": [],
         "end": 38325,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1394,7 +1394,7 @@
         ],
         "off-targets": [],
         "end": 38326,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1416,7 +1416,7 @@
         ],
         "off-targets": [],
         "end": 38329,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1438,7 +1438,7 @@
         ],
         "off-targets": [],
         "end": 38338,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1460,7 +1460,7 @@
         ],
         "off-targets": [],
         "end": 38344,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1482,7 +1482,7 @@
         ],
         "off-targets": [],
         "end": 38348,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1504,7 +1504,7 @@
         ],
         "off-targets": [],
         "end": 38359,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1526,7 +1526,7 @@
         ],
         "off-targets": [],
         "end": 38362,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1548,7 +1548,7 @@
         ],
         "off-targets": [],
         "end": 38378,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1570,7 +1570,7 @@
         ],
         "off-targets": [],
         "end": 38382,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1592,7 +1592,7 @@
         ],
         "off-targets": [],
         "end": 38383,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1614,7 +1614,7 @@
         ],
         "off-targets": [],
         "end": 38384,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1636,7 +1636,7 @@
         ],
         "off-targets": [],
         "end": 38400,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1658,7 +1658,7 @@
         ],
         "off-targets": [],
         "end": 38401,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1680,7 +1680,7 @@
         ],
         "off-targets": [],
         "end": 38402,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1702,7 +1702,7 @@
         ],
         "off-targets": [],
         "end": 38405,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1724,7 +1724,7 @@
         ],
         "off-targets": [],
         "end": 38409,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1746,7 +1746,7 @@
         ],
         "off-targets": [],
         "end": 38416,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1768,7 +1768,7 @@
         ],
         "off-targets": [],
         "end": 38417,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1790,7 +1790,7 @@
         ],
         "off-targets": [],
         "end": 38422,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1812,7 +1812,7 @@
         ],
         "off-targets": [],
         "end": 38423,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1834,7 +1834,7 @@
         ],
         "off-targets": [],
         "end": 38424,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1856,7 +1856,7 @@
         ],
         "off-targets": [],
         "end": 38429,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1878,7 +1878,7 @@
         ],
         "off-targets": [],
         "end": 38455,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1900,7 +1900,7 @@
         ],
         "off-targets": [],
         "end": 38458,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1922,7 +1922,7 @@
         ],
         "off-targets": [],
         "end": 38459,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1944,7 +1944,7 @@
         ],
         "off-targets": [],
         "end": 38473,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -1966,7 +1966,7 @@
         ],
         "off-targets": [],
         "end": 38473,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -1988,7 +1988,7 @@
         ],
         "off-targets": [],
         "end": 38479,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2010,7 +2010,7 @@
         ],
         "off-targets": [],
         "end": 38494,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2032,7 +2032,7 @@
         ],
         "off-targets": [],
         "end": 38495,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2054,7 +2054,7 @@
         ],
         "off-targets": [],
         "end": 38502,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2076,7 +2076,7 @@
         ],
         "off-targets": [],
         "end": 38512,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2098,7 +2098,7 @@
         ],
         "off-targets": [],
         "end": 38527,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2120,7 +2120,7 @@
         ],
         "off-targets": [],
         "end": 38531,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2142,7 +2142,7 @@
         ],
         "off-targets": [],
         "end": 38545,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2164,7 +2164,7 @@
         ],
         "off-targets": [],
         "end": 38562,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2186,7 +2186,7 @@
         ],
         "off-targets": [],
         "end": 38563,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2208,7 +2208,7 @@
         ],
         "off-targets": [],
         "end": 38565,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2230,7 +2230,7 @@
         ],
         "off-targets": [],
         "end": 38570,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2252,7 +2252,7 @@
         ],
         "off-targets": [],
         "end": 38572,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2274,7 +2274,7 @@
         ],
         "off-targets": [],
         "end": 38573,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2296,7 +2296,7 @@
         ],
         "off-targets": [],
         "end": 38580,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2318,7 +2318,7 @@
         ],
         "off-targets": [],
         "end": 38596,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2340,7 +2340,7 @@
         ],
         "off-targets": [],
         "end": 38613,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2362,7 +2362,7 @@
         ],
         "off-targets": [],
         "end": 38614,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2384,7 +2384,7 @@
         ],
         "off-targets": [],
         "end": 38637,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2406,7 +2406,7 @@
         ],
         "off-targets": [],
         "end": 38638,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2428,7 +2428,7 @@
         ],
         "off-targets": [],
         "end": 38644,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2450,7 +2450,7 @@
         ],
         "off-targets": [],
         "end": 38663,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2472,7 +2472,7 @@
         ],
         "off-targets": [],
         "end": 38668,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2494,7 +2494,7 @@
         ],
         "off-targets": [],
         "end": 38704,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2516,7 +2516,7 @@
         ],
         "off-targets": [],
         "end": 38721,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2538,7 +2538,7 @@
         ],
         "off-targets": [],
         "end": 38734,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2560,7 +2560,7 @@
         ],
         "off-targets": [],
         "end": 38735,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2582,7 +2582,7 @@
         ],
         "off-targets": [],
         "end": 38773,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2604,7 +2604,7 @@
         ],
         "off-targets": [],
         "end": 38781,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2626,7 +2626,7 @@
         ],
         "off-targets": [],
         "end": 38782,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2648,7 +2648,7 @@
         ],
         "off-targets": [],
         "end": 38798,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2670,7 +2670,7 @@
         ],
         "off-targets": [],
         "end": 38805,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2692,7 +2692,7 @@
         ],
         "off-targets": [],
         "end": 38806,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2714,7 +2714,7 @@
         ],
         "off-targets": [],
         "end": 38807,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2736,7 +2736,7 @@
         ],
         "off-targets": [],
         "end": 38859,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2758,7 +2758,7 @@
         ],
         "off-targets": [],
         "end": 38876,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2780,7 +2780,7 @@
         ],
         "off-targets": [],
         "end": 38877,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2802,7 +2802,7 @@
         ],
         "off-targets": [],
         "end": 38878,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2824,7 +2824,7 @@
         ],
         "off-targets": [],
         "end": 38884,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2846,7 +2846,7 @@
         ],
         "off-targets": [],
         "end": 38892,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2868,7 +2868,7 @@
         ],
         "off-targets": [],
         "end": 38920,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2890,7 +2890,7 @@
         ],
         "off-targets": [],
         "end": 38922,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -2912,7 +2912,7 @@
         ],
         "off-targets": [],
         "end": 38945,
-        "specificity": 1,
+        "specificity": 1.0,
         "direction": "negative"
       },
       {
@@ -2934,295 +2934,7 @@
         ],
         "off-targets": [],
         "end": 38946,
-        "specificity": 1,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.117007,
-        "start": 37465,
-        "sequence": "TGAAATTTTCTGCGTATTTANGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 592010,
-            "chromosome": "X",
-            "direction": "negative",
-            "distance": 3,
-            "accession": "NC_001142.9"
-          }
-        ],
-        "end": 37487,
-        "specificity": 0.913884,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.50395,
-        "start": 37529,
-        "sequence": "GCTATCCAACGTTACATTAGNGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 590820,
-            "chromosome": "XIII",
-            "direction": "positive",
-            "distance": 3,
-            "accession": "NC_001145.3"
-          }
-        ],
-        "end": 37551,
-        "specificity": 0.987179,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.464014,
-        "start": 37766,
-        "sequence": "ACCTATTAATGTTTCAGAAANGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 194688,
-            "chromosome": "IV",
-            "direction": "positive",
-            "distance": 3,
-            "accession": "NC_001136.10"
-          }
-        ],
-        "end": 37788,
-        "specificity": 0.914149,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.484461,
-        "start": 37802,
-        "sequence": "TGTCCAACTTAATTTCGTACNGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 454368,
-            "chromosome": "II",
-            "direction": "positive",
-            "distance": 3,
-            "accession": "NC_001134.8"
-          }
-        ],
-        "end": 37824,
-        "specificity": 0.844156,
-        "direction": "negative"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.425906,
-        "start": 37845,
-        "sequence": "GCGTTTATTAAGTTAATGTCNGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 803411,
-            "chromosome": "XV",
-            "direction": "negative",
-            "distance": 3,
-            "accession": "NC_001147.6"
-          }
-        ],
-        "end": 37867,
-        "specificity": 0.991278,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.320661,
-        "start": 37941,
-        "sequence": "TATTGTGCTCCTGAAATAAANGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 102463,
-            "chromosome": "II",
-            "direction": "positive",
-            "distance": 3,
-            "accession": "NC_001134.8"
-          }
-        ],
-        "end": 37963,
-        "specificity": 0.936849,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.35088,
-        "start": 37964,
-        "sequence": "CGTGCAATTTGCCATCAATANGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 711885,
-            "chromosome": "XII",
-            "direction": "positive",
-            "distance": 3,
-            "accession": "NC_001144.5"
-          }
-        ],
-        "end": 37986,
-        "specificity": 0.921152,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.552895,
-        "start": 38103,
-        "sequence": "TCTTTTCAAATTCTTATAGANGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 707843,
-            "chromosome": "II",
-            "direction": "negative",
-            "distance": 3,
-            "accession": "NC_001134.8"
-          }
-        ],
-        "end": 38125,
-        "specificity": 0.929106,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.597656,
-        "start": 38499,
-        "sequence": "ATAAATAATGCCAAGTACAANGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 608933,
-            "chromosome": "II",
-            "direction": "negative",
-            "distance": 3,
-            "accession": "NC_001134.8"
-          }
-        ],
-        "end": 38521,
-        "specificity": 0.92915,
+        "specificity": 1.0,
         "direction": "positive"
       },
       {
@@ -3262,6 +2974,102 @@
         "off-target-summary": {
           "3": 1
         },
+        "cutting-efficiency": 0.425906,
+        "start": 37845,
+        "sequence": "GCGTTTATTAAGTTAATGTCNGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 803411,
+            "chromosome": "XV",
+            "direction": "negative",
+            "distance": 3,
+            "accession": "NC_001147.6"
+          }
+        ],
+        "end": 37867,
+        "specificity": 0.991278,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.50395,
+        "start": 37529,
+        "sequence": "GCTATCCAACGTTACATTAGNGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 590820,
+            "chromosome": "XIII",
+            "direction": "positive",
+            "distance": 3,
+            "accession": "NC_001145.3"
+          }
+        ],
+        "end": 37551,
+        "specificity": 0.987179,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.555205,
+        "start": 38725,
+        "sequence": "AAATTATTGGGAATAAGACTNGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 603387,
+            "chromosome": "II",
+            "direction": "positive",
+            "distance": 3,
+            "accession": "NC_001134.8"
+          }
+        ],
+        "end": 38747,
+        "specificity": 0.986577,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
         "cutting-efficiency": 0.321725,
         "start": 38577,
         "sequence": "TATAGCGGGTTTTCAATTTCNGG",
@@ -3287,38 +3095,6 @@
         ],
         "end": 38599,
         "specificity": 0.979681,
-        "direction": "negative"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
-        "cutting-efficiency": 0.668482,
-        "start": 38651,
-        "sequence": "GAGATCCACTCCAAAACTCGNGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 256945,
-            "chromosome": "XV",
-            "direction": "negative",
-            "distance": 3,
-            "accession": "NC_001147.6"
-          }
-        ],
-        "end": 38673,
-        "specificity": 0.867769,
         "direction": "negative"
       },
       {
@@ -3358,38 +3134,6 @@
         "off-target-summary": {
           "3": 1
         },
-        "cutting-efficiency": 0.555205,
-        "start": 38725,
-        "sequence": "AAATTATTGGGAATAAGACTNGG",
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 603387,
-            "chromosome": "II",
-            "direction": "positive",
-            "distance": 3,
-            "accession": "NC_001134.8"
-          }
-        ],
-        "end": 38747,
-        "specificity": 0.986577,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 1
-        },
         "cutting-efficiency": 0.622111,
         "start": 38796,
         "sequence": "AAATTCATGAATAGCAGACTNGG",
@@ -3415,6 +3159,198 @@
         ],
         "end": 38818,
         "specificity": 0.975287,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.320661,
+        "start": 37941,
+        "sequence": "TATTGTGCTCCTGAAATAAANGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 102463,
+            "chromosome": "II",
+            "direction": "positive",
+            "distance": 3,
+            "accession": "NC_001134.8"
+          }
+        ],
+        "end": 37963,
+        "specificity": 0.936849,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.597656,
+        "start": 38499,
+        "sequence": "ATAAATAATGCCAAGTACAANGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 608933,
+            "chromosome": "II",
+            "direction": "negative",
+            "distance": 3,
+            "accession": "NC_001134.8"
+          }
+        ],
+        "end": 38521,
+        "specificity": 0.92915,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.552895,
+        "start": 38103,
+        "sequence": "TCTTTTCAAATTCTTATAGANGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 707843,
+            "chromosome": "II",
+            "direction": "negative",
+            "distance": 3,
+            "accession": "NC_001134.8"
+          }
+        ],
+        "end": 38125,
+        "specificity": 0.929106,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.35088,
+        "start": 37964,
+        "sequence": "CGTGCAATTTGCCATCAATANGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 711885,
+            "chromosome": "XII",
+            "direction": "positive",
+            "distance": 3,
+            "accession": "NC_001144.5"
+          }
+        ],
+        "end": 37986,
+        "specificity": 0.921152,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.464014,
+        "start": 37766,
+        "sequence": "ACCTATTAATGTTTCAGAAANGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 194688,
+            "chromosome": "IV",
+            "direction": "positive",
+            "distance": 3,
+            "accession": "NC_001136.10"
+          }
+        ],
+        "end": 37788,
+        "specificity": 0.914149,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.117007,
+        "start": 37465,
+        "sequence": "TGAAATTTTCTGCGTATTTANGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 592010,
+            "chromosome": "X",
+            "direction": "negative",
+            "distance": 3,
+            "accession": "NC_001142.9"
+          }
+        ],
+        "end": 37487,
+        "specificity": 0.913884,
         "direction": "positive"
       },
       {
@@ -3455,6 +3391,70 @@
         ],
         "end": 37789,
         "specificity": 0.8808,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.668482,
+        "start": 38651,
+        "sequence": "GAGATCCACTCCAAAACTCGNGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 256945,
+            "chromosome": "XV",
+            "direction": "negative",
+            "distance": 3,
+            "accession": "NC_001147.6"
+          }
+        ],
+        "end": 38673,
+        "specificity": 0.867769,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.484461,
+        "start": 37802,
+        "sequence": "TGTCCAACTTAATTTCGTACNGG",
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 454368,
+            "chromosome": "II",
+            "direction": "positive",
+            "distance": 3,
+            "accession": "NC_001134.8"
+          }
+        ],
+        "end": 37824,
+        "specificity": 0.844156,
         "direction": "negative"
       },
       {
