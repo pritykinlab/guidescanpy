@@ -176,7 +176,8 @@
                         ],
                     });
 
-                    $('.datatable tbody').on('click', 'a[class="off_target"]', function () {
+                    $('.datatable tbody').on('click', 'a[class="off_target"]', function (event) {
+                        event.preventDefault();
                         var row = table.row($(this).parents('tr')).data();
                         $('#modal-title').html('Off-targets for ' + row[0]);
                         $('#table-off-targets').DataTable({
