@@ -1,5 +1,6 @@
 import logging
-from flask import Blueprint, jsonify, render_template, make_response, abort
+from flask import Blueprint, jsonify, render_template, make_response, abort, request
+import pandas as pd
 from guidescanpy.tasks import app as tasks_app
 
 
@@ -30,6 +31,32 @@ def result(format, job_id):
     assert format in ("json", "bed", "csv")
     res = tasks_app.AsyncResult(job_id)
     result = res.result
+
+    # Optional filtering/ordering/pagination
+    if "region" in request.args:
+        region = request.args["region"]
+        assert region in result["queries"], f"Region {region} not found in results"
+        value = result["queries"][region]  # value has keys 'region' and 'hits'
+
+        # Create a dataframe for easy ordering/filtering
+        hits = pd.DataFrame(value["hits"])
+        asc = request.args.get("asc") == "1"
+        if orderby := request.args.get("orderby"):
+            hits = hits.sort_values(by=orderby, ascending=asc)
+
+        if start := request.args.get("start"):
+            start = int(start)
+        else:
+            start = 0
+        if limit := request.args.get("limit"):
+            end = start + int(limit)
+        else:
+            end = None
+        hits = hits[start:end]
+
+        hits = hits.to_dict("records")
+        # Remove all but the region explicitly requested
+        result["queries"] = {region: {"region": value["region"], "hits": hits}}
 
     match format:
         case "json":
