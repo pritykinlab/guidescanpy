@@ -28,7 +28,7 @@ def status(job_id):
 
 @bp.route("/result/<format>/<job_id>")
 def result(format, job_id):
-    assert format in ("json", "bed", "csv")
+    assert format in ("json", "bed", "csv", "dt")  # "dt" stands for DataTable
     res = tasks_app.AsyncResult(job_id)
     result = res.result
 
@@ -40,19 +40,26 @@ def result(format, job_id):
 
         # Create a dataframe for easy ordering/filtering
         hits = pd.DataFrame(value["hits"])
-        hits_len = len(hits)
         asc = request.args.get("asc") == "1"
         if orderby := request.args.get("orderby"):
             hits = hits.sort_values(by=orderby, ascending=asc)
 
-        if start := request.args.get("start"):
-            start = int(start)
+        # Get pagination parameters when called by html DataTable.
+        if format == "dt":
+            hits_len = len(hits)
+            page = int(request.args.get("page", 1))
+            per_page = int(request.args.get("per_page", 10))
+            start = (page - 1) * per_page
+            end = start + per_page
         else:
-            start = 0
-        if limit := request.args.get("per_page"):
-            end = start + int(limit)
-        else:
-            end = None
+            if start := request.args.get("start"):
+                start = int(start)
+            else:
+                start = 0
+            if limit := request.args.get("limit"):
+                end = start + int(limit)
+            else:
+                end = None
         hits = hits[start:end]
 
         hits = hits.to_dict("records")
@@ -61,14 +68,6 @@ def result(format, job_id):
 
     match format:
         case "json":
-            if request.args.get("per_page"):
-                response = {
-                    "data": hits,
-                    "draw": int(request.args.get("draw", 1)),
-                    "recordsTotal": hits_len,
-                    "recordsFiltered": hits_len,
-                }
-                return jsonify(response)
             return jsonify(result)
 
         case "bed":
@@ -119,6 +118,15 @@ def result(format, job_id):
             response = make_response(response, 200)
             response.mimetype = "text/csv"
             return response
+
+        case "dt":
+            response = {
+                "data": hits,
+                "draw": int(request.args.get("draw", 1)),
+                "recordsTotal": hits_len,
+                "recordsFiltered": hits_len,
+            }
+            return jsonify(response)
 
         case _:
             abort(415)  # Unsupported Media Type
