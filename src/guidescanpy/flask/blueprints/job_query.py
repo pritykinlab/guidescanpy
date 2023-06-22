@@ -28,7 +28,7 @@ def status(job_id):
 
 @bp.route("/result/<format>/<job_id>")
 def result(format, job_id):
-    assert format in ("json", "bed", "csv", "dt")  # "dt" stands for DataTable
+    assert format in ("json", "bed", "csv")
     res = tasks_app.AsyncResult(job_id)
     result = res.result
 
@@ -44,22 +44,14 @@ def result(format, job_id):
         if orderby := request.args.get("orderby"):
             hits = hits.sort_values(by=orderby, ascending=asc)
 
-        # Get pagination parameters when called by html DataTable.
-        if format == "dt":
-            hits_len = len(hits)
-            page = int(request.args.get("page", 1))
-            per_page = int(request.args.get("per_page", 10))
-            start = (page - 1) * per_page
-            end = start + per_page
+        if start := request.args.get("start"):
+            start = int(start)
         else:
-            if start := request.args.get("start"):
-                start = int(start)
-            else:
-                start = 0
-            if limit := request.args.get("limit"):
-                end = start + int(limit)
-            else:
-                end = None
+            start = 0
+        if limit := request.args.get("limit"):
+            end = start + int(limit)
+        else:
+            end = None
         hits = hits[start:end]
 
         hits = hits.to_dict("records")
@@ -119,14 +111,41 @@ def result(format, job_id):
             response.mimetype = "text/csv"
             return response
 
-        case "dt":
-            response = {
-                "data": hits,
-                "draw": int(request.args.get("draw", 1)),
-                "recordsTotal": hits_len,
-                "recordsFiltered": hits_len,
-            }
-            return jsonify(response)
-
         case _:
             abort(415)  # Unsupported Media Type
+
+
+@bp.route("/result/dt/<job_id>")
+def result_dt(job_id):
+    res = tasks_app.AsyncResult(job_id)
+    result = res.result
+    region = request.args.get("region")
+    value = result["queries"][region]
+    hits = pd.DataFrame(value["hits"])
+    hits_len = len(hits)
+
+    # Get sorting parameters
+    sort_column_num = request.args.get(
+        "order[0][column]"
+    )  # Default is 0. Can be changed in jQuery code.
+    sort_dir = request.args.get("order[0][dir]")  # Default is 'asc'
+    if sort_column_num is not None and sort_dir is not None:
+        sort_column = request.args.get("columns[" + sort_column_num + "][data]")
+        hits.sort_values(by=sort_column, ascending=(sort_dir == "asc"), inplace=True)
+
+    # Get pagination parameters
+    page = int(request.args.get("page", 1))
+    per_page = int(request.args.get("per_page", 5))
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+
+    hits = hits[start_idx:end_idx]
+    hits = hits.to_dict("records")
+
+    response = {
+        "data": hits,
+        "draw": int(request.args.get("draw", 1)),
+        "recordsTotal": hits_len,
+        "recordsFiltered": hits_len,
+    }
+    return jsonify(response)
