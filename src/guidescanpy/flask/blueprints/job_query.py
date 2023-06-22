@@ -40,6 +40,7 @@ def result(format, job_id):
 
         # Create a dataframe for easy ordering/filtering
         hits = pd.DataFrame(value["hits"])
+        hits_len = len(hits)
         asc = request.args.get("asc") == "1"
         if orderby := request.args.get("orderby"):
             hits = hits.sort_values(by=orderby, ascending=asc)
@@ -48,7 +49,7 @@ def result(format, job_id):
             start = int(start)
         else:
             start = 0
-        if limit := request.args.get("limit"):
+        if limit := request.args.get("per_page"):
             end = start + int(limit)
         else:
             end = None
@@ -60,6 +61,14 @@ def result(format, job_id):
 
     match format:
         case "json":
+            if request.args.get("per_page"):
+                response = {
+                    "data": hits,
+                    "draw": int(request.args.get("draw", 1)),
+                    "recordsTotal": hits_len,
+                    "recordsFiltered": hits_len,
+                }
+                return jsonify(response)
             return jsonify(result)
 
         case "bed":
