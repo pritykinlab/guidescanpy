@@ -98,7 +98,8 @@
       }
     },
     "db": "host=localhost dbname=guidescan user=scott password=tiger",
-    "cachedir": "/tmp"
+    "cachedir": "/tmp",
+    "region_size_lmt": 1e7
   },
   "flask": {
     "DEBUG": 0,

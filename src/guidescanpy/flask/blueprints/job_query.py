@@ -11,13 +11,26 @@ logger = logging.getLogger(__name__)
 @bp.route("/<job_id>")
 def job(job_id):
     result = tasks_app.AsyncResult(job_id)
-    if result.status == "SUCCESS" and result.result["queries"]:
+    if result.status == "SUCCESS":
         # TODO: Is there a cleaner way to do this?
-        first_region = list(result.result["queries"].values())[0]["region"]
+        first_region = (
+            list(result.result["queries"].values())[0]["region"]
+            if ("queries" in result.result) and result.result["queries"]
+            else ""
+        )
+        overwhelming_err = (
+            result.result["overwhelming_err"]
+            if "overwhelming_err" in result.result
+            else ""
+        )
     else:
-        first_region = ""
-
-    return render_template("job_query.html", result=result, first_region=first_region)
+        first_region, overwhelming_err = "", ""
+    return render_template(
+        "job_query.html",
+        result=result,
+        first_region=first_region,
+        overwhelming_err=overwhelming_err,
+    )
 
 
 @bp.route("/status/<job_id>")
@@ -26,37 +39,43 @@ def status(job_id):
     return jsonify({"status": res.status})
 
 
-@bp.route("/result/<format>/<job_id>")
-def result(format, job_id):
-    assert format in ("json", "bed", "csv")
+def get_result(
+    job_id, region=None, start=0, end=None, orderby=None, asc=True, dt=False
+):
+    """
+    return a full result dictionary for non-DataTable use, a 'hits' dictionary for DataTable use.
+    """
     res = tasks_app.AsyncResult(job_id)
     result = res.result
-
-    # Optional filtering/ordering/pagination
-    if "region" in request.args:
-        region = request.args["region"]
-        assert region in result["queries"], f"Region {region} not found in results"
-        value = result["queries"][region]  # value has keys 'region' and 'hits'
-
-        # Create a dataframe for easy ordering/filtering
-        hits = pd.DataFrame(value["hits"])
-        asc = request.args.get("asc") == "1"
-        if orderby := request.args.get("orderby"):
-            hits = hits.sort_values(by=orderby, ascending=asc)
-
-        if start := request.args.get("start"):
-            start = int(start)
-        else:
-            start = 0
-        if limit := request.args.get("limit"):
-            end = start + int(limit)
-        else:
-            end = None
-        hits = hits[start:end]
-
-        hits = hits.to_dict("records")
-        # Remove all but the region explicitly requested
+    if region is None:
+        return result
+    assert region in result["queries"], f"Region {region} not found in results"
+    value = result["queries"][region]
+    hits = pd.DataFrame(value["hits"])
+    hits_len = len(hits)
+    if orderby:
+        hits.sort_values(by=orderby, ascending=asc, inplace=True)
+    hits = hits[start:end]
+    hits = hits.to_dict("records")
+    if dt:
+        return hits, hits_len
+    else:
         result["queries"] = {region: {"region": value["region"], "hits": hits}}
+        return result
+
+
+@bp.route("/result/<format>/<job_id>")
+def result(format, job_id):
+    region = request.args.get("region")
+    orderby = request.args.get("orderby")
+    asc = request.args.get("asc") == "asc"
+    start = int(request.args.get("start", 0))
+    end = (
+        int(request.args.get("limit")) + start
+        if request.args.get("limit") is not None
+        else None
+    )
+    result = get_result(job_id, region, start, end, orderby, asc, dt=False)
 
     match format:
         case "json":
@@ -117,30 +136,21 @@ def result(format, job_id):
 
 @bp.route("/result/dt/<job_id>")
 def result_dt(job_id):
-    res = tasks_app.AsyncResult(job_id)
-    result = res.result
     region = request.args.get("region")
-    value = result["queries"][region]
-    hits = pd.DataFrame(value["hits"])
-    hits_len = len(hits)
 
     # Get sorting parameters
-    sort_column_num = request.args.get(
-        "order[0][column]"
-    )  # Default is 0. Can be changed in jQuery code.
-    sort_dir = request.args.get("order[0][dir]")  # Default is 'asc'
-    if sort_column_num is not None and sort_dir is not None:
-        sort_column = request.args.get("columns[" + sort_column_num + "][data]")
-        hits.sort_values(by=sort_column, ascending=(sort_dir == "asc"), inplace=True)
+    orderby = request.args.get("order[0][column]")  # Default is 5.
+    if orderby is not None:
+        orderby = request.args.get("columns[" + orderby + "][data]")
+    asc = request.args.get("order[0][dir]") == "asc"  # Default is 'desc'
 
     # Get pagination parameters
     page = int(request.args.get("page", 1))
-    per_page = int(request.args.get("per_page", 5))
-    start_idx = (page - 1) * per_page
-    end_idx = start_idx + per_page
+    per_page = int(request.args.get("per_page", 10))
+    start = (page - 1) * per_page
+    end = start + per_page
 
-    hits = hits[start_idx:end_idx]
-    hits = hits.to_dict("records")
+    hits, hits_len = get_result(job_id, region, start, end, orderby, asc, dt=True)
 
     response = {
         "data": hits,
