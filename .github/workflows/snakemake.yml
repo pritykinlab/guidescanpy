@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  run_tests:
+  run_snakemake:
 
     runs-on: ubuntu-latest
     strategy:
@@ -35,5 +35,5 @@ jobs:
       - name: Snakemake
         uses: snakemake/snakemake-github-action@v1
         with:
-          directory: 'snakemake'
+          snakefile: 'snakemake/Snakefile'
           args: '--cores 1'
