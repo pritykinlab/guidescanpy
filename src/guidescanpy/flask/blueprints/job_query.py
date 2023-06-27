@@ -71,6 +71,7 @@ def result(format, job_id):
                                 hit["off-target-summary"],
                                 hit["cutting-efficiency"],
                                 hit["specificity"],
+                                hit["gc-content"],
                                 i,
                                 hit["coordinate"],
                                 hit["direction"],
