@@ -19,6 +19,7 @@
         "cutting-efficiency": 0.462437,
         "start": 202231,
         "sequence": "AATATAATACAAAGTTAAAGNGG",
+        "gc-content": 0.15,
         "annotations": [],
         "off-targets": [
           {
@@ -29,6 +30,7 @@
             "accession": "NC_001136.10"
           }
         ],
+        "n-off-targets": 1,
         "end": 202253,
         "specificity": 0.900124,
         "direction": "positive"

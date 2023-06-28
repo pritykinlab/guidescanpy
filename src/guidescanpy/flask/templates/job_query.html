@@ -90,6 +90,7 @@
                                             <th>off-target-summary</th>
                                             <th>cutting-efficiency</th>
                                             <th>specificity</th>
+                                            <th>gc-content</th>
                                             <th>annotations</th>
                                             <th>off-targets-hidden</th>
                                         </tr>
@@ -108,6 +109,7 @@
                                                 {% endif %}
                                                 <td>{{ '%0.2f' | format(value['cutting-efficiency'] | float) }}</td>
                                                 <td>{{ '%0.2f' | format(value['specificity'] | float) }}</td>
+                                                <td>{{ '%0.2f' | format(value['gc-content'] | float) }}</td>
                                                 <td>{{ value['annotations'] }}</td>
                                                 <td>{{ value['off-targets'] | tojson }}</td>
                                             </tr>
@@ -170,7 +172,7 @@
                                 }
                             },
                             {
-                                target: 7,
+                                target: 8,
                                 visible: false
                             }
                         ],

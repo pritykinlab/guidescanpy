@@ -25,6 +25,10 @@
                 var checked = $(this).prop('checked');
                 $('#txtFilterAboveSpecificity').prop('disabled', !checked);
             });
+            $('#checkFilterAboveGCContent').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtFilterAboveGCContent').prop('disabled', !checked);
+            });
             $('#selectOrganism').on('change', function () {
                 refreshMenu();
                 refreshExamples();
@@ -144,7 +148,21 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkFilterAboveGCContent"
+                                               name="checkFilterAboveGCContent">
+                                        <label class="form-check-label" for="checkFilterAboveGCContent">
+                                            Filter above GC-Content <i class="fa-regular fa-circle-question"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Returns only gRNAs with GC-Content above this value."></i>
+                                        </label>
+                                    </div>
+                                    <input type="number" class="form-control" id="txtFilterAboveGCContent" disabled
+                                           value="0"
+                                           min="0" max="1" step="0.1" name="txtFilterAboveGCContent">
+                                </div>
+                                <div class="form-group col-md-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="checkExonic"
                                                name="checkExonic">

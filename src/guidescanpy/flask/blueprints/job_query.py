@@ -55,7 +55,7 @@ def result(format, job_id):
         case "csv":
             lines = [
                 "Region-name,gRNA-ID,gRNA-SeqNumber of off-targets,"
-                "Off-target summary,Cutting efficiency,Specificity,Rank,Coordinates,Strand,Annotations"
+                "Off-target summary,Cutting efficiency,Specificity,GC,Rank,Coordinates,Strand,Annotations"
             ]
 
             for _, v in result["queries"].items():
@@ -71,6 +71,7 @@ def result(format, job_id):
                                 hit["off-target-summary"],
                                 hit["cutting-efficiency"],
                                 hit["specificity"],
+                                hit["gc-content"],
                                 i,
                                 hit["coordinate"],
                                 hit["direction"],
