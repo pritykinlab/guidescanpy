@@ -302,15 +302,10 @@ class GenomeStructure:
                 }
 
                 if enzyme == "cas9":
-                    result["gc-content"] = (
-                        result["sequence"][:-2].count("G")
-                        + result["sequence"][:-2].count("C")
-                    ) / (len(result["sequence"]) - 3)
+                    sequence = result["sequence"][:-2]
                 else:
-                    result["gc-content"] = (
-                        result["sequence"][4:].count("G")
-                        + result["sequence"][4:].count("C")
-                    ) / (len(result["sequence"]) - 4)
+                    sequence = result["sequence"][4:]
+                result["gc-content"] = (sequence.count("G") + sequence.count("C")) / 20
 
                 if result["start"] >= start_pos and result["end"] <= end_pos:
                     results.append(result)

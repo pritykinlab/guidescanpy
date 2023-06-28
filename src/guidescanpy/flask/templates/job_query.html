@@ -109,7 +109,7 @@
                                                 {% endif %}
                                                 <td>{{ '%0.2f' | format(value['cutting-efficiency'] | float) }}</td>
                                                 <td>{{ '%0.2f' | format(value['specificity'] | float) }}</td>
-                                                <td>{{ '%0.1f' | format(value['gc-content'] | float) }}</td>
+                                                <td>{{ '%0.2f' | format(value['gc-content'] | float) }}</td>
                                                 <td>{{ value['annotations'] }}</td>
                                                 <td>{{ value['off-targets'] | tojson }}</td>
                                             </tr>
