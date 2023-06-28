@@ -68,7 +68,6 @@ def grna_design():
 
         if form.get("checkFilterAboveGCContent", "off") == "on":
             form_data["gc-bounds-l"] = float(form["txtFilterAboveGCContent"])
-            form_data["gc-bounds-u"] = 1.0
 
         results = query_endpoint(form_data)
         return results

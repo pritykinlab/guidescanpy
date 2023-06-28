@@ -279,14 +279,23 @@ class GenomeStructure:
                 elif read.has_tag("cs"):  # old guidescan BAM format
                     specificity = read.get_tag("cs")
 
+                sequence = read.get_forward_sequence()
+                if enzyme == "cas9":
+                    sequence_no_pam = sequence[:-3]
+                else:
+                    sequence_no_pam = sequence[4:]
+                gc_content = (
+                    sequence_no_pam.count("G") + sequence_no_pam.count("C")
+                ) / 20
+
                 result = {
                     "id": read.query_name,
                     "query-sequence": read.query_sequence,
-                    "gc-content": None,
+                    "gc-content": gc_content,
                     "reference-name": read.reference_name,
                     "offtargets-by-distance": off_targets_by_distance,
                     "coordinate": self.to_coordinate_string(read, offset=read_offset),
-                    "sequence": read.get_forward_sequence(),
+                    "sequence": sequence,
                     "start": read.reference_start
                     + 1
                     + read_offset,  # 0-indexed inclusive -> 1-indexed inclusive
@@ -300,12 +309,6 @@ class GenomeStructure:
                     "n-off-targets": len(off_targets),
                     "annotations": ";".join(annotations),
                 }
-
-                if enzyme == "cas9":
-                    sequence = result["sequence"][:-2]
-                else:
-                    sequence = result["sequence"][4:]
-                result["gc-content"] = (sequence.count("G") + sequence.count("C")) / 20
 
                 if result["start"] >= start_pos and result["end"] <= end_pos:
                     results.append(result)
