@@ -17,6 +17,7 @@
         "cutting-efficiency": 0.557138,
         "start": 9570,
         "sequence": "TTAGAAAATTCGTGGAGGGTNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 852166,
@@ -29,6 +30,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 9592,
         "specificity": 1.0,
         "direction": "positive"
@@ -39,6 +41,7 @@
         "cutting-efficiency": 0.608763,
         "start": 9972,
         "sequence": "GGAGTTTACGCAATTCTGCANGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 852167,
@@ -51,6 +54,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 9994,
         "specificity": 1.0,
         "direction": "negative"
@@ -63,6 +67,7 @@
         "cutting-efficiency": 0.615523,
         "start": 9578,
         "sequence": "TTCGTGGAGGGTTGGCCGAGNGG",
+        "gc-content": 0.65,
         "annotations": [
           {
             "exons/entrez_id": 852166,
@@ -97,6 +102,7 @@
             "accession": "NC_001136.10"
           }
         ],
+        "n-off-targets": 3,
         "end": 9600,
         "specificity": 0.425028,
         "direction": "positive"

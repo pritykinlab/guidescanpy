@@ -17,6 +17,7 @@
         "cutting-efficiency": 0.632561,
         "start": 37468,
         "sequence": "AATTTTCTGCGTATTTATGGNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -29,6 +30,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37490,
         "specificity": 1.0,
         "direction": "positive"
@@ -39,6 +41,7 @@
         "cutting-efficiency": 0.590487,
         "start": 37490,
         "sequence": "GCTGTTTTTGAATCTAGCGTNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -51,6 +54,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37512,
         "specificity": 1.0,
         "direction": "positive"
@@ -61,6 +65,7 @@
         "cutting-efficiency": 0.540485,
         "start": 37497,
         "sequence": "TTGAATCTAGCGTTGGTGAANGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -73,6 +78,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37519,
         "specificity": 1.0,
         "direction": "positive"
@@ -83,6 +89,7 @@
         "cutting-efficiency": 0.615468,
         "start": 37534,
         "sequence": "ATCTTCCGCTAATGTAACGTNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -95,6 +102,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37556,
         "specificity": 1.0,
         "direction": "negative"
@@ -105,6 +113,7 @@
         "cutting-efficiency": 0.463101,
         "start": 37544,
         "sequence": "ATTAGCGGAAGATTCTTTCTNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -117,6 +126,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37566,
         "specificity": 1.0,
         "direction": "positive"
@@ -127,6 +137,7 @@
         "cutting-efficiency": 0.554322,
         "start": 37591,
         "sequence": "CAAAGCATTTAAACCAAGAGNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -139,6 +150,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37613,
         "specificity": 1.0,
         "direction": "positive"
@@ -149,6 +161,7 @@
         "cutting-efficiency": 0.388663,
         "start": 37604,
         "sequence": "CTTCACTTGTGATCCACTCTNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -161,6 +174,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37626,
         "specificity": 1.0,
         "direction": "negative"
@@ -171,6 +185,7 @@
         "cutting-efficiency": 0.532701,
         "start": 37620,
         "sequence": "AGTGAAGCCGTCAACAATGANGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -183,6 +198,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37642,
         "specificity": 1.0,
         "direction": "positive"
@@ -193,6 +209,7 @@
         "cutting-efficiency": 0.419196,
         "start": 37627,
         "sequence": "TTTAGAGCCTTCATTGTTGANGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -205,6 +222,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37649,
         "specificity": 1.0,
         "direction": "negative"
@@ -215,6 +233,7 @@
         "cutting-efficiency": 0.319508,
         "start": 37635,
         "sequence": "AATGAAGGCTCTAAAATATANGG",
+        "gc-content": 0.25,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -227,6 +246,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37657,
         "specificity": 1.0,
         "direction": "positive"
@@ -237,6 +257,7 @@
         "cutting-efficiency": 0.617599,
         "start": 37645,
         "sequence": "CTAAAATATATGGTGCACAANGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -249,6 +270,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37667,
         "specificity": 1.0,
         "direction": "positive"
@@ -259,6 +281,7 @@
         "cutting-efficiency": 0.452513,
         "start": 37658,
         "sequence": "TGCACAATGGCGACTATCACNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -271,6 +294,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37680,
         "specificity": 1.0,
         "direction": "positive"
@@ -281,6 +305,7 @@
         "cutting-efficiency": 0.665294,
         "start": 37659,
         "sequence": "GCACAATGGCGACTATCACANGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -293,6 +318,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37681,
         "specificity": 1.0,
         "direction": "positive"
@@ -303,6 +329,7 @@
         "cutting-efficiency": 0.568388,
         "start": 37671,
         "sequence": "CTATCACAGGGTCGATTGCANGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -315,6 +342,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37693,
         "specificity": 1.0,
         "direction": "positive"
@@ -325,6 +353,7 @@
         "cutting-efficiency": 0.591782,
         "start": 37681,
         "sequence": "GTCGATTGCAAGGATCCGCANGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -337,6 +366,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37703,
         "specificity": 1.0,
         "direction": "positive"
@@ -347,6 +377,7 @@
         "cutting-efficiency": 0.649072,
         "start": 37682,
         "sequence": "TCGATTGCAAGGATCCGCATNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -359,6 +390,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37704,
         "specificity": 1.0,
         "direction": "positive"
@@ -369,6 +401,7 @@
         "cutting-efficiency": 0.369604,
         "start": 37689,
         "sequence": "CAAGGATCCGCATGGGATAANGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -381,6 +414,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37711,
         "specificity": 1.0,
         "direction": "positive"
@@ -391,6 +425,7 @@
         "cutting-efficiency": 0.612132,
         "start": 37696,
         "sequence": "TGCGATTCCTTTATCCCATGNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -403,6 +438,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37718,
         "specificity": 1.0,
         "direction": "negative"
@@ -413,6 +449,7 @@
         "cutting-efficiency": 0.467123,
         "start": 37707,
         "sequence": "AAAGGAATCGCAGTTCGAACNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -425,6 +462,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37729,
         "specificity": 1.0,
         "direction": "positive"
@@ -435,6 +473,7 @@
         "cutting-efficiency": 0.467673,
         "start": 37728,
         "sequence": "GGCAATGCCGCAGCTATGATNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -447,6 +486,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37750,
         "specificity": 1.0,
         "direction": "positive"
@@ -457,6 +497,7 @@
         "cutting-efficiency": 0.6943,
         "start": 37735,
         "sequence": "GAGATGTCCTATCATAGCTGNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -469,6 +510,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37757,
         "specificity": 1.0,
         "direction": "negative"
@@ -479,6 +521,7 @@
         "cutting-efficiency": 0.536711,
         "start": 37739,
         "sequence": "AGCTATGATAGGACATCTCTNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -491,6 +534,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37761,
         "specificity": 1.0,
         "direction": "positive"
@@ -501,6 +545,7 @@
         "cutting-efficiency": 0.504622,
         "start": 37775,
         "sequence": "TGTTTCAGAAACGGATACCTNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -513,6 +558,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37797,
         "specificity": 1.0,
         "direction": "positive"
@@ -523,6 +569,7 @@
         "cutting-efficiency": 0.69947,
         "start": 37792,
         "sequence": "AATTTCGTACTGGACAACCANGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -535,6 +582,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37814,
         "specificity": 1.0,
         "direction": "negative"
@@ -545,6 +593,7 @@
         "cutting-efficiency": 0.543152,
         "start": 37799,
         "sequence": "TGTCCAGTACGAAATTAAGTNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -557,6 +606,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37821,
         "specificity": 1.0,
         "direction": "positive"
@@ -567,6 +617,7 @@
         "cutting-efficiency": 0.657445,
         "start": 37818,
         "sequence": "TTGGACAATTCTTTGACGTGNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -579,6 +630,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37840,
         "specificity": 1.0,
         "direction": "positive"
@@ -589,6 +641,7 @@
         "cutting-efficiency": 0.57855,
         "start": 37821,
         "sequence": "GACAATTCTTTGACGTGCGGNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -601,6 +654,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37843,
         "specificity": 1.0,
         "direction": "positive"
@@ -611,6 +665,7 @@
         "cutting-efficiency": 0.660504,
         "start": 37892,
         "sequence": "ACACTATGCACCCGATACAGNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -623,6 +678,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37914,
         "specificity": 1.0,
         "direction": "positive"
@@ -633,6 +689,7 @@
         "cutting-efficiency": 0.628378,
         "start": 37893,
         "sequence": "CACTATGCACCCGATACAGANGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -645,6 +702,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37915,
         "specificity": 1.0,
         "direction": "positive"
@@ -655,6 +713,7 @@
         "cutting-efficiency": 0.462095,
         "start": 37902,
         "sequence": "AACTCGACACCCTCTGTATCNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -667,6 +726,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37924,
         "specificity": 1.0,
         "direction": "negative"
@@ -677,6 +737,7 @@
         "cutting-efficiency": 0.50604,
         "start": 37903,
         "sequence": "TAACTCGACACCCTCTGTATNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -689,6 +750,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37925,
         "specificity": 1.0,
         "direction": "negative"
@@ -699,6 +761,7 @@
         "cutting-efficiency": 0.486714,
         "start": 37916,
         "sequence": "TGTCGAGTTAGTTTTTGGTCNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -711,6 +774,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37938,
         "specificity": 1.0,
         "direction": "positive"
@@ -721,6 +785,7 @@
         "cutting-efficiency": 0.408754,
         "start": 37975,
         "sequence": "GATCTTGTCAACCTTATTGANGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -733,6 +798,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 37997,
         "specificity": 1.0,
         "direction": "negative"
@@ -743,6 +809,7 @@
         "cutting-efficiency": 0.657255,
         "start": 38034,
         "sequence": "GTATCAGTTAATTTTGACAGNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -755,6 +822,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38056,
         "specificity": 1.0,
         "direction": "negative"
@@ -765,6 +833,7 @@
         "cutting-efficiency": 0.647345,
         "start": 38035,
         "sequence": "GGTATCAGTTAATTTTGACANGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -777,6 +846,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38057,
         "specificity": 1.0,
         "direction": "negative"
@@ -787,6 +857,7 @@
         "cutting-efficiency": 0.445941,
         "start": 38036,
         "sequence": "AGGTATCAGTTAATTTTGACNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -799,6 +870,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38058,
         "specificity": 1.0,
         "direction": "negative"
@@ -809,6 +881,7 @@
         "cutting-efficiency": 0.656206,
         "start": 38056,
         "sequence": "CGTATACAGATGAGATTGCGNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -821,6 +894,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38078,
         "specificity": 1.0,
         "direction": "negative"
@@ -831,6 +905,7 @@
         "cutting-efficiency": 0.611294,
         "start": 38111,
         "sequence": "AATTCTTATAGACGGTAAGANGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -843,6 +918,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38133,
         "specificity": 1.0,
         "direction": "positive"
@@ -853,6 +929,7 @@
         "cutting-efficiency": 0.413849,
         "start": 38117,
         "sequence": "TATAGACGGTAAGACGGTTANGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -865,6 +942,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38139,
         "specificity": 1.0,
         "direction": "positive"
@@ -875,6 +953,7 @@
         "cutting-efficiency": 0.432978,
         "start": 38147,
         "sequence": "ACATATCGAAGACAAGAAAANGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -887,6 +966,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38169,
         "specificity": 1.0,
         "direction": "positive"
@@ -897,6 +977,7 @@
         "cutting-efficiency": 0.644292,
         "start": 38181,
         "sequence": "ATTAAAGGCGGTGTAATGGGNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -909,6 +990,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38203,
         "specificity": 1.0,
         "direction": "negative"
@@ -919,6 +1001,7 @@
         "cutting-efficiency": 0.379665,
         "start": 38184,
         "sequence": "ATCATTAAAGGCGGTGTAATNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -931,6 +1014,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38206,
         "specificity": 1.0,
         "direction": "negative"
@@ -941,6 +1025,7 @@
         "cutting-efficiency": 0.456676,
         "start": 38185,
         "sequence": "AATCATTAAAGGCGGTGTAANGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -953,6 +1038,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38207,
         "specificity": 1.0,
         "direction": "negative"
@@ -963,6 +1049,7 @@
         "cutting-efficiency": 0.696848,
         "start": 38193,
         "sequence": "ACATCAGGAATCATTAAAGGNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -975,6 +1062,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38215,
         "specificity": 1.0,
         "direction": "negative"
@@ -985,6 +1073,7 @@
         "cutting-efficiency": 0.335693,
         "start": 38196,
         "sequence": "GAAACATCAGGAATCATTAANGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -997,6 +1086,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38218,
         "specificity": 1.0,
         "direction": "negative"
@@ -1007,6 +1097,7 @@
         "cutting-efficiency": 0.562447,
         "start": 38208,
         "sequence": "GGTTTCGCTACTGAAACATCNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1019,6 +1110,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38230,
         "specificity": 1.0,
         "direction": "negative"
@@ -1029,6 +1121,7 @@
         "cutting-efficiency": 0.366235,
         "start": 38218,
         "sequence": "CAGTAGCGAAACCGCATGATNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1041,6 +1134,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38240,
         "specificity": 1.0,
         "direction": "positive"
@@ -1051,6 +1145,7 @@
         "cutting-efficiency": 0.46847,
         "start": 38219,
         "sequence": "AGTAGCGAAACCGCATGATTNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1063,6 +1158,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38241,
         "specificity": 1.0,
         "direction": "positive"
@@ -1073,6 +1169,7 @@
         "cutting-efficiency": 0.703649,
         "start": 38229,
         "sequence": "ATGCGATCATCCCAATCATGNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1085,6 +1182,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38251,
         "specificity": 1.0,
         "direction": "negative"
@@ -1095,6 +1193,7 @@
         "cutting-efficiency": 0.651992,
         "start": 38249,
         "sequence": "CATCCGAATCCCAGATCCTGNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1107,6 +1206,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38271,
         "specificity": 1.0,
         "direction": "positive"
@@ -1117,6 +1217,7 @@
         "cutting-efficiency": 0.703037,
         "start": 38252,
         "sequence": "CCGAATCCCAGATCCTGAGGNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1129,6 +1230,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38274,
         "specificity": 1.0,
         "direction": "positive"
@@ -1139,6 +1241,7 @@
         "cutting-efficiency": 0.40604,
         "start": 38252,
         "sequence": "CCGCCTCAGGATCTGGGATTNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1151,6 +1254,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38274,
         "specificity": 1.0,
         "direction": "negative"
@@ -1161,6 +1265,7 @@
         "cutting-efficiency": 0.492634,
         "start": 38258,
         "sequence": "GCTTCACCGCCTCAGGATCTNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1173,6 +1278,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38280,
         "specificity": 1.0,
         "direction": "negative"
@@ -1183,6 +1289,7 @@
         "cutting-efficiency": 0.452939,
         "start": 38265,
         "sequence": "TCACTGAGCTTCACCGCCTCNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1195,6 +1302,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38287,
         "specificity": 1.0,
         "direction": "negative"
@@ -1205,6 +1313,7 @@
         "cutting-efficiency": 0.515491,
         "start": 38269,
         "sequence": "AGGCGGTGAAGCTCAGTGATNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1217,6 +1326,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38291,
         "specificity": 1.0,
         "direction": "positive"
@@ -1227,6 +1337,7 @@
         "cutting-efficiency": 0.434371,
         "start": 38270,
         "sequence": "GGCGGTGAAGCTCAGTGATCNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1239,6 +1350,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38292,
         "specificity": 1.0,
         "direction": "positive"
@@ -1249,6 +1361,7 @@
         "cutting-efficiency": 0.533714,
         "start": 38303,
         "sequence": "CTGGATGTGGAATCATCAATNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1261,6 +1374,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38325,
         "specificity": 1.0,
         "direction": "negative"
@@ -1271,6 +1385,7 @@
         "cutting-efficiency": 0.497475,
         "start": 38304,
         "sequence": "TCTGGATGTGGAATCATCAANGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1283,6 +1398,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38326,
         "specificity": 1.0,
         "direction": "negative"
@@ -1293,6 +1409,7 @@
         "cutting-efficiency": 0.652285,
         "start": 38307,
         "sequence": "TTGATGATTCCACATCCAGANGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1305,6 +1422,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38329,
         "specificity": 1.0,
         "direction": "positive"
@@ -1315,6 +1433,7 @@
         "cutting-efficiency": 0.52878,
         "start": 38316,
         "sequence": "GGTTCAGTGCCATCTGGATGNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1327,6 +1446,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38338,
         "specificity": 1.0,
         "direction": "negative"
@@ -1337,6 +1457,7 @@
         "cutting-efficiency": 0.42106,
         "start": 38322,
         "sequence": "TCTGGTGGTTCAGTGCCATCNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1349,6 +1470,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38344,
         "specificity": 1.0,
         "direction": "negative"
@@ -1359,6 +1481,7 @@
         "cutting-efficiency": 0.570155,
         "start": 38326,
         "sequence": "ATGGCACTGAACCACCAGAANGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1371,6 +1494,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38348,
         "specificity": 1.0,
         "direction": "positive"
@@ -1381,6 +1505,7 @@
         "cutting-efficiency": 0.543669,
         "start": 38337,
         "sequence": "ATGGAGCTGTTCCATTCTGGNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1393,6 +1518,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38359,
         "specificity": 1.0,
         "direction": "negative"
@@ -1403,6 +1529,7 @@
         "cutting-efficiency": 0.586207,
         "start": 38356,
         "sequence": "GTCAAGAATGTATTCGGGGANGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1415,6 +1542,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38378,
         "specificity": 1.0,
         "direction": "negative"
@@ -1425,6 +1553,7 @@
         "cutting-efficiency": 0.684507,
         "start": 38360,
         "sequence": "TTGGGTCAAGAATGTATTCGNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1437,6 +1566,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38382,
         "specificity": 1.0,
         "direction": "negative"
@@ -1447,6 +1577,7 @@
         "cutting-efficiency": 0.435854,
         "start": 38361,
         "sequence": "TTTGGGTCAAGAATGTATTCNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1459,6 +1590,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38383,
         "specificity": 1.0,
         "direction": "negative"
@@ -1469,6 +1601,7 @@
         "cutting-efficiency": 0.319379,
         "start": 38362,
         "sequence": "ATTTGGGTCAAGAATGTATTNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1481,6 +1614,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38384,
         "specificity": 1.0,
         "direction": "negative"
@@ -1491,6 +1625,7 @@
         "cutting-efficiency": 0.3934,
         "start": 38378,
         "sequence": "ACGAGGGCTTTTGAGCATTTNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1503,6 +1638,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38400,
         "specificity": 1.0,
         "direction": "negative"
@@ -1513,6 +1649,7 @@
         "cutting-efficiency": 0.657524,
         "start": 38380,
         "sequence": "CAAATGCTCAAAAGCCCTCGNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1525,6 +1662,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38402,
         "specificity": 1.0,
         "direction": "positive"
@@ -1535,6 +1673,7 @@
         "cutting-efficiency": 0.675068,
         "start": 38383,
         "sequence": "ATGCTCAAAAGCCCTCGTGGNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1547,6 +1686,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38405,
         "specificity": 1.0,
         "direction": "positive"
@@ -1557,6 +1697,7 @@
         "cutting-efficiency": 0.559715,
         "start": 38387,
         "sequence": "TCAAAAGCCCTCGTGGTGGANGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1569,6 +1710,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38409,
         "specificity": 1.0,
         "direction": "positive"
@@ -1579,6 +1721,7 @@
         "cutting-efficiency": 0.634225,
         "start": 38394,
         "sequence": "TCAAGTTCCTTCCACCACGANGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1591,6 +1734,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38416,
         "specificity": 1.0,
         "direction": "negative"
@@ -1601,6 +1745,7 @@
         "cutting-efficiency": 0.576053,
         "start": 38395,
         "sequence": "CTCAAGTTCCTTCCACCACGNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1613,6 +1758,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38417,
         "specificity": 1.0,
         "direction": "negative"
@@ -1623,6 +1769,7 @@
         "cutting-efficiency": 0.607054,
         "start": 38400,
         "sequence": "TGGTGGAAGGAACTTGAGCANGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1635,6 +1782,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38422,
         "specificity": 1.0,
         "direction": "positive"
@@ -1645,6 +1793,7 @@
         "cutting-efficiency": 0.5612,
         "start": 38401,
         "sequence": "GGTGGAAGGAACTTGAGCACNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1657,6 +1806,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38423,
         "specificity": 1.0,
         "direction": "positive"
@@ -1667,6 +1817,7 @@
         "cutting-efficiency": 0.698937,
         "start": 38402,
         "sequence": "GTGGAAGGAACTTGAGCACGNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1679,6 +1830,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38424,
         "specificity": 1.0,
         "direction": "positive"
@@ -1689,6 +1841,7 @@
         "cutting-efficiency": 0.486801,
         "start": 38407,
         "sequence": "AGGAACTTGAGCACGGGGAANGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1701,6 +1854,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38429,
         "specificity": 1.0,
         "direction": "positive"
@@ -1711,6 +1865,7 @@
         "cutting-efficiency": 0.647263,
         "start": 38433,
         "sequence": "AGAGGATTTTTAATCATGGGNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1723,6 +1878,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38455,
         "specificity": 1.0,
         "direction": "negative"
@@ -1733,6 +1889,7 @@
         "cutting-efficiency": 0.4632,
         "start": 38436,
         "sequence": "CAAAGAGGATTTTTAATCATNGG",
+        "gc-content": 0.25,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1745,6 +1902,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38458,
         "specificity": 1.0,
         "direction": "negative"
@@ -1755,6 +1913,7 @@
         "cutting-efficiency": 0.463981,
         "start": 38437,
         "sequence": "GCAAAGAGGATTTTTAATCANGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1767,6 +1926,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38459,
         "specificity": 1.0,
         "direction": "negative"
@@ -1777,6 +1937,7 @@
         "cutting-efficiency": 0.594324,
         "start": 38451,
         "sequence": "CCTCTTTGCACTGCAGAACGNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1789,6 +1950,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38473,
         "specificity": 1.0,
         "direction": "positive"
@@ -1799,6 +1961,7 @@
         "cutting-efficiency": 0.598653,
         "start": 38451,
         "sequence": "CCACGTTCTGCAGTGCAAAGNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1811,6 +1974,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38473,
         "specificity": 1.0,
         "direction": "negative"
@@ -1821,6 +1985,7 @@
         "cutting-efficiency": 0.492031,
         "start": 38457,
         "sequence": "TGCACTGCAGAACGTGGTTGNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1833,6 +1998,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38479,
         "specificity": 1.0,
         "direction": "positive"
@@ -1843,6 +2009,7 @@
         "cutting-efficiency": 0.436082,
         "start": 38472,
         "sequence": "GGTTGTGGCCAGCAGATACCNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1855,6 +2022,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38494,
         "specificity": 1.0,
         "direction": "positive"
@@ -1865,6 +2033,7 @@
         "cutting-efficiency": 0.639904,
         "start": 38473,
         "sequence": "GTTGTGGCCAGCAGATACCANGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1877,6 +2046,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38495,
         "specificity": 1.0,
         "direction": "positive"
@@ -1887,6 +2057,7 @@
         "cutting-efficiency": 0.480563,
         "start": 38480,
         "sequence": "TTATCAGCCCTGGTATCTGCNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1899,6 +2070,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38502,
         "specificity": 1.0,
         "direction": "negative"
@@ -1909,6 +2081,7 @@
         "cutting-efficiency": 0.52129,
         "start": 38490,
         "sequence": "TTGGCATTATTTATCAGCCCNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1921,6 +2094,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38512,
         "specificity": 1.0,
         "direction": "negative"
@@ -1931,6 +2105,7 @@
         "cutting-efficiency": 0.551968,
         "start": 38505,
         "sequence": "AATGCCAAGTACAAAGGTCCNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1943,6 +2118,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38527,
         "specificity": 1.0,
         "direction": "positive"
@@ -1953,6 +2129,7 @@
         "cutting-efficiency": 0.40056,
         "start": 38509,
         "sequence": "TTCGCCTGGACCTTTGTACTNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1965,6 +2142,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38531,
         "specificity": 1.0,
         "direction": "negative"
@@ -1975,6 +2153,7 @@
         "cutting-efficiency": 0.471689,
         "start": 38523,
         "sequence": "ATGATTTCATTGAGTTCGCCNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1987,6 +2166,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38545,
         "specificity": 1.0,
         "direction": "negative"
@@ -1997,6 +2177,7 @@
         "cutting-efficiency": 0.490793,
         "start": 38540,
         "sequence": "AATCATAAATCCCAATTACANGG",
+        "gc-content": 0.25,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2009,6 +2190,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38562,
         "specificity": 1.0,
         "direction": "positive"
@@ -2019,6 +2201,7 @@
         "cutting-efficiency": 0.539384,
         "start": 38541,
         "sequence": "ATCATAAATCCCAATTACATNGG",
+        "gc-content": 0.25,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2031,6 +2214,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38563,
         "specificity": 1.0,
         "direction": "positive"
@@ -2041,6 +2225,7 @@
         "cutting-efficiency": 0.71158,
         "start": 38543,
         "sequence": "CATAAATCCCAATTACATGGNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2053,6 +2238,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38565,
         "specificity": 1.0,
         "direction": "positive"
@@ -2063,6 +2249,7 @@
         "cutting-efficiency": 0.513314,
         "start": 38548,
         "sequence": "ATCCCAATTACATGGGGGAANGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2075,6 +2262,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38570,
         "specificity": 1.0,
         "direction": "positive"
@@ -2085,6 +2273,7 @@
         "cutting-efficiency": 0.400742,
         "start": 38550,
         "sequence": "TGCCATTCCCCCATGTAATTNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2097,6 +2286,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38572,
         "specificity": 1.0,
         "direction": "negative"
@@ -2107,6 +2297,7 @@
         "cutting-efficiency": 0.615502,
         "start": 38558,
         "sequence": "CATGGGGGAATGGCATCCACNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2119,6 +2310,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38580,
         "specificity": 1.0,
         "direction": "positive"
@@ -2129,6 +2321,7 @@
         "cutting-efficiency": 0.589343,
         "start": 38574,
         "sequence": "AGCGGGTTTTCAATTTCCGGNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2141,6 +2334,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38596,
         "specificity": 1.0,
         "direction": "negative"
@@ -2151,6 +2345,7 @@
         "cutting-efficiency": 0.531792,
         "start": 38591,
         "sequence": "GCTGCTCTTCGTAGTATAGCNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2163,6 +2358,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38613,
         "specificity": 1.0,
         "direction": "negative"
@@ -2173,6 +2369,7 @@
         "cutting-efficiency": 0.618644,
         "start": 38592,
         "sequence": "TGCTGCTCTTCGTAGTATAGNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2185,6 +2382,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38614,
         "specificity": 1.0,
         "direction": "negative"
@@ -2195,6 +2393,7 @@
         "cutting-efficiency": 0.453945,
         "start": 38615,
         "sequence": "TAACGTTTTCGATGCGCAATNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2207,6 +2406,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38637,
         "specificity": 1.0,
         "direction": "negative"
@@ -2217,6 +2417,7 @@
         "cutting-efficiency": 0.520451,
         "start": 38616,
         "sequence": "ATAACGTTTTCGATGCGCAANGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2229,6 +2430,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38638,
         "specificity": 1.0,
         "direction": "negative"
@@ -2239,6 +2441,7 @@
         "cutting-efficiency": 0.641106,
         "start": 38622,
         "sequence": "CGCATCGAAAACGTTATCAGNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2251,6 +2454,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38644,
         "specificity": 1.0,
         "direction": "positive"
@@ -2261,6 +2465,7 @@
         "cutting-efficiency": 0.368046,
         "start": 38641,
         "sequence": "GTGGTGTGATCCTCGAGTTTNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2273,6 +2478,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38663,
         "specificity": 1.0,
         "direction": "positive"
@@ -2283,6 +2489,7 @@
         "cutting-efficiency": 0.636395,
         "start": 38646,
         "sequence": "GTGATCCTCGAGTTTTGGAGNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2295,6 +2502,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38668,
         "specificity": 1.0,
         "direction": "positive"
@@ -2305,6 +2513,7 @@
         "cutting-efficiency": 0.458119,
         "start": 38682,
         "sequence": "TTGATAAGCAACATTTATGTNGG",
+        "gc-content": 0.25,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2317,6 +2526,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38704,
         "specificity": 1.0,
         "direction": "positive"
@@ -2327,6 +2537,7 @@
         "cutting-efficiency": 0.652502,
         "start": 38699,
         "sequence": "TGTTGGTAAAAATGTAACAGNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2339,6 +2550,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38721,
         "specificity": 1.0,
         "direction": "positive"
@@ -2349,6 +2561,7 @@
         "cutting-efficiency": 0.386321,
         "start": 38713,
         "sequence": "TAACAGAGGCGCAAATTATTNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2361,6 +2574,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38735,
         "specificity": 1.0,
         "direction": "positive"
@@ -2371,6 +2585,7 @@
         "cutting-efficiency": 0.368096,
         "start": 38751,
         "sequence": "ATGAGAGACCGCGCGTTTAGNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2383,6 +2598,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38773,
         "specificity": 1.0,
         "direction": "positive"
@@ -2393,6 +2609,7 @@
         "cutting-efficiency": 0.669135,
         "start": 38759,
         "sequence": "CATCGGAGCCTCTAAACGCGNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2405,6 +2622,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38781,
         "specificity": 1.0,
         "direction": "negative"
@@ -2415,6 +2633,7 @@
         "cutting-efficiency": 0.550321,
         "start": 38760,
         "sequence": "CGCGCGTTTAGAGGCTCCGANGG",
+        "gc-content": 0.65,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2427,6 +2646,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38782,
         "specificity": 1.0,
         "direction": "positive"
@@ -2437,6 +2657,7 @@
         "cutting-efficiency": 0.498184,
         "start": 38776,
         "sequence": "TTTGCGTTCTGTGGGGCCATNGG",
+        "gc-content": 0.55,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2449,6 +2670,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38798,
         "specificity": 1.0,
         "direction": "negative"
@@ -2459,6 +2681,7 @@
         "cutting-efficiency": 0.662999,
         "start": 38783,
         "sequence": "TCATGAATTTGCGTTCTGTGNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2471,6 +2694,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38805,
         "specificity": 1.0,
         "direction": "negative"
@@ -2481,6 +2705,7 @@
         "cutting-efficiency": 0.45171,
         "start": 38784,
         "sequence": "TTCATGAATTTGCGTTCTGTNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2493,6 +2718,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38806,
         "specificity": 1.0,
         "direction": "negative"
@@ -2503,6 +2729,7 @@
         "cutting-efficiency": 0.497054,
         "start": 38785,
         "sequence": "ATTCATGAATTTGCGTTCTGNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2515,6 +2742,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38807,
         "specificity": 1.0,
         "direction": "negative"
@@ -2525,6 +2753,7 @@
         "cutting-efficiency": 0.355912,
         "start": 38837,
         "sequence": "TAGGGGATTCTCTTTCGTTANGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2537,6 +2766,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38859,
         "specificity": 1.0,
         "direction": "negative"
@@ -2547,6 +2777,7 @@
         "cutting-efficiency": 0.610248,
         "start": 38854,
         "sequence": "AATGCGGTCAAATGGATTAGNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2559,6 +2790,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38876,
         "specificity": 1.0,
         "direction": "negative"
@@ -2569,6 +2801,7 @@
         "cutting-efficiency": 0.34307,
         "start": 38855,
         "sequence": "TAATGCGGTCAAATGGATTANGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2581,6 +2814,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38877,
         "specificity": 1.0,
         "direction": "negative"
@@ -2591,6 +2825,7 @@
         "cutting-efficiency": 0.336609,
         "start": 38856,
         "sequence": "ATAATGCGGTCAAATGGATTNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2603,6 +2838,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38878,
         "specificity": 1.0,
         "direction": "negative"
@@ -2613,6 +2849,7 @@
         "cutting-efficiency": 0.479394,
         "start": 38862,
         "sequence": "CGATCTATAATGCGGTCAAANGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2625,6 +2862,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38884,
         "specificity": 1.0,
         "direction": "negative"
@@ -2635,6 +2873,7 @@
         "cutting-efficiency": 0.667754,
         "start": 38870,
         "sequence": "CTAATATGCGATCTATAATGNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2647,6 +2886,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38892,
         "specificity": 1.0,
         "direction": "negative"
@@ -2657,6 +2897,7 @@
         "cutting-efficiency": 0.640078,
         "start": 38898,
         "sequence": "GCAGTAAGCACAAATTTCAGNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2669,6 +2910,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38920,
         "specificity": 1.0,
         "direction": "negative"
@@ -2679,6 +2921,7 @@
         "cutting-efficiency": 0.656503,
         "start": 38900,
         "sequence": "TCTGAAATTTGTGCTTACTGNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2691,6 +2934,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38922,
         "specificity": 1.0,
         "direction": "positive"
@@ -2701,6 +2945,7 @@
         "cutting-efficiency": 0.770317,
         "start": 38923,
         "sequence": "CGACGTCGTCAAGAGCACGANGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2713,6 +2958,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38945,
         "specificity": 1.0,
         "direction": "negative"
@@ -2723,6 +2969,7 @@
         "cutting-efficiency": 0.650783,
         "start": 38924,
         "sequence": "CGTCGTGCTCTTGACGACGTNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2735,6 +2982,7 @@
           }
         ],
         "off-targets": [],
+        "n-off-targets": 0,
         "end": 38946,
         "specificity": 1.0,
         "direction": "positive"
@@ -2747,6 +2995,7 @@
         "cutting-efficiency": 0.623807,
         "start": 38542,
         "sequence": "TCATAAATCCCAATTACATGNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2767,6 +3016,7 @@
             "accession": "NC_001142.9"
           }
         ],
+        "n-off-targets": 1,
         "end": 38564,
         "specificity": 1.0,
         "direction": "positive"
@@ -2779,6 +3029,7 @@
         "cutting-efficiency": 0.425906,
         "start": 37845,
         "sequence": "GCGTTTATTAAGTTAATGTCNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2799,6 +3050,7 @@
             "accession": "NC_001147.6"
           }
         ],
+        "n-off-targets": 1,
         "end": 37867,
         "specificity": 0.991278,
         "direction": "positive"
@@ -2811,6 +3063,7 @@
         "cutting-efficiency": 0.50395,
         "start": 37529,
         "sequence": "GCTATCCAACGTTACATTAGNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2831,6 +3084,7 @@
             "accession": "NC_001145.3"
           }
         ],
+        "n-off-targets": 1,
         "end": 37551,
         "specificity": 0.987179,
         "direction": "positive"
@@ -2843,6 +3097,7 @@
         "cutting-efficiency": 0.555205,
         "start": 38725,
         "sequence": "AAATTATTGGGAATAAGACTNGG",
+        "gc-content": 0.25,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2863,6 +3118,7 @@
             "accession": "NC_001134.8"
           }
         ],
+        "n-off-targets": 1,
         "end": 38747,
         "specificity": 0.986577,
         "direction": "positive"
@@ -2875,6 +3131,7 @@
         "cutting-efficiency": 0.321725,
         "start": 38577,
         "sequence": "TATAGCGGGTTTTCAATTTCNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2895,6 +3152,7 @@
             "accession": "NC_001146.8"
           }
         ],
+        "n-off-targets": 1,
         "end": 38599,
         "specificity": 0.979681,
         "direction": "negative"
@@ -2907,6 +3165,7 @@
         "cutting-efficiency": 0.381759,
         "start": 38673,
         "sequence": "ATGTTGCTTATCAACATGTTNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2927,6 +3186,7 @@
             "accession": "NC_001139.9"
           }
         ],
+        "n-off-targets": 1,
         "end": 38695,
         "specificity": 0.976365,
         "direction": "negative"
@@ -2939,6 +3199,7 @@
         "cutting-efficiency": 0.622111,
         "start": 38796,
         "sequence": "AAATTCATGAATAGCAGACTNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2959,6 +3220,7 @@
             "accession": "NC_001134.8"
           }
         ],
+        "n-off-targets": 1,
         "end": 38818,
         "specificity": 0.975287,
         "direction": "positive"
@@ -2971,6 +3233,7 @@
         "cutting-efficiency": 0.320661,
         "start": 37941,
         "sequence": "TATTGTGCTCCTGAAATAAANGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -2991,6 +3254,7 @@
             "accession": "NC_001134.8"
           }
         ],
+        "n-off-targets": 1,
         "end": 37963,
         "specificity": 0.936849,
         "direction": "positive"
@@ -3003,6 +3267,7 @@
         "cutting-efficiency": 0.597656,
         "start": 38499,
         "sequence": "ATAAATAATGCCAAGTACAANGG",
+        "gc-content": 0.25,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -3023,6 +3288,7 @@
             "accession": "NC_001134.8"
           }
         ],
+        "n-off-targets": 1,
         "end": 38521,
         "specificity": 0.92915,
         "direction": "positive"
@@ -3035,6 +3301,7 @@
         "cutting-efficiency": 0.552895,
         "start": 38103,
         "sequence": "TCTTTTCAAATTCTTATAGANGG",
+        "gc-content": 0.2,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -3055,6 +3322,7 @@
             "accession": "NC_001134.8"
           }
         ],
+        "n-off-targets": 1,
         "end": 38125,
         "specificity": 0.929106,
         "direction": "positive"
@@ -3067,6 +3335,7 @@
         "cutting-efficiency": 0.35088,
         "start": 37964,
         "sequence": "CGTGCAATTTGCCATCAATANGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -3087,6 +3356,7 @@
             "accession": "NC_001144.5"
           }
         ],
+        "n-off-targets": 1,
         "end": 37986,
         "specificity": 0.921152,
         "direction": "positive"
@@ -3099,6 +3369,7 @@
         "cutting-efficiency": 0.464014,
         "start": 37766,
         "sequence": "ACCTATTAATGTTTCAGAAANGG",
+        "gc-content": 0.25,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -3119,6 +3390,7 @@
             "accession": "NC_001136.10"
           }
         ],
+        "n-off-targets": 1,
         "end": 37788,
         "specificity": 0.914149,
         "direction": "positive"
@@ -3132,6 +3404,7 @@
         "cutting-efficiency": 0.379921,
         "start": 37767,
         "sequence": "TCCGTTTCTGAAACATTAATNGG",
+        "gc-content": 0.3,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -3159,6 +3432,7 @@
             "accession": "NC_001136.10"
           }
         ],
+        "n-off-targets": 2,
         "end": 37789,
         "specificity": 0.8808,
         "direction": "negative"
@@ -3171,6 +3445,7 @@
         "cutting-efficiency": 0.668482,
         "start": 38651,
         "sequence": "GAGATCCACTCCAAAACTCGNGG",
+        "gc-content": 0.5,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -3191,6 +3466,7 @@
             "accession": "NC_001147.6"
           }
         ],
+        "n-off-targets": 1,
         "end": 38673,
         "specificity": 0.867769,
         "direction": "negative"
@@ -3203,6 +3479,7 @@
         "cutting-efficiency": 0.484461,
         "start": 37802,
         "sequence": "TGTCCAACTTAATTTCGTACNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -3223,6 +3500,7 @@
             "accession": "NC_001134.8"
           }
         ],
+        "n-off-targets": 1,
         "end": 37824,
         "specificity": 0.844156,
         "direction": "negative"
@@ -3235,6 +3513,7 @@
         "cutting-efficiency": 0.454913,
         "start": 37935,
         "sequence": "ATTTCAGGAGCACAATAATCNGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -3262,6 +3541,7 @@
             "accession": "NC_001134.8"
           }
         ],
+        "n-off-targets": 2,
         "end": 37957,
         "specificity": 0.78516,
         "direction": "negative"

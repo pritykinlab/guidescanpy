@@ -23,6 +23,7 @@ def query(args):
     topn = int(args["topn"]) if "topn" in args else None
     min_specificity = float(args.get("s-bounds-l", 0))
     min_ce = float(args.get("ce-bounds-l", 0))
+    min_gc = float(args.get("gc-bounds-l", 0))
     filter_annotated = args.get("filter-annotated", False)
     flanking = int(args.get("flanking", 0))
 
@@ -49,6 +50,7 @@ def query(args):
             topn=topn,
             min_specificity=min_specificity,
             min_ce=min_ce,
+            min_gc=min_gc,
             filter_annotated=filter_annotated,
         )
         if result:
