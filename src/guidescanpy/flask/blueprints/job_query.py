@@ -2,6 +2,7 @@ import logging
 from flask import Blueprint, jsonify, render_template, make_response, abort, request
 import pandas as pd
 from guidescanpy.tasks import app as tasks_app
+from guidescanpy.flask.core.utils import job_result
 
 
 bp = Blueprint("job_query", __name__)
@@ -9,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 @bp.route("/<job_id>")
+@job_result
 def job(job_id):
     result = tasks_app.AsyncResult(job_id)
     if result.status == "SUCCESS":
@@ -18,19 +20,9 @@ def job(job_id):
             if ("queries" in result.result) and result.result["queries"]
             else ""
         )
-        overwhelming_err = (
-            result.result["overwhelming_err"]
-            if "overwhelming_err" in result.result
-            else ""
-        )
     else:
-        first_region, overwhelming_err = "", ""
-    return render_template(
-        "job_query.html",
-        result=result,
-        first_region=first_region,
-        overwhelming_err=overwhelming_err,
-    )
+        first_region = ""
+    return render_template("job_query.html", result=result, first_region=first_region)
 
 
 @bp.route("/status/<job_id>")

@@ -24,25 +24,14 @@
         </div>
 
         <div class="container-fluid">
-        {% if overwhelming_err != "" %}
-                <div class="row">
-                    <div class="col">
-                        <div class="card">
-                            <h5 class="card-header">Job Failed</h5>
-                            <div class="card-body">
-                                {{ overwhelming_err }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        {% else %}
             <div class="row">
                 <div class="col">
                     <div class="card">
                         <h5 class="card-header">Job {{ result.task_id }}</h5>
                         <div class="card-body text-center">
                             <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Download Results
                                 </button>
@@ -62,58 +51,58 @@
                     </div>
                 </div>
             </div>
-                {% if first_region != "" %}
-                    <div class="row">
-                        <div class="col">
-                            <div class="card">
-                                <h5 class="card-header">IGV Viewer</h5>
-                                <div class="card-body">
-                                    <div id="igv-div"></div>
-                                </div>
+            {% if first_region != "" %}
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <h5 class="card-header">IGV Viewer</h5>
+                            <div class="card-body">
+                                <div id="igv-div"></div>
                             </div>
                         </div>
                     </div>
-                {% else %}
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <h5 class="card-header">Job {{ result.task_id }}</h5>
+                            <div class="card-body">
+                                No results for query region(s).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% for region, values in result.result['queries'].items() %}
+                {% if values['hits']|length > 0 %}
                     <div class="row">
                         <div class="col">
                             <div class="card">
-                                <h5 class="card-header">Job {{ result.task_id }}</h5>
+                                <h5 class="card-header">{{ region }}</h5>
                                 <div class="card-body">
-                                    No results for query region(s).
+                                    <table class="display datatable resulttable" data-region="{{ region }}">
+                                        <thead>
+                                        <tr>
+                                            <th>coordinate</th>
+                                            <th>sequence</th>
+                                            <th>num-off-targets</th>
+                                            <th>off-target-summary</th>
+                                            <th>cutting-efficiency</th>
+                                            <th>specificity</th>
+                                            <th>gc-content</th>
+                                            <th>annotations</th>
+                                            <th>off-targets-hidden</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 {% endif %}
-
-                {% for region, values in result.result['queries'].items() %}
-                    {% if values['hits']|length > 0 %}
-                        <div class="row">
-                            <div class="col">
-                                <div class="card">
-                                    <h5 class="card-header">{{ region }}</h5>
-                                    <div class="card-body">
-                                        <table class="display datatable resulttable" data-region="{{ region }}">
-                                            <thead>
-                                            <tr>
-                                                <th>coordinate</th>
-                                                <th>sequence</th>
-                                                <th>num-off-targets</th>
-                                                <th>off-target-summary</th>
-                                                <th>cutting-efficiency</th>
-                                                <th>specificity</th>
-                                                <th>annotations</th>
-                                                <th>off-targets-hidden</th>
-                                            </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-        {% endif %}
+            {% endfor %}
 
         </div>
 
@@ -150,7 +139,7 @@
                         };
                     igv.createBrowser(igvDiv, options);
 
-                    $('.resulttable').each(function(){
+                    $('.resulttable').each(function () {
                         var region = $(this).data('region');
                         var table = $(this).DataTable({
                             searching: false,
@@ -198,6 +187,12 @@
                                 },
                                 {
                                     data: 'specificity',
+                                    render: function (data) {
+                                        return data.toFixed(2);
+                                    }
+                                },
+                                {
+                                    data: 'gc-content',
                                     render: function (data) {
                                         return data.toFixed(2);
                                     }

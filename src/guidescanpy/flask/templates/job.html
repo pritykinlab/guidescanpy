@@ -21,11 +21,17 @@
                     <div class="card">
                         <h5 class="card-header">Job {{ result.task_id }}</h5>
                         <div class="card-body">
-                            Job failed. This likely indicates a problem with the code.
-                            Please submit an <a href="https://github.com/pritykinlab/guidescanpy/issues/new">issue</a>
-                            with the following traceback, and we'll try to fix this as soon as possible.
-                            <p><pre><code>{{ result.traceback }}</code></pre></p>
-                        </div>
+                            <!-- "error" indicates user error, not an unhandled Exception -->
+                            {% if error is defined %}
+                                <div class="alert alert-danger" role="alert">{{ error }}</div>
+                            {% else %}
+                                Job failed. This likely indicates a problem with the code.
+                                Please submit an
+                                <a href="https://github.com/pritykinlab/guidescanpy/issues/new">issue</a>
+                                with the following traceback, and we'll try to fix this as soon as possible.
+                                <p>
+                                <div class="alert alert-danger" role="alert"><pre><code>{{ result.traceback }}</code></pre></p></div>
+                            {% endif %}
                     </div>
                 </div>
             </div>

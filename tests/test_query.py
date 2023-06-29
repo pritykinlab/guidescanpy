@@ -71,18 +71,13 @@ def test_query_chr_pos_bad(app):
         assert len(data["queries"]) == 0
 
 
-def test_region_exceed_lmt(app):
+def test_region_exceed_limit(app):
     with config({"celery.eager": True}):
-        limitation = int(config.guidescan.region_size_lmt)
+        limitation = int(config.guidescan.region_size_limit)
         # Search for 2 regions, with total size larger than limitation.
         query_text = f"chrII:200000-220000\nchrIX:1-{limitation+1}"
         encoded_query_text = quote(query_text)
         response = app.test_client().get(
             f"py/query?organism=sacCer3&enzyme=cas9&query-text={encoded_query_text}"
         )
-        assert response.mimetype == "application/json"
-        data = json.loads(response.data)
-        assert (
-            data["overwhelming_err"]
-            == f"Parsed genomic regions length exceeds {limitation}, the maximum allowed."
-        )
+        assert response.status_code == 500

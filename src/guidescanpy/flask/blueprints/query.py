@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, url_for, request
 from guidescanpy.flask.core.genome import get_genome_structure
+from guidescanpy.exceptions import GuidescanException
 from guidescanpy import config
 
 bp = Blueprint("query", __name__)
@@ -34,14 +35,14 @@ def query(args):
     regions = genome_structure.parse_regions(query_text_or_file, flanking=flanking)
 
     # The server won't process the query with region size larger than the limitation.
-    region_lmt = int(config.guidescan.region_size_lmt)
+    region_limit = int(config.guidescan.region_size_limit)
     if (
         sum([(region["coords"][2] - region["coords"][1] + 1) for region in regions])
-        > region_lmt
+        > region_limit
     ):
-        return {
-            "overwhelming_err": f"Parsed genomic regions length exceeds {region_lmt}, the maximum allowed."
-        }
+        raise GuidescanException(
+            f"Parsed genomic regions length exceeds {region_limit}, the maximum allowed."
+        )
 
     for region in regions:
         result = genome_structure.query(
