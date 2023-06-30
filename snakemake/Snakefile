@@ -26,15 +26,9 @@ localrules:
 # -----------------------------------------------------------------------------
 rule all:
     input:
-        expand(f"{OUTPUT_DIR}/raw/{{organism}}.gtf.gz", organism=ORGANISMS),
-        expand(f"{OUTPUT_DIR}/raw/{{organism}}", organism=ORGANISMS),
-        f"{OUTPUT_DIR}/job_status/guidescan.txt",
-        f"{OUTPUT_DIR}/job_status/guidescanpy.txt",
-        expand(f"{OUTPUT_DIR}/bam_files/{{organism}}.bam", organism=ORGANISMS)
+        expand(f"{OUTPUT_DIR}/bam_files/{{organism}}.bam", organism=ORGANISMS),
+        expand(f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt",organism=ORGANISMS)
 
-        # This is a one time running rule (add_organism). If the data is already in the db, this will raise exceptions.
-        # Uncomment the following line if it's the first time run add_organism.py.
-        # expand(f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt", organism=ORGANISMS)
 
 rule download_sequence:
     params:
@@ -83,17 +77,17 @@ rule add_organism:
         chr2acc = rules.download_chr2acc.output,
     params:
         script = config["add_organism_script_path"],
-
         organism = lambda wildcards: wildcards.organism
     output: f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt"
     shell: """
     touch {output}
-    python {params.script} {params.organism} {params.gtf_gz} {params.chr2acc}
+    python {params.script} {params.organism} {input[0]} {input[1]} || true
     """
 
 
 rule guidescan_index:
-    input: rules.download_sequence.output[1]
+    input: rules.download_sequence.output[1],
+            rules.install_guidescan.output
     output: f"{OUTPUT_DIR}/index/{{organism}}.fna.index.gs"
     params:
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.forward",
@@ -103,19 +97,20 @@ rule guidescan_index:
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.gs"
     shell:
         """
-        guidescan index {input}
+        guidescan index {input[0]}
         mv {params[4]} {output}
         mv {params[0]} {params[1]}
         mv {params[2]} {params[3]}
     """
 
 rule generate_kmers:
-    input: rules.download_sequence.output[1]
+    input: rules.download_sequence.output[1],
+            rules.install_guidescanpy.output
     output: f"{OUTPUT_DIR}/kmers/{{organism}}.csv"
     params: script = config["generate_kmers_script_path"]
     shell:
         """
-        python {params.script} {input} --output {output}
+        python {params.script} {input[0]} --output {output}
     """
 
 
