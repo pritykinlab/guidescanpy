@@ -1,3 +1,5 @@
+import sys
+
 from Bio import SeqIO
 import argparse
 
@@ -10,6 +12,8 @@ def parse_arguments():
     parser.add_argument(
         "fasta", type=str, help="FASTA file to use as a reference for kmer generation."
     )
+
+    parser.add_argument("--output", help="Output file of the generated kmers.")
 
     parser.add_argument(
         "--pam", help="Protospacer adjacent motif to match.", default="NGG"
@@ -132,11 +136,9 @@ def output_kmer(prefix, chrm_name, kmer):
     print(",".join(row))
 
 
-if __name__ == "__main__":
-    args = parse_arguments()
-
+def output(fasta_file):
     print("id,sequence,pam,chromosome,position,sense")
-    for record in SeqIO.parse(args.fasta, "fasta"):
+    for record in SeqIO.parse(fasta_file, "fasta"):
         if len(record) < args.min_chr_length:
             continue
 
@@ -144,3 +146,17 @@ if __name__ == "__main__":
             args.pam, args.kmer_length, record.seq, end=not args.start
         ):
             output_kmer(args.prefix, record.name, kmer)
+
+
+if __name__ == "__main__":
+    args = parse_arguments()
+    fasta_file = args.fasta
+    print(fasta_file)
+    output_file = getattr(args, "output", None)
+    if output_file is None:
+        output(fasta_file)
+    else:
+        with open(output_file, "w") as file:
+            sys.stdout = file
+            output(fasta_file)
+            sys.stdout = sys.__stdout__
