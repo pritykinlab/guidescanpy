@@ -82,7 +82,7 @@ rule add_organism:
     output: f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt"
     shell: """
     touch {output}
-    python {params.script} {params.organism} {input[0]} {input[1]} || true
+    python {params.script} {params.organism} {input[0]} {input[1]}
     """
 
 
@@ -111,7 +111,7 @@ rule generate_kmers:
     params: script = config["generate_kmers_script_path"]
     shell:
         """
-        python {params.script} {input[0]} --output {output}
+        python {params.script} {input[0]} > {output}
     """
 
 
@@ -122,6 +122,7 @@ rule guidescan_enumerate:
     params: index_file = f"{OUTPUT_DIR}/index/{{organism}}.fna.index"
     shell:
         """
+
         guidescan enumerate {params.index_file} --kmers-file {input[1]} --output {output}
     """
 # -----------------------------------------------------------------------------

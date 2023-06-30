@@ -151,7 +151,6 @@ def output(fasta_file):
 if __name__ == "__main__":
     args = parse_arguments()
     fasta_file = args.fasta
-    print(fasta_file)
     output_file = getattr(args, "output", None)
     if output_file is None:
         output(fasta_file)
