@@ -73,7 +73,7 @@ rule install_guidescanpy:
     output: f"{OUTPUT_DIR}/job_status/guidescanpy.txt"
     shell: """
     touch {output}
-    pip install ..
+    pip install -e ..[web]
     """
 
 
