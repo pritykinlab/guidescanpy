@@ -5,7 +5,5 @@
     "fna": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.fna.gz",
     "gtf": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.gtf.gz",
     "chr2acc": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc"
-  },
-  "add_organism_script_path": "../scripts/add_organism.py",
-  "generate_kmers_script_path": "../src/guidescanpy/flask/core/generate_kmers.py"
+  }
 }

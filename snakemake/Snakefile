@@ -77,12 +77,11 @@ rule add_organism:
         chr2acc = rules.download_chr2acc.output,
         guidescanpy = rules.install_guidescanpy.output
     params:
-        script = config["add_organism_script_path"],
         organism = lambda wildcards: wildcards.organism
     output: f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt"
     shell: """
     touch {output}
-    python {params.script} {params.organism} {input[0]} {input[1]}
+    guidescanpy add-organism {params.organism} {input[0]} {input[1]}
     """
 
 
@@ -108,10 +107,9 @@ rule generate_kmers:
     input: rules.download_sequence.output[1],
             rules.install_guidescanpy.output
     output: f"{OUTPUT_DIR}/kmers/{{organism}}.csv"
-    params: script = config["generate_kmers_script_path"]
     shell:
         """
-        python {params.script} {input[0]} > {output}
+        guidescanpy generate-kmers {input[0]} > {output}
     """
 
 

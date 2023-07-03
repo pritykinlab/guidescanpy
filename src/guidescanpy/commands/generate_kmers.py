@@ -4,11 +4,7 @@ from Bio import SeqIO
 import argparse
 
 
-def parse_arguments():
-    parser = argparse.ArgumentParser(
-        description="Generates a set of kmers for processing by Guidescan2."
-    )
-
+def get_parser(parser):
     parser.add_argument(
         "fasta", type=str, help="FASTA file to use as a reference for kmer generation."
     )
@@ -40,7 +36,7 @@ def parse_arguments():
         action="store_true",
     )
 
-    return parser.parse_args()
+    return parser
 
 
 NUCS = list("ACTG")
@@ -148,8 +144,11 @@ def output(fasta_file, args):
             output_kmer(args.prefix, record.name, kmer)
 
 
-if __name__ == "__main__":
-    args = parse_arguments()
+def main(args):
+    parser = argparse.ArgumentParser(
+        description="Generates a set of kmers for processing by Guidescan2."
+    )
+    args = get_parser(parser).parse_args(args)
     fasta_file = args.fasta
     output_file = getattr(args, "output", None)
     if output_file is None:

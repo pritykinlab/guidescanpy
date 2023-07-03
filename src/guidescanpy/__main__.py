@@ -2,8 +2,10 @@ import sys
 import guidescanpy
 from guidescanpy.flask import create_app
 from guidescanpy.commands.decode import main as decode  # noqa: F401
+from guidescanpy.commands.generate_kmers import main as generate_kmers  # noqa: F401
+from guidescanpy.commands.add_organism import main as add_organism  # noqa: F401
 
-commands = ("web", "decode")
+commands = ("web", "decode", "generate-kmers", "add-organism")
 
 
 def print_usage():
