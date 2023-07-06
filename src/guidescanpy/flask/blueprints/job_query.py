@@ -31,29 +31,34 @@ def status(job_id):
     return jsonify({"status": res.status})
 
 
-def get_result(
-    job_id, region=None, start=0, end=None, orderby=None, asc=True, dt=False
-):
+def get_result(job_id, region=None, start=0, end=None, orderby=None, asc=True):
     """
     return a full result dictionary for non-DataTable use, a 'hits' dictionary for DataTable use.
     """
-    res = tasks_app.AsyncResult(job_id)
-    result = res.result
+    result = tasks_app.AsyncResult(job_id).result
+
     if region is None:
-        return result
-    assert region in result["queries"], f"Region {region} not found in results"
-    value = result["queries"][region]
-    hits = pd.DataFrame(value["hits"])
-    hits_len = len(hits)
-    if orderby:
-        hits.sort_values(by=orderby, ascending=asc, inplace=True)
-    hits = hits[start:end]
-    hits = hits.to_dict("records")
-    if dt:
-        return hits, hits_len
+        regions = result["queries"].keys()
     else:
-        result["queries"] = {region: {"region": value["region"], "hits": hits}}
-        return result
+        assert region in result["queries"], f"Region {region} not found in results"
+        regions = [region]
+
+    for region in regions:
+        value = result["queries"][region]
+        hits = pd.DataFrame(value["hits"])
+        total_hits = len(hits)
+        if orderby:
+            hits.sort_values(by=orderby, ascending=asc, inplace=True)
+        hits = hits[start:end]
+        hits = hits.to_dict("records")
+
+        result["queries"][region] = {
+            "region": value["region"],
+            "hits": hits,
+            "total_hits": total_hits,
+        }
+
+    return result
 
 
 @bp.route("/result/<format>/<job_id>")
@@ -67,7 +72,7 @@ def result(format, job_id):
         if request.args.get("limit") is not None
         else None
     )
-    result = get_result(job_id, region, start, end, orderby, asc, dt=False)
+    result = get_result(job_id, region, start, end, orderby, asc)
 
     match format:
         case "json":
@@ -130,6 +135,9 @@ def result(format, job_id):
 @bp.route("/result/dt/<job_id>")
 def result_dt(job_id):
     region = request.args.get("region")
+    assert (
+        region is not None
+    ), "DataTables format only supported when region is specified"
 
     # Get sorting parameters
     orderby = request.args.get("order[0][column]")  # Default is 5.
@@ -143,12 +151,14 @@ def result_dt(job_id):
     start = (page - 1) * per_page
     end = start + per_page
 
-    hits, hits_len = get_result(job_id, region, start, end, orderby, asc, dt=True)
+    result = get_result(job_id, region, start, end, orderby, asc)
+    data = result["queries"][region]
+    hits, total_hits = data["hits"], data["total_hits"]
 
     response = {
         "data": hits,
         "draw": int(request.args.get("draw", 1)),
-        "recordsTotal": hits_len,
-        "recordsFiltered": hits_len,
+        "recordsTotal": total_hits,
+        "recordsFiltered": total_hits,
     }
     return jsonify(response)

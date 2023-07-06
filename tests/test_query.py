@@ -72,10 +72,9 @@ def test_query_chr_pos_bad(app):
 
 
 def test_region_exceed_limit(app):
-    with config({"celery.eager": True}):
-        limitation = int(config.guidescan.region_size_limit)
-        # Search for 2 regions, with total size larger than limitation.
-        query_text = f"chrII:200000-220000\nchrIX:1-{limitation+1}"
+    # RAD51 region is ~1.2K, so the following should fail
+    with config({"celery.eager": True, "guidescan.region_size_limit": 1000}):
+        query_text = "RAD51"
         encoded_query_text = quote(query_text)
         response = app.test_client().get(
             f"py/query?organism=sacCer3&enzyme=cas9&query-text={encoded_query_text}"
