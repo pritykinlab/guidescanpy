@@ -1,5 +1,6 @@
 from flask import json
 from guidescanpy import config
+from urllib.parse import quote
 
 
 def test_info(app):
@@ -68,3 +69,14 @@ def test_query_chr_pos_bad(app):
         assert response.mimetype == "application/json"
         data = json.loads(response.data)
         assert len(data["queries"]) == 0
+
+
+def test_region_exceed_limit(app):
+    # RAD51 region is ~1.2K, so the following should fail
+    with config({"celery.eager": True, "guidescan.region_size_limit": 1000}):
+        query_text = "RAD51"
+        encoded_query_text = quote(query_text)
+        response = app.test_client().get(
+            f"py/query?organism=sacCer3&enzyme=cas9&query-text={encoded_query_text}"
+        )
+        assert response.status_code == 500
