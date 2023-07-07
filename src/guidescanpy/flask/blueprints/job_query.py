@@ -97,7 +97,7 @@ def result(format, job_id):
 
         case "csv":
             lines = [
-                "Region-name,gRNA-ID,gRNA-SeqNumber of off-targets,"
+                "Region-name,gRNA-ID,gRNA-Seq,Number of off-targets,"
                 "Off-target summary,Cutting efficiency,Specificity,GC,Rank,Coordinates,Strand,Annotations"
             ]
 
@@ -122,6 +122,63 @@ def result(format, job_id):
                             ]
                         )
                     )
+
+            response = "\n".join(lines)
+            response = make_response(response, 200)
+            response.mimetype = "text/csv"
+            return response
+
+        case "csv-offtarget":
+            lines = [
+                "Region-name,gRNA-ID,gRNA-Seq,Number of off-targets,"
+                "Off-target summary,Off-target accession,Off-target chromosome,"
+                "Off-target direction,Off-target distance,Off-target position,"
+                "Off-target region-string,"
+                "Cutting efficiency,Specificity,GC,Rank,Coordinates,Strand,Annotations"
+            ]
+
+            for _, v in result["queries"].items():
+                for i, hit in enumerate(v["hits"], start=1):
+                    n_off_targets = hit["n-off-targets"]
+                    if n_off_targets == 0:
+                        hit["off-targets"].append(
+                            {
+                                "accession": "",
+                                "chromosome": "",
+                                "direction": "",
+                                "distance": "",
+                                "position": "",
+                                "region-string": "",
+                            }
+                        )
+                    for off_target in range(max(1, n_off_targets)):
+                        lines.append(
+                            ",".join(
+                                str(x)
+                                for x in [
+                                    hit["region-string"],
+                                    hit["region-string"] + f".{i}",
+                                    hit["sequence"],
+                                    hit["n-off-targets"],
+                                    hit["off-target-summary"],
+                                    hit["off-targets"][off_target]["accession"],
+                                    hit["off-targets"][off_target]["chromosome"],
+                                    hit["off-targets"][off_target]["direction"],
+                                    hit["off-targets"][off_target]["distance"],
+                                    hit["off-targets"][off_target]["position"],
+                                    hit["off-targets"][off_target]["region-string"],
+                                    hit["cutting-efficiency"],
+                                    hit["specificity"],
+                                    hit["gc-content"],
+                                    i,
+                                    hit["coordinate"],
+                                    hit["direction"],
+                                    hit["annotations"],
+                                ]
+                            )
+                        )
+                    if n_off_targets == 0:
+                        hit["off-targets"] = []
 
             response = "\n".join(lines)
             response = make_response(response, 200)
