@@ -25,7 +25,7 @@
         "cas9": "cas9/rn6.bam.sorted"
       },
       "sacCer3": {
-        "cas9": "sacCer3/cas9/sacCer3.bam.sorted"
+        "cas9": "cas9/sacCer3.bam.sorted"
       }
     },
     "example_queries": {
@@ -63,7 +63,7 @@
       "mm10": "mm10.index",
       "mm39": "mm39.index",
       "rn6": "rn6.index",
-      "sacCer3": "sacCer3/index/GCF_000146045.2_R64_genomic.fna.index"
+      "sacCer3": "sacCer3.index"
     },
     "grna_db_offset_map": {
       "hg38:cas9": 1,
@@ -97,7 +97,7 @@
         "cas9": "TACAAAAGACTTGAGAAAGT\nAATCTAAAACTAGGTGATTT"
       }
     },
-    "db": "host=postgres dbname=guidescan user=scott password=tiger",
+    "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}",
     "cachedir": "/tmp",
     "region_size_limit": 1e7
   },
@@ -112,5 +112,12 @@
     "broker": "redis://localhost",
     "backend": "redis://localhost",
     "eager": false
+  },
+  "pytest": {
+    "astring": "foo",
+    "abool": true,
+    "nested": {
+      "aint": 42
+    }
   }
 }
