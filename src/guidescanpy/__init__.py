@@ -1,4 +1,5 @@
 from importlib.resources import read_text
+import logging
 import guidescanpy
 from guidescanpy.config import Config
 
@@ -10,3 +11,6 @@ except ModuleNotFoundError:
 
 
 config = Config(read_text(guidescanpy, "config.json"))
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
