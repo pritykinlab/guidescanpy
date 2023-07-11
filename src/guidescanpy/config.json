@@ -1,7 +1,7 @@
 {
   "guidescan": {
     "bin": "guidescan",
-    "grna_database_path_prefix": "{BAMS_PATH}",
+    "grna_database_path_prefix": "{BAM_PATH}",
     "grna_database_path_map": {
       "ce11": {
         "cas9": "cas9/ce11.bam.sorted",
@@ -55,7 +55,7 @@
       }
     },
 
-    "index_files_path_prefix": "/media/vineetb/T7/guidescan/ec2/assemblies",
+    "index_files_path_prefix": "{INDEX_PATH}",
     "index_files_path_map": {
       "ce11": "ce11.index",
       "dm6": "dm6.index",
