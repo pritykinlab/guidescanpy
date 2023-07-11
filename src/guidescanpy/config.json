@@ -98,7 +98,8 @@
       }
     },
     "db": "host=postgres dbname=guidescan user=scott password=tiger",
-    "cachedir": "/tmp"
+    "cachedir": "/tmp",
+    "region_size_limit": 1e7
   },
   "flask": {
     "DEBUG": 0,

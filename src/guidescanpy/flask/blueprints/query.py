@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, url_for, request
 from guidescanpy.flask.core.genome import get_genome_structure
+from guidescanpy.exceptions import GuidescanException
 from guidescanpy import config
 
 bp = Blueprint("query", __name__)
@@ -23,6 +24,7 @@ def query(args):
     topn = int(args["topn"]) if "topn" in args else None
     min_specificity = float(args.get("s-bounds-l", 0))
     min_ce = float(args.get("ce-bounds-l", 0))
+    min_gc = float(args.get("gc-bounds-l", 0))
     filter_annotated = args.get("filter-annotated", False)
     flanking = int(args.get("flanking", 0))
 
@@ -31,6 +33,17 @@ def query(args):
     queries = {}
     query_text_or_file = args.get("file") or args.get("query-text")
     regions = genome_structure.parse_regions(query_text_or_file, flanking=flanking)
+
+    # The server won't process the query with region size larger than the limitation.
+    region_limit = int(config.guidescan.region_size_limit)
+    if (
+        sum([(region["coords"][2] - region["coords"][1] + 1) for region in regions])
+        > region_limit
+    ):
+        raise GuidescanException(
+            f"Parsed genomic regions length exceeds {region_limit}, the maximum allowed."
+        )
+
     for region in regions:
         result = genome_structure.query(
             region,
@@ -38,6 +51,7 @@ def query(args):
             topn=topn,
             min_specificity=min_specificity,
             min_ce=min_ce,
+            min_gc=min_gc,
             filter_annotated=filter_annotated,
         )
         if result:

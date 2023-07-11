@@ -23,10 +23,10 @@ create table if not exists libraries
 
 create table if not exists chromosomes
 (
-    accession varchar(1023) not null
-        primary key,
+    accession varchar(1023) not null,
     name      varchar(1023) not null,
-    organism  varchar(1023) not null
+    organism  varchar(1023) not null,
+    primary key (accession, name, organism)
 );
 
 

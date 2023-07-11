@@ -170,6 +170,7 @@ class GenomeStructure:
         topn=None,
         min_specificity=None,
         min_ce=None,
+        min_gc=None,
         filter_annotated=False,
         as_dataframe=False,
         bam_filepath=None,
@@ -278,13 +279,23 @@ class GenomeStructure:
                 elif read.has_tag("cs"):  # old guidescan BAM format
                     specificity = read.get_tag("cs")
 
+                sequence = read.get_forward_sequence()
+                if enzyme == "cas9":
+                    sequence_no_pam = sequence[:-3]
+                else:
+                    sequence_no_pam = sequence[4:]
+                gc_content = (
+                    sequence_no_pam.count("G") + sequence_no_pam.count("C")
+                ) / 20
+
                 result = {
                     "id": read.query_name,
                     "query-sequence": read.query_sequence,
+                    "gc-content": gc_content,
                     "reference-name": read.reference_name,
                     "offtargets-by-distance": off_targets_by_distance,
                     "coordinate": self.to_coordinate_string(read, offset=read_offset),
-                    "sequence": read.get_forward_sequence(),
+                    "sequence": sequence,
                     "start": read.reference_start
                     + 1
                     + read_offset,  # 0-indexed inclusive -> 1-indexed inclusive
@@ -315,6 +326,9 @@ class GenomeStructure:
             # Only filter on cutting efficiency when enzyme is cas9, since specificity values are NA otherwise
             if min_ce is not None and enzyme == "cas9":
                 results = results[results["cutting-efficiency"] >= min_ce]
+
+            if min_gc is not None:
+                results = results[results["gc-content"] >= min_gc]
 
             if filter_annotated:
                 results = results[results["annotations"] != ""]

@@ -30,7 +30,8 @@
                         <h5 class="card-header">Job {{ result.task_id }}</h5>
                         <div class="card-body text-center">
                             <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Download Results
                                 </button>
@@ -81,7 +82,7 @@
                             <div class="card">
                                 <h5 class="card-header">{{ region }}</h5>
                                 <div class="card-body">
-                                    <table class="display datatable resulttable">
+                                    <table class="display datatable resulttable" data-region="{{ region }}">
                                         <thead>
                                         <tr>
                                             <th>coordinate</th>
@@ -90,29 +91,11 @@
                                             <th>off-target-summary</th>
                                             <th>cutting-efficiency</th>
                                             <th>specificity</th>
+                                            <th>gc-content</th>
                                             <th>annotations</th>
                                             <th>off-targets-hidden</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        {% for value in values['hits'] %}
-                                            <tr>
-                                                <td>{{ value['coordinate'] }}</td>
-                                                <td>{{ value['sequence'] }}</td>
-                                                <td>{{ value['n-off-targets'] }}</td>
-                                                {% if value['n-off-targets'] > 0 %}
-                                                    <td><a href="#" class="off_target">{{ value['off-target-summary'] }}</a>
-                                                    </td>
-                                                {% else %}
-                                                    <td>{{ value['off-target-summary'] }}</td>
-                                                {% endif %}
-                                                <td>{{ '%0.2f' | format(value['cutting-efficiency'] | float) }}</td>
-                                                <td>{{ '%0.2f' | format(value['specificity'] | float) }}</td>
-                                                <td>{{ value['annotations'] }}</td>
-                                                <td>{{ value['off-targets'] | tojson }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -156,51 +139,103 @@
                         };
                     igv.createBrowser(igvDiv, options);
 
-                    var table = $('.resulttable').DataTable({
-                        searching: false,
-                        lengthChange: false,
-                        bInfo: false,
-                        pagingType: "numbers",
-                        columnDefs: [
-
-                            {
-                                target: 0,
-                                render: function(data, type, row, meta) {
-                                    return '<a target="_blank" href="https://igv.org/app/?genome={{ result.result['organism'] }}&locus=' + data + '">' + data + '</a>';
-                                }
-                            },
-                            {
-                                target: 7,
-                                visible: false
-                            }
-                        ],
-                    });
-
-                    $('.datatable tbody').on('click', 'a[class="off_target"]', function (event) {
-                        event.preventDefault();
-                        var row = table.row($(this).parents('tr')).data();
-                        $('#modal-title').html('Off-targets for ' + row[0]);
-                        $('#table-off-targets').DataTable({
-                            data: JSON.parse(row[7]),
-                            columns: [
-                                {
-                                    data: 'region-string',
-                                    title: 'coordinates',
-                                    render: function (data, type, row, meta) {
-                                        return '<a target="_blank" href="https://igv.org/app/?genome={{ result.result['organism'] }}&locus=' + data + '">' + data + '</a>';
-                                    }
-                                },
-                                {data: 'distance', title: 'distance'}
-                            ],
+                    $('.resulttable').each(function () {
+                        var region = $(this).data('region');
+                        var table = $(this).DataTable({
                             searching: false,
                             lengthChange: false,
                             bInfo: false,
                             pagingType: "numbers",
-                            destroy: true
+                            serverSide: true,
+                            order: [[5, 'desc']],
+                            ajax: {
+                                url: "{{url_for('job_query.result_dt', job_id=result.task_id)}}",
+                                data: function (d) {
+                                    d.page = Math.ceil(d.start / d.length) + 1;
+                                    d.per_page = 10;
+                                    d.region = region;
+                                }
+                            },
+                            columns: [
+                                {
+                                    data: 'coordinate',
+                                    render: function (data) {
+                                        return '<a target="_blank" href="https://igv.org/app/?genome={{ result.result['organism'] }}&locus=' + data + '">' + data + '</a>';
+                                    }
+                                },
+                                {
+                                    data: 'sequence'
+                                },
+                                {
+                                    data: 'n-off-targets'
+                                },
+                                {
+                                    data: 'off-target-summary',
+                                    render: function (data, type, row) {
+                                        if (row['n-off-targets'] > 0) {
+                                            return '<a href="#" class="off_target">' + data + '</a>';
+                                        } else {
+                                            return data;
+                                        }
+                                    }
+                                },
+                                {
+                                    data: 'cutting-efficiency',
+                                    render: function (data) {
+                                        return data.toFixed(2);
+                                    }
+                                },
+                                {
+                                    data: 'specificity',
+                                    render: function (data) {
+                                        return data.toFixed(2);
+                                    }
+                                },
+                                {
+                                    data: 'gc-content',
+                                    render: function (data) {
+                                        return data.toFixed(2);
+                                    }
+                                },
+                                {
+                                    data: 'annotations',
+                                    orderable: false
+                                },
+                                {
+                                    data: 'off-targets',
+                                    render: function (data) {
+                                        return JSON.stringify(data);
+                                    },
+                                    visible: false
+                                },
+                            ]
                         });
-                        $('#modal-off-targets').modal('show');
-                    });
 
+                        $('.datatable tbody').on('click', 'a[class="off_target"]', function (event) {
+                            event.preventDefault();
+                            var row = table.row($(this).parents('tr')).data();
+                            $('#modal-title').html('Off-targets for ' + row['coordinate']);
+                            $('#table-off-targets').DataTable({
+                                data: JSON.parse(JSON.stringify(row['off-targets'])),
+                                columns: [
+                                    {
+                                        data: 'region-string',
+                                        title: 'coordinates',
+                                        render: function (data, type, row, meta) {
+                                            return '<a target="_blank" href="https://igv.org/app/?genome={{ result.result['organism'] }}&locus=' + data + '">' + data + '</a>';
+                                        }
+                                    },
+                                    {data: 'distance', title: 'distance'}
+                                ],
+                                searching: false,
+                                lengthChange: false,
+                                bInfo: false,
+                                pagingType: "numbers",
+                                destroy: true
+                            });
+                            $('#modal-off-targets').modal('show');
+                        });
+                    });
                 });
             </script>
         {% endif %}
