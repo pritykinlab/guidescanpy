@@ -1,4 +1,3 @@
-import itertools
 from Bio import SeqIO
 import argparse
 
@@ -138,15 +137,17 @@ def output_kmer(prefix, chrm_name, kmer):
 
 def output(fasta_file, args):
     print("id,sequence,pam,chromosome,position,sense")
+    kmers_count = 0
     for record in SeqIO.parse(fasta_file, "fasta"):
         if len(record) < args.min_chr_length:
             continue
-
-        for kmer in itertools.islice(
-            find_all_kmers(args.pam, args.kmer_length, record.seq, end=not args.start),
-            args.max_kmers,
+        for kmer in find_all_kmers(
+            args.pam, args.kmer_length, record.seq, end=not args.start
         ):
+            kmers_count += 1
             output_kmer(args.prefix, record.name, kmer)
+            if kmers_count >= args.max_kmers:
+                return
 
 
 def main(args):
