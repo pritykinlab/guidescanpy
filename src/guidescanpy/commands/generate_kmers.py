@@ -1,5 +1,4 @@
-import sys
-
+import itertools
 from Bio import SeqIO
 import argparse
 
@@ -8,8 +7,6 @@ def get_parser(parser):
     parser.add_argument(
         "fasta", type=str, help="FASTA file to use as a reference for kmer generation."
     )
-
-    parser.add_argument("--output", help="Output file of the generated kmers.")
 
     parser.add_argument(
         "--pam", help="Protospacer adjacent motif to match.", default="NGG"
@@ -34,6 +31,13 @@ def get_parser(parser):
         "--start",
         help="Match PAM at start of kmer instead at end (default).",
         action="store_true",
+    )
+
+    parser.add_argument(
+        "--max-kmers",
+        help="Maximum number of kmers to generate (no limit by default).",
+        type=int,
+        default=None,
     )
 
     return parser
@@ -138,8 +142,9 @@ def output(fasta_file, args):
         if len(record) < args.min_chr_length:
             continue
 
-        for kmer in find_all_kmers(
-            args.pam, args.kmer_length, record.seq, end=not args.start
+        for kmer in itertools.islice(
+            find_all_kmers(args.pam, args.kmer_length, record.seq, end=not args.start),
+            args.max_kmers,
         ):
             output_kmer(args.prefix, record.name, kmer)
 
@@ -150,11 +155,4 @@ def main(args):
     )
     args = get_parser(parser).parse_args(args)
     fasta_file = args.fasta
-    output_file = getattr(args, "output", None)
-    if output_file is None:
-        output(fasta_file, args)
-    else:
-        with open(output_file, "w") as file:
-            sys.stdout = file
-            output(fasta_file, args)
-            sys.stdout = sys.__stdout__
+    output(fasta_file, args)

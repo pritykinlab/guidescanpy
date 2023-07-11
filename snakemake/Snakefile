@@ -109,7 +109,7 @@ rule generate_kmers:
     output: f"{OUTPUT_DIR}/kmers/{{organism}}.csv"
     shell:
         """
-        guidescanpy generate-kmers {input[0]} > {output}
+        guidescanpy generate-kmers {input[0]} --max-kmers 100 > {output}
     """
 
 
