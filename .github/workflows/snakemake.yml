@@ -46,10 +46,6 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
-      - name: Install package with extras
-        run: |
-          python -m pip install .[dev,web]
-
       - name: Snakemake
         uses: snakemake/snakemake-github-action@v1
         with:
