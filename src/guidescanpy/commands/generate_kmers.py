@@ -146,7 +146,7 @@ def output(fasta_file, args):
         ):
             kmers_count += 1
             output_kmer(args.prefix, record.name, kmer)
-            if kmers_count >= args.max_kmers:
+            if args.max_kmers is not None and kmers_count >= args.max_kmers:
                 return
 
 
