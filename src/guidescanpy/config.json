@@ -97,7 +97,7 @@
         "cas9": "TACAAAAGACTTGAGAAAGT\nAATCTAAAACTAGGTGATTT"
       }
     },
-    "db": "host=localhost dbname=guidescan user=scott password=tiger",
+    "db": "host=postgres dbname=guidescan user=scott password=tiger",
     "cachedir": "/tmp"
   },
   "flask": {
