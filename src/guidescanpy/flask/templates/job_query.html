@@ -43,7 +43,7 @@
                                        href="{{ url_for('job_query.result', format='csv', job_id=result.task_id) }}">as
                                         csv..</a>
                                     <a class="dropdown-item"
-                                       href="{{ url_for('job_query.result', format='csv-offtarget', job_id=result.task_id) }}">as
+                                       href="{{ url_for('job_query.result', format='csv', job_id=result.task_id, offtarget=True) }}">as
                                         csv (off-target info included)..</a>
                                     <a class="dropdown-item"
                                        href="{{ url_for('job_query.result', format='bed', job_id=result.task_id) }}">as
