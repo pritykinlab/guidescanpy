@@ -72,6 +72,8 @@ rule install_guidescanpy:
 
 
 rule init_db:
+    input:
+        guidescanpy = rules.install_guidescanpy.output
     output: f"{OUTPUT_DIR}/job_status/init_db.txt"
     shell: """
     touch {output}
@@ -83,7 +85,6 @@ rule add_organism:
     input:
         gtf_gz = rules.download_annotations.output,
         chr2acc = rules.download_chr2acc.output,
-        guidescanpy = rules.install_guidescanpy.output,
         init_db = rules.init_db.output
     params:
         organism = lambda wildcards: wildcards.organism
