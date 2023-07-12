@@ -1,0 +1,136 @@
+configfile: "config.json"
+threads: 1
+# -----------------------------------------------------------------------------
+# Setup
+# -----------------------------------------------------------------------------
+ORGANISMS = ["sacCer3"]
+OUTPUT_DIR = config['output_dir']
+
+shell.executable("/bin/bash")
+
+wildcard_constraints:
+    organism = "|".join(ORGANISMS)
+
+# Rules that should be run on the head node in a cluster environment
+# These typically involve web access or one time installation steps
+localrules:
+    download_sequence,
+    download_annotations,
+    download_chr2acc,
+    install_guidescan,
+    install_guidescanpy
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# Rules
+# -----------------------------------------------------------------------------
+rule all:
+    input:
+        expand(f"{OUTPUT_DIR}/bam_files/{{organism}}.bam", organism=ORGANISMS),
+        expand(f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt",organism=ORGANISMS)
+
+
+rule download_sequence:
+    params:
+        organism_url = lambda wildcards: config[wildcards.organism]['fna']
+    output: f"{OUTPUT_DIR}/raw/{{organism}}.fna.gz",
+            f"{OUTPUT_DIR}/raw/{{organism}}.fna"
+    shell: """
+        wget -O {output[0]} {params.organism_url}
+        gunzip -c {output[0]} > {output[1]}
+        """
+
+
+rule download_annotations:
+    params:
+        organism_url = lambda wildcards: config[wildcards.organism]['gtf']
+    output: f"{OUTPUT_DIR}/raw/{{organism}}.gtf.gz"
+    shell:
+        "wget -O {output} {params.organism_url}"
+
+
+rule download_chr2acc:
+    params:
+        organism_url = lambda wildcards: config[wildcards.organism]['chr2acc'] # can it be improved?
+    output: f"{OUTPUT_DIR}/raw/{{organism}}"
+    shell: "wget -O {output} {params.organism_url}" # Wildcard?
+
+
+rule install_guidescan:
+    output: f"{OUTPUT_DIR}/job_status/guidescan.txt"
+    shell: """
+    touch {output}
+    conda install -c bioconda guidescan
+    """
+
+rule install_guidescanpy:
+    output: f"{OUTPUT_DIR}/job_status/guidescanpy.txt"
+    shell: """
+    touch {output}
+    pip install -e ..[web]
+    """
+
+
+rule init_db:
+    input:
+        guidescanpy = rules.install_guidescanpy.output
+    output: f"{OUTPUT_DIR}/job_status/init_db.txt"
+    shell: """
+    touch {output}
+    guidescanpy init-db
+    """
+
+
+rule add_organism:
+    input:
+        gtf_gz = rules.download_annotations.output,
+        chr2acc = rules.download_chr2acc.output,
+        init_db = rules.init_db.output
+    params:
+        organism = lambda wildcards: wildcards.organism
+    output: f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt"
+    shell: """
+    touch {output}
+    guidescanpy add-organism {params.organism} {input[0]} {input[1]}
+    """
+
+
+rule guidescan_index:
+    input: rules.download_sequence.output[1],
+            rules.install_guidescan.output
+    output: f"{OUTPUT_DIR}/index/{{organism}}.fna.index.gs"
+    params:
+            f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.forward",
+            f"{OUTPUT_DIR}/index/{{organism}}.fna.index.forward",
+            f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.reverse",
+            f"{OUTPUT_DIR}/index/{{organism}}.fna.index.reverse",
+            f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.gs"
+    shell:
+        """
+        guidescan index {input[0]}
+        mv {params[4]} {output}
+        mv {params[0]} {params[1]}
+        mv {params[2]} {params[3]}
+    """
+
+rule generate_kmers:
+    input: rules.download_sequence.output[1],
+            rules.install_guidescanpy.output
+    output: f"{OUTPUT_DIR}/kmers/{{organism}}.csv"
+    shell:
+        """
+        guidescanpy generate-kmers {input[0]} --max-kmers 100 > {output}
+    """
+
+
+rule guidescan_enumerate:
+    input: rules.guidescan_index.output,
+            rules.generate_kmers.output
+    output: f"{OUTPUT_DIR}/bam_files/{{organism}}.bam"
+    params: index_file = f"{OUTPUT_DIR}/index/{{organism}}.fna.index"
+    shell:
+        """
+
+        guidescan enumerate {params.index_file} --kmers-file {input[1]} --output {output}
+    """
+# -----------------------------------------------------------------------------

@@ -7,7 +7,8 @@ name = "guidescanpy"
 dynamic = ["version"]
 authors = [
   { name="Henry Schmidt", email="henri.schmidt@princeton.edu" },
-  { name="Vineet Bansal", email="vineetb@princeton.edu" }
+  { name="Vineet Bansal", email="vineetb@princeton.edu" },
+  { name="Yiran Zhu", email="islezhu@gmail.com" }
 ]
 description = "GuideScan is a tool for genome-wide CRISPR guide RNA (gRNA) design and analysis in custom genomes."
 readme = "README.md"
@@ -22,6 +23,7 @@ dependencies = [
 
 [project.optional-dependencies]
 web = [
+    "biopython",
     "celery",
     "Flask",
     "flower",
@@ -31,10 +33,10 @@ web = [
     "psycopg2-binary",
     "pysam",
     "Redis",
+    "snakemake",
     "werkzeug"
 ]
 dev = [
-    "biopython",
     "build",
     "pre-commit",
     "pyright",

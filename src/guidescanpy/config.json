@@ -1,7 +1,7 @@
 {
   "guidescan": {
     "bin": "guidescan",
-    "grna_database_path_prefix": "{BAMS_PATH}",
+    "grna_database_path_prefix": "{BAM_PATH}",
     "grna_database_path_map": {
       "ce11": {
         "cas9": "cas9/ce11.bam.sorted",
@@ -25,7 +25,7 @@
         "cas9": "cas9/rn6.bam.sorted"
       },
       "sacCer3": {
-        "cas9": "sacCer3/cas9/sacCer3.bam.sorted"
+        "cas9": "cas9/sacCer3.bam.sorted"
       }
     },
     "example_queries": {
@@ -55,7 +55,7 @@
       }
     },
 
-    "index_files_path_prefix": "/media/vineetb/T7/guidescan/ec2/assemblies",
+    "index_files_path_prefix": "{INDEX_PATH}",
     "index_files_path_map": {
       "ce11": "ce11.index",
       "dm6": "dm6.index",
@@ -63,7 +63,7 @@
       "mm10": "mm10.index",
       "mm39": "mm39.index",
       "rn6": "rn6.index",
-      "sacCer3": "sacCer3/index/GCF_000146045.2_R64_genomic.fna.index"
+      "sacCer3": "sacCer3.index"
     },
     "grna_db_offset_map": {
       "hg38:cas9": 1,
@@ -97,7 +97,7 @@
         "cas9": "TACAAAAGACTTGAGAAAGT\nAATCTAAAACTAGGTGATTT"
       }
     },
-    "db": "host=localhost dbname=guidescan user=scott password=tiger",
+    "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}",
     "cachedir": "/tmp",
     "region_size_limit": 1e7
   },
@@ -113,29 +113,11 @@
     "backend": "redis://localhost",
     "eager": false
   },
-  "logging_": {
-    "version": 1,
-    "formatters": {
-      "simple_formatter": {
-        "format": "%(asctime)s %(levelname)-8s - %(message)s",
-        "datefmt": "%Y/%m/%d %H:%M:%S"
-      }
-    },
-    "handlers": {
-      "console": {
-        "class": "logging.StreamHandler",
-        "formatter": "simple_formatter",
-        "level": "DEBUG",
-        "stream": "ext://sys.stdout"
-      }
-    },
-    "loggers": {
-      "guidescan": {
-        "level": "DEBUG",
-        "handlers": [
-          "console"
-        ]
-      }
+  "pytest": {
+    "astring": "foo",
+    "abool": true,
+    "nested": {
+      "aint": 42
     }
   }
 }

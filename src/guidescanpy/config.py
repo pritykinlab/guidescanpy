@@ -1,4 +1,5 @@
 import functools
+import os
 from types import SimpleNamespace
 from copy import deepcopy
 import json
@@ -32,9 +33,18 @@ class Config:
             self.config.namespace = self._original_namespace
 
     def __init__(self, json_string):
-        self.namespace = json.loads(
-            json_string, object_hook=lambda d: SimpleNamespace(**d)
-        )
+        def object_hook(d):
+            value_dict = {}
+            for k, v in d.items():
+                if isinstance(v, str):
+                    try:
+                        v = v.format(**os.environ)
+                    except KeyError:
+                        pass
+                value_dict[k] = v
+            return SimpleNamespace(**value_dict)
+
+        self.namespace = json.loads(json_string, object_hook=object_hook)
         self.namespace.json = json.loads(json_string)
 
     def __getattr__(self, item):

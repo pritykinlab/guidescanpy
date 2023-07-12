@@ -3,7 +3,8 @@ import logging
 from intervaltree import IntervalTree
 from functools import cache
 import psycopg2
-from psycopg2 import sql, OperationalError
+from psycopg2 import sql, OperationalError, errorcodes
+from psycopg2.errors import IntegrityError
 from psycopg2.extras import DictCursor, RealDictCursor
 from guidescanpy import config
 
@@ -25,8 +26,18 @@ def insert_chromosome_query(**kwargs):
     conn = get_connection()
     query = "INSERT INTO chromosomes (accession, name, organism) VALUES (%s, %s, %s)"
     cur = conn.cursor()
-    cur.execute(query, (kwargs["accession"], kwargs["name"], kwargs["organism"]))
-    conn.commit()
+    try:
+        cur.execute(query, (kwargs["accession"], kwargs["name"], kwargs["organism"]))
+        conn.commit()
+    except IntegrityError as e:
+        if e.pgcode == errorcodes.UNIQUE_VIOLATION:
+            print(
+                "Unique constraint violation occurred:",
+                f"Chromosome {kwargs['accession']} already exists.",
+            )
+            conn.rollback()
+        else:
+            raise e
     cur.close()
 
 
@@ -34,18 +45,28 @@ def insert_gene_query(**kwargs):
     conn = get_connection()
     query = "INSERT INTO genes (entrez_id, gene_symbol, chromosome, sense, start_pos, end_pos) VALUES (%s, %s, %s, %s, %s, %s)"
     cur = conn.cursor()
-    cur.execute(
-        query,
-        (
-            kwargs["entrez_id"],
-            kwargs["gene_symbol"],
-            kwargs["chromosome"],
-            kwargs["sense"],
-            kwargs["start_pos"],
-            kwargs["end_pos"],
-        ),
-    )
-    conn.commit()
+    try:
+        cur.execute(
+            query,
+            (
+                kwargs["entrez_id"],
+                kwargs["gene_symbol"],
+                kwargs["chromosome"],
+                kwargs["sense"],
+                kwargs["start_pos"],
+                kwargs["end_pos"],
+            ),
+        )
+        conn.commit()
+    except IntegrityError as e:
+        if e.pgcode == errorcodes.UNIQUE_VIOLATION:
+            print(
+                "Unique constraint violation occurred:",
+                f"Gene {kwargs['gene_symbol']} already exists.",
+            )
+            conn.rollback()
+        else:
+            raise e
     cur.close()
 
 
@@ -53,19 +74,29 @@ def insert_exon_query(**kwargs):
     conn = get_connection()
     query = "INSERT INTO exons (entrez_id, exon_number, chromosome, product, sense, start_pos, end_pos) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     cur = conn.cursor()
-    cur.execute(
-        query,
-        (
-            kwargs["entrez_id"],
-            kwargs["exon_number"],
-            kwargs["chromosome"],
-            kwargs["product"],
-            kwargs["sense"],
-            kwargs["start_pos"],
-            kwargs["end_pos"],
-        ),
-    )
-    conn.commit()
+    try:
+        cur.execute(
+            query,
+            (
+                kwargs["entrez_id"],
+                kwargs["exon_number"],
+                kwargs["chromosome"],
+                kwargs["product"],
+                kwargs["sense"],
+                kwargs["start_pos"],
+                kwargs["end_pos"],
+            ),
+        )
+        conn.commit()
+    except IntegrityError as e:
+        if e.pgcode == errorcodes.UNIQUE_VIOLATION:
+            print(
+                "Unique constraint violation occurred:",
+                f"Exon {kwargs['entrez_id']} already exists.",
+            )
+            conn.rollback()
+        else:
+            raise e
     cur.close()
 
 

@@ -1,0 +1,59 @@
+name: Snakemake
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  run_snakemake:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10']
+      fail-fast: false
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: scott
+          POSTGRES_PASSWORD: tiger
+          POSTGRES_DB: guidescan
+
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Upgrade setuptools
+        run: |
+          pip3 install wheel --upgrade
+          pip3 install setuptools --upgrade
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Snakemake
+        uses: snakemake/snakemake-github-action@v1
+        with:
+          directory: 'snakemake'
+          snakefile: 'snakemake/Snakefile'
+          args: '--cores 1'
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_DB: guidescan
+          POSTGRES_USER: scott
+          POSTGRES_PASSWORD: tiger
