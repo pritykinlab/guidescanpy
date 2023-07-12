@@ -4,12 +4,10 @@ services:
   db:
     container_name: guidescan_db
     image: postgres:13-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=scott
-      - POSTGRES_PASSWORD=tiger
-      - POSTGRES_DB=guidescan
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - "5433:5432"
 
@@ -29,14 +27,16 @@ services:
       - CELERY_BROKER=redis://guidescan_redis
       - CELERY_BACKEND=redis://guidescan_redis
       - POSTGRES_HOST=host.docker.internal
-      - POSTGRES_DB=guidescan
-      - POSTGRES_USER=scott
-      - POSTGRES_PASSWORD=tiger
-      - BAMS_PATH=/bam_dbs/
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - BAM_PATH=/bams/
+      - INDEX_PATH=/indices/
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
     volumes:
-      - /media/vineetb/t5/ec2/guidescan/guidescan2_dbs/:/bam_dbs/
+      - ${BAM_PATH}:/bams/
+      - ${INDEX_PATH}:/indices/
 
   flower:
     container_name: guidescan_flower
@@ -46,42 +46,43 @@ services:
       - CELERY_BROKER=redis://guidescan_redis
       - CELERY_BACKEND=redis://guidescan_redis
       - POSTGRES_HOST=host.docker.internal
-      - POSTGRES_DB=guidescan
-      - POSTGRES_USER=scott
-      - POSTGRES_PASSWORD=tiger
-      - BAMS_PATH=/bam_dbs/
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - BAM_PATH=/bams/
+      - INDEX_PATH=/indices/
     ports:
-      - "5001:5001"
-    command: python -m celery -A guidescanpy.tasks.app flower --port=5001
+      - "5555:5555"
+    command: python -m celery -A guidescanpy.tasks.app flower --port=5555
     depends_on:
       - celery
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
     volumes:
-      - /media/vineetb/t5/ec2/guidescan/guidescan2_dbs/:/bam_dbs/
+      - ${BAM_PATH}:/bams/
+      - ${INDEX_PATH}:/indices/
 
   app:
+    container_name: guidescan_app
     build: .
     image: guidescan_app
     depends_on:
       - db
       - flower
     ports:
-      - "80:5000"
+      - "5001:5001"
     command: python -m guidescanpy web
     environment:
       - CELERY_BROKER=redis://guidescan_redis
       - CELERY_BACKEND=redis://guidescan_redis
       - POSTGRES_HOST=host.docker.internal
-      - POSTGRES_DB=guidescan
-      - POSTGRES_USER=scott
-      - POSTGRES_PASSWORD=tiger
-      - BAMS_PATH=/bam_dbs/
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - BAM_PATH=/bams/
+      - INDEX_PATH=/indices/
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
     volumes:
-      - /media/vineetb/t5/ec2/guidescan/guidescan2_dbs/:/bam_dbs/
-
-volumes:
-  postgres_data:
-  bam_dbs:
+      - ${BAM_PATH}:/bams/
+      - ${INDEX_PATH}:/indices/
