@@ -10,22 +10,25 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - "5433:5432"
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER}
 
   init_db:
     container_name: guidescan_init_db
     build: .
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     command: bash -c "
-          guidescanpy init-db
-          && wget -O data/raw/sacCer3.gtf.gz https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.gtf.gz
-          && wget -O data/raw/sacCer3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc
-          && guidescanpy add-organism sacCer3 data/raw/sacCer3.gtf.gz data/raw/sacCer3
+      guidescanpy init-db
+      && wget -O data/raw/sacCer3.gtf.gz https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.gtf.gz
+      && wget -O data/raw/sacCer3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc
+      && guidescanpy add-organism sacCer3 data/raw/sacCer3.gtf.gz data/raw/sacCer3
       "
     environment:
       - CELERY_BROKER=redis://guidescan_redis
       - CELERY_BACKEND=redis://guidescan_redis
-      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_HOST=guidescan_db
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -36,18 +39,24 @@ services:
     container_name: guidescan_redis
     image: redis:4.0.5-alpine
     command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   celery:
     container_name: guidescan_celery
     build: .
     image: guidescan
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     command: python -m celery -A guidescanpy.tasks.app worker -l INFO
     environment:
       - CELERY_BROKER=redis://guidescan_redis
       - CELERY_BACKEND=redis://guidescan_redis
-      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_HOST=guidescan_db
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -66,7 +75,7 @@ services:
     environment:
       - CELERY_BROKER=redis://guidescan_redis
       - CELERY_BACKEND=redis://guidescan_redis
-      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_HOST=guidescan_db
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -89,14 +98,13 @@ services:
     image: guidescan_app
     depends_on:
       - init_db
-      - flower
     ports:
       - "5001:5001"
     command: python -m guidescanpy web
     environment:
       - CELERY_BROKER=redis://guidescan_redis
       - CELERY_BACKEND=redis://guidescan_redis
-      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_HOST=guidescan_db
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
