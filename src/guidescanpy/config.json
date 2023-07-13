@@ -109,8 +109,8 @@
     "SERVER_NAME": "127.0.0.1:5001"
   },
   "celery": {
-    "broker": "redis://localhost",
-    "backend": "redis://localhost",
+    "broker": "{CELERY_BROKER}",
+    "backend": "{CELERY_BACKEND}",
     "eager": false
   },
   "pytest": {
