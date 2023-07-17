@@ -4,6 +4,7 @@
     "cas9": "NGG",
     "cpf1": "TTTN"
   },
+  "organisms": ["sacCer3"],
   "sacCer3": {
     "fna": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.fna.gz",
     "gtf": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.gtf.gz",

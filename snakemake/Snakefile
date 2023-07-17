@@ -3,7 +3,7 @@ threads: 1
 # -----------------------------------------------------------------------------
 # Setup
 # -----------------------------------------------------------------------------
-ORGANISMS = ["sacCer3"]
+ORGANISMS = config["organisms"]
 ENZYMES = ["cas9", "cpf1"]
 OUTPUT_DIR = config['output_dir']
 
