@@ -1,9 +1,42 @@
 {
-  "output_dir": "data",
-
+  "output_dir": "../data",
+  "pams": {
+    "cas9": "NGG",
+    "cpf1": "TTTN"
+  },
   "sacCer3": {
     "fna": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.fna.gz",
     "gtf": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.gtf.gz",
     "chr2acc": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc"
+  },
+  "hg38": {
+    "fna": "",
+    "gtf": "",
+    "chr2acc": ""
+  },
+  "ce11": {
+    "fna": "",
+    "gtf": "",
+    "chr2acc": ""
+  },
+  "dm6": {
+    "fna": "",
+    "gtf": "",
+    "chr2acc": ""
+  },
+  "mm10": {
+    "fna": "",
+    "gtf": "",
+    "chr2acc": ""
+  },
+  "mm39": {
+    "fna": "",
+    "gtf": "",
+    "chr2acc": ""
+  },
+  "rn6": {
+    "fna": "",
+    "gtf": "",
+    "chr2acc": ""
   }
 }

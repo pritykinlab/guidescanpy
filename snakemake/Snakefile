@@ -4,6 +4,7 @@ threads: 1
 # Setup
 # -----------------------------------------------------------------------------
 ORGANISMS = ["sacCer3"]
+ENZYMES = ["cas9", "cpf1"]
 OUTPUT_DIR = config['output_dir']
 
 shell.executable("/bin/bash")
@@ -26,7 +27,7 @@ localrules:
 # -----------------------------------------------------------------------------
 rule all:
     input:
-        expand(f"{OUTPUT_DIR}/bam_files/{{organism}}.bam", organism=ORGANISMS),
+        expand(f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted", organism=ORGANISMS, enzyme=ENZYMES),
         expand(f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt",organism=ORGANISMS)
 
 
@@ -98,12 +99,12 @@ rule add_organism:
 rule guidescan_index:
     input: rules.download_sequence.output[1],
             rules.install_guidescan.output
-    output: f"{OUTPUT_DIR}/index/{{organism}}.fna.index.gs"
+    output: f"{OUTPUT_DIR}/indices/{{organism}}/{{organism}}.fna.index.gs"
     params:
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.forward",
-            f"{OUTPUT_DIR}/index/{{organism}}.fna.index.forward",
+            f"{OUTPUT_DIR}/indices/{{organism}}/{{organism}}.fna.index.forward",
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.reverse",
-            f"{OUTPUT_DIR}/index/{{organism}}.fna.index.reverse",
+            f"{OUTPUT_DIR}/indices/{{organism}}/{{organism}}.fna.index.reverse",
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.gs"
     shell:
         """
@@ -116,21 +117,23 @@ rule guidescan_index:
 rule generate_kmers:
     input: rules.download_sequence.output[1],
             rules.install_guidescanpy.output
-    output: f"{OUTPUT_DIR}/kmers/{{organism}}.csv"
+    output: f"{OUTPUT_DIR}/kmers/{{enzyme}}/{{organism}}.csv"
+    params: pam = lambda wildcards: config['pams'][wildcards.enzyme]
     shell:
         """
-        guidescanpy generate-kmers {input[0]} --max-kmers 100 > {output}
+        guidescanpy generate-kmers {input[0]} --max-kmers 100000 --pam {params.pam} > {output}
     """
 
 
 rule guidescan_enumerate:
     input: rules.guidescan_index.output,
             rules.generate_kmers.output
-    output: f"{OUTPUT_DIR}/bam_files/{{organism}}.bam"
-    params: index_file = f"{OUTPUT_DIR}/index/{{organism}}.fna.index"
+    output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
+    params: index_file = f"{OUTPUT_DIR}/indices/{{organism}}/{{organism}}.fna.index",
+            sam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam",
     shell:
         """
-
-        guidescan enumerate {params.index_file} --kmers-file {input[1]} --output {output}
-    """
+        guidescan enumerate {params.index_file} --kmers-file {input[1]} --output {params.sam_file} --format sam
+        samtools sort {params.sam_file} > {output[0]}
+        """
 # -----------------------------------------------------------------------------
