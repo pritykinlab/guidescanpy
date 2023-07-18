@@ -32,7 +32,6 @@ web = [
     "pandas",
     "psycopg2-binary",
     "pysam",
-    "samtools",
     "Redis",
     "snakemake",
     "werkzeug"

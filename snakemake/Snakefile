@@ -121,19 +121,27 @@ rule generate_kmers:
     params: pam = lambda wildcards: config['pams'][wildcards.enzyme]
     shell:
         """
-        guidescanpy generate-kmers {input[0]} --max-kmers 100000 --pam {params.pam} > {output}
+        guidescanpy generate-kmers --max-kmers 10000 {input[0]} --pam {params.pam} > {output}
     """
 
 
 rule guidescan_enumerate:
     input: rules.guidescan_index.output,
             rules.generate_kmers.output
-    output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
+    output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam"
     params: index_file = f"{OUTPUT_DIR}/indices/{{organism}}/{{organism}}.fna.index",
-            sam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam",
     shell:
         """
-        guidescan enumerate {params.index_file} --kmers-file {input[1]} --output {params.sam_file} --format sam
-        samtools sort {params.sam_file} > {output[0]}
+        guidescan enumerate {params.index_file} --kmers-file {input[1]} --output {output} --format sam
+        """
+
+
+rule add_sam_ce:
+    input: rules.guidescan_enumerate.output
+    output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
+    shell:
+        """
+        guidescanpy add-sam-tag {input} --ce -o {output}
+        python -c "import pysam; pysam.sort('-o', '{output}', '{output}'); pysam.index('{output}')"
         """
 # -----------------------------------------------------------------------------
