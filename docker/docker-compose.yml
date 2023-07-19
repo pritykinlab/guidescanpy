@@ -1,0 +1,116 @@
+version: "3.8"
+
+services:
+  guidescan_db:
+    container_name: guidescan_db
+    image: postgres:13-alpine
+    volumes:
+      - guidescan_postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+
+  guidescan_snakemake:
+    container_name: guidescan_snakemake
+    build: .
+    depends_on:
+      guidescan_db:
+        condition: service_healthy
+    volumes:
+      - guidescan_data:/data
+    environment:
+    # No '--use-conda' flag used in snakemake since our Dockerfile bootstraps the environment with env.yaml anyway
+    command: snakemake --cores 1 --config output_dir="/data"
+    environment:
+      - POSTGRES_HOST=guidescan_db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+  guidescan_redis:
+    container_name: guidescan_redis
+    image: redis:4.0.5-alpine
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  guidescan_celery:
+    container_name: guidescan_celery
+    build: .
+    depends_on:
+      guidescan_redis:
+        condition: service_healthy
+    volumes:
+      - guidescan_data:/data
+    command: python -m celery -A guidescanpy.tasks.app worker -l INFO
+    environment:
+      - CELERY_BROKER=redis://guidescan_redis
+      - CELERY_BACKEND=redis://guidescan_redis
+      - POSTGRES_HOST=guidescan_db
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - BAM_PATH=/data/bams/
+      - INDEX_PATH=/data/indices/
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+
+  guidescan_flower:
+    container_name: guidescan_flower
+    build: .
+    ports:
+      - "5555:5555"
+    depends_on:
+      guidescan_redis:
+        condition: service_healthy
+    volumes:
+      - guidescan_data:/data
+    command: python -m celery -A guidescanpy.tasks.app flower --port=5555
+    environment:
+      - CELERY_BROKER=redis://guidescan_redis
+      - CELERY_BACKEND=redis://guidescan_redis
+      - POSTGRES_HOST=guidescan_db
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - BAM_PATH=/data/bams/
+      - INDEX_PATH=/data/indices/
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+
+  guidescan_app:
+    container_name: guidescan_app
+    build: .
+    ports:
+      - "5001:5001"
+    depends_on:
+      guidescan_snakemake:
+        condition: service_completed_successfully
+      guidescan_redis:
+        condition: service_healthy
+    volumes:
+      - guidescan_data:/data
+    command: python -m guidescanpy web
+    environment:
+      - CELERY_BROKER=redis://guidescan_redis
+      - CELERY_BACKEND=redis://guidescan_redis
+      - POSTGRES_HOST=guidescan_db
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - BAM_PATH=/data/bams/
+      - INDEX_PATH=/data/indices/
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+
+volumes:
+  guidescan_data:
+  guidescan_postgres_data:

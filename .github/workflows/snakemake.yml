@@ -56,7 +56,7 @@ jobs:
 
       - name: Snakemake
         run: |
-          cd snakemake
+          cd docker/snakemake
           snakemake --cores 1 --use-conda --conda-frontend conda
         env:
           POSTGRES_HOST: localhost
