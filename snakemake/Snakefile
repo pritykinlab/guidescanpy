@@ -99,12 +99,12 @@ rule add_organism:
 rule guidescan_index:
     input: rules.download_sequence.output[1],
             rules.install_guidescan.output
-    output: f"{OUTPUT_DIR}/indices/{{organism}}/{{organism}}.fna.index.gs"
+    output: f"{OUTPUT_DIR}/indices/{{organism}}.fna.index.gs"
     params:
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.forward",
-            f"{OUTPUT_DIR}/indices/{{organism}}/{{organism}}.fna.index.forward",
+            f"{OUTPUT_DIR}/indices/{{organism}}.fna.index.forward",
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.reverse",
-            f"{OUTPUT_DIR}/indices/{{organism}}/{{organism}}.fna.index.reverse",
+            f"{OUTPUT_DIR}/indices/{{organism}}.fna.index.reverse",
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.gs"
     shell:
         """
