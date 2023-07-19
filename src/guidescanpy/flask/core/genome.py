@@ -272,7 +272,9 @@ class GenomeStructure:
                     off_targets_by_distance[dist] += 1
 
                 cutting_efficiency = specificity = None
-                if read.has_tag("ds"):
+                if read.has_tag("ce"):  # new guidescan BAM format
+                    cutting_efficiency = read.get_tag("ce")
+                elif read.has_tag("ds"):  # old guidescan BAM format
                     cutting_efficiency = read.get_tag("ds")
                 if read.has_tag("sp"):  # new guidescan BAM format
                     specificity = read.get_tag("sp")

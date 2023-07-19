@@ -5,8 +5,9 @@ from guidescanpy.commands.decode import main as decode  # noqa: F401
 from guidescanpy.commands.generate_kmers import main as generate_kmers  # noqa: F401
 from guidescanpy.commands.add_organism import main as add_organism  # noqa: F401
 from guidescanpy.commands.init_db import main as init_db  # noqa: F401
+from guidescanpy.commands.add_tag import main as add_tag  # noqa: F401
 
-commands = ("web", "decode", "generate-kmers", "init-db", "add-organism")
+commands = ("web", "decode", "generate-kmers", "init-db", "add-organism", "add-tag")
 
 
 def print_usage():

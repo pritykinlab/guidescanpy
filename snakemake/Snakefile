@@ -3,7 +3,8 @@ threads: 1
 # -----------------------------------------------------------------------------
 # Setup
 # -----------------------------------------------------------------------------
-ORGANISMS = ["sacCer3"]
+ORGANISMS = config["organisms"]
+ENZYMES = ["cas9", "cpf1"]
 OUTPUT_DIR = config['output_dir']
 
 shell.executable("/bin/bash")
@@ -16,9 +17,7 @@ wildcard_constraints:
 localrules:
     download_sequence,
     download_annotations,
-    download_chr2acc,
-    install_guidescan,
-    install_guidescanpy
+    download_chr2acc
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
@@ -26,7 +25,7 @@ localrules:
 # -----------------------------------------------------------------------------
 rule all:
     input:
-        expand(f"{OUTPUT_DIR}/bam_files/{{organism}}.bam", organism=ORGANISMS),
+        expand(f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted", organism=ORGANISMS, enzyme=ENZYMES),
         expand(f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt",organism=ORGANISMS)
 
 
@@ -52,28 +51,12 @@ rule download_annotations:
 rule download_chr2acc:
     params:
         organism_url = lambda wildcards: config[wildcards.organism]['chr2acc'] # can it be improved?
-    output: f"{OUTPUT_DIR}/raw/{{organism}}"
+    output: f"{OUTPUT_DIR}/raw/{{organism}}_chr2acc"
     shell: "wget -O {output} {params.organism_url}" # Wildcard?
 
 
-rule install_guidescan:
-    output: f"{OUTPUT_DIR}/job_status/guidescan.txt"
-    shell: """
-    touch {output}
-    conda install -c bioconda guidescan
-    """
-
-rule install_guidescanpy:
-    output: f"{OUTPUT_DIR}/job_status/guidescanpy.txt"
-    shell: """
-    touch {output}
-    pip install -e ..[web]
-    """
-
-
 rule init_db:
-    input:
-        guidescanpy = rules.install_guidescanpy.output
+    conda: "env.yaml"
     output: f"{OUTPUT_DIR}/job_status/init_db.txt"
     shell: """
     touch {output}
@@ -82,6 +65,7 @@ rule init_db:
 
 
 rule add_organism:
+    conda: "env.yaml"
     input:
         gtf_gz = rules.download_annotations.output,
         chr2acc = rules.download_chr2acc.output,
@@ -96,41 +80,54 @@ rule add_organism:
 
 
 rule guidescan_index:
-    input: rules.download_sequence.output[1],
-            rules.install_guidescan.output
-    output: f"{OUTPUT_DIR}/index/{{organism}}.fna.index.gs"
+    conda: "env.yaml"
+    input: rules.download_sequence.output[1]
+    output: f"{OUTPUT_DIR}/indices/{{organism}}.fna.index.gs"
     params:
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.forward",
-            f"{OUTPUT_DIR}/index/{{organism}}.fna.index.forward",
+            f"{OUTPUT_DIR}/indices/{{organism}}.fna.index.forward",
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.reverse",
-            f"{OUTPUT_DIR}/index/{{organism}}.fna.index.reverse",
+            f"{OUTPUT_DIR}/indices/{{organism}}.fna.index.reverse",
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.gs"
     shell:
         """
-        guidescan index {input[0]}
+        guidescan index {input}
         mv {params[4]} {output}
         mv {params[0]} {params[1]}
         mv {params[2]} {params[3]}
     """
 
 rule generate_kmers:
-    input: rules.download_sequence.output[1],
-            rules.install_guidescanpy.output
-    output: f"{OUTPUT_DIR}/kmers/{{organism}}.csv"
+    conda: "env.yaml"
+    input: rules.download_sequence.output[1]
+    output: f"{OUTPUT_DIR}/kmers/{{enzyme}}/{{organism}}.csv"
+    params: pam = lambda wildcards: config['pams'][wildcards.enzyme]
     shell:
         """
-        guidescanpy generate-kmers {input[0]} --max-kmers 100 > {output}
+        guidescanpy generate-kmers {input} --max-kmers 100 --pam {params.pam} > {output}
     """
 
 
 rule guidescan_enumerate:
+    conda: "env.yaml"
     input: rules.guidescan_index.output,
             rules.generate_kmers.output
-    output: f"{OUTPUT_DIR}/bam_files/{{organism}}.bam"
-    params: index_file = f"{OUTPUT_DIR}/index/{{organism}}.fna.index"
+    output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam"
+    params: index_file = f"{OUTPUT_DIR}/indices/{{organism}}.fna.index",
     shell:
         """
+        guidescan enumerate {params.index_file} --kmers-file {input[1]} --output {output} --format sam
+        """
 
-        guidescan enumerate {params.index_file} --kmers-file {input[1]} --output {output}
-    """
+
+rule add_ce:
+    conda: "env.yaml"
+    input: rules.guidescan_enumerate.output
+    output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam",
+            f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
+    shell:
+        """
+        guidescanpy add-tag ce -i {input} -o {output[0]}
+        python -c "import pysam; pysam.sort('-o', '{output[1]}', '{output[0]}'); pysam.index('{output[1]}')"
+        """
 # -----------------------------------------------------------------------------
