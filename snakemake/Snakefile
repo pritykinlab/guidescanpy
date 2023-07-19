@@ -121,6 +121,7 @@ rule guidescan_enumerate:
 
 
 rule add_ce:
+    conda: "env.yaml"
     input: rules.guidescan_enumerate.output
     output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam",
             f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
