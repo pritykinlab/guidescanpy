@@ -91,7 +91,7 @@ rule guidescan_index:
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.gs"
     shell:
         """
-        guidescan index {input[0]}
+        guidescan index {input}
         mv {params[4]} {output}
         mv {params[0]} {params[1]}
         mv {params[2]} {params[3]}
@@ -104,7 +104,7 @@ rule generate_kmers:
     params: pam = lambda wildcards: config['pams'][wildcards.enzyme]
     shell:
         """
-        guidescanpy generate-kmers {input[0]} --max-kmers 100 --pam {params.pam} > {output}
+        guidescanpy generate-kmers {input} --max-kmers 100 --pam {params.pam} > {output}
     """
 
 
