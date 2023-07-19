@@ -53,7 +53,7 @@ rule download_annotations:
 rule download_chr2acc:
     params:
         organism_url = lambda wildcards: config[wildcards.organism]['chr2acc'] # can it be improved?
-    output: f"{OUTPUT_DIR}/raw/{{organism}}"
+    output: f"{OUTPUT_DIR}/raw/{{organism}}_chr2acc"
     shell: "wget -O {output} {params.organism_url}" # Wildcard?
 
 
@@ -121,7 +121,7 @@ rule generate_kmers:
     params: pam = lambda wildcards: config['pams'][wildcards.enzyme]
     shell:
         """
-        guidescanpy generate-kmers --max-kmers 10000 {input[0]} --pam {params.pam} > {output}
+        guidescanpy generate-kmers {input[0]} --max-kmers 100 --pam {params.pam} > {output}
     """
 
 
@@ -138,10 +138,11 @@ rule guidescan_enumerate:
 
 rule add_sam_ce:
     input: rules.guidescan_enumerate.output
-    output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
+    output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam",
+            f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
     shell:
         """
-        guidescanpy add-sam-tag {input} --ce -o {output}
-        python -c "import pysam; pysam.sort('-o', '{output}', '{output}'); pysam.index('{output}')"
+        guidescanpy add-sam-tag {input} --ce -o {output[0]}
+        python -c "import pysam; pysam.sort('-o', '{output[1]}', '{output[0]}'); pysam.index('{output[1]}')"
         """
 # -----------------------------------------------------------------------------

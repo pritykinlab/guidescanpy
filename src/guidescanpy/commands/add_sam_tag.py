@@ -27,29 +27,36 @@ def get_parser(parser):
 def add_tag(tag_name, input_sam_file, output_sam_file, is_bam):
     if is_bam:
         writing_mode = "wb"
+        reading_mode = "rb"
     else:
         writing_mode = "w"
+        reading_mode = "r"
 
-    with pysam.AlignmentFile(input_sam_file, "r") as input_file, pysam.AlignmentFile(
+    with pysam.AlignmentFile(
+        input_sam_file, reading_mode
+    ) as input_file, pysam.AlignmentFile(
         output_sam_file, writing_mode, header=input_file.header
     ) as output_file:
         for read in input_file:
-            match tag_name:
-                case "ce":
-                    tag_value = get_ce_value(read)
-                case _:
-                    raise ValueError(
-                        f"Unsupported tag. The tag_name should be in {supported_tags}"
-                    )
+            tag_value = get_tag_value(tag_name, read)
             read.set_tag(tag_name, tag_value)
             output_file.write(read)
 
 
-def get_ce_value(read):
+def get_tag_value(tag_name, read):
     """
-    Write the cutting-efficiency calculation function here.
+    This is the calculation function to generate tag_value. Need 'ce' for now.
     """
-    tag_value = 1.0
+    match tag_name:
+        case "ce":
+            tag_value = 1.0
+            """
+            cutting-efficiency calculation.
+            """
+        case _:
+            raise ValueError(
+                f"Unsupported tag. The tag_name should be in {supported_tags}"
+            )
     return tag_value
 
 
