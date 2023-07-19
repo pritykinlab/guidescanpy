@@ -59,7 +59,7 @@ jobs:
           cd snakemake
           snakemake --cores 1 --use-conda --conda-frontend conda
         env:
-          POSTGRES_HOST: postgres
+          POSTGRES_HOST: localhost
           POSTGRES_DB: guidescan
           POSTGRES_USER: scott
           POSTGRES_PASSWORD: tiger
