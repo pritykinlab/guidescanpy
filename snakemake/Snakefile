@@ -136,13 +136,13 @@ rule guidescan_enumerate:
         """
 
 
-rule add_sam_ce:
+rule add_ce:
     input: rules.guidescan_enumerate.output
     output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam",
             f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
     shell:
         """
-        guidescanpy add-sam-tag {input} --ce -o {output[0]}
+        guidescanpy add-tag {input} --ce -o {output[0]}
         python -c "import pysam; pysam.sort('-o', '{output[1]}', '{output[0]}'); pysam.index('{output[1]}')"
         """
 # -----------------------------------------------------------------------------

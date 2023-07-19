@@ -13,7 +13,7 @@ def get_parser(parser):
         help="Add cutting-efficiency tag to the sam/bam file.",
     )
 
-    parser.add_argument("--output", "-o", help="Path to the output sam file.")
+    parser.add_argument("--output", "-o", help="Path to the output sam/bam file.")
 
     parser.add_argument(
         "--output-format",
@@ -24,7 +24,7 @@ def get_parser(parser):
     return parser
 
 
-def add_tag(tag_name, input_sam_file, output_sam_file, is_bam):
+def add_tag(tag_name, input_file, output_file, is_bam):
     if is_bam:
         writing_mode = "wb"
         reading_mode = "rb"
@@ -33,9 +33,9 @@ def add_tag(tag_name, input_sam_file, output_sam_file, is_bam):
         reading_mode = "r"
 
     with pysam.AlignmentFile(
-        input_sam_file, reading_mode
+        input_file, reading_mode
     ) as input_file, pysam.AlignmentFile(
-        output_sam_file, writing_mode, header=input_file.header
+        output_file, writing_mode, header=input_file.header
     ) as output_file:
         for read in input_file:
             tag_value = get_tag_value(tag_name, read)
