@@ -142,7 +142,7 @@ rule add_ce:
             f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
     shell:
         """
-        guidescanpy add-tag {input} --ce -o {output[0]}
+        guidescanpy add-tag ce -i {input} -o {output[0]}
         python -c "import pysam; pysam.sort('-o', '{output[1]}', '{output[0]}'); pysam.index('{output[1]}')"
         """
 # -----------------------------------------------------------------------------

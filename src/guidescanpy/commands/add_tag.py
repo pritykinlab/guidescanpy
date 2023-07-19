@@ -1,40 +1,39 @@
 import argparse
 import pysam
+import os.path
 
 supported_tags = ["ce"]
+supported_formats = ["sam", "bam"]
 
 
 def get_parser(parser):
-    parser.add_argument("input", type=str, help="Path to the input sam/bam file.")
-
     parser.add_argument(
-        "--ce",
-        action="store_true",
-        help="Add cutting-efficiency tag to the sam/bam file.",
+        "tags",
+        nargs="+",
+        choices=supported_tags,
+        help="List of tags to add.",
     )
-
-    parser.add_argument("--output", "-o", help="Path to the output sam/bam file.")
-
     parser.add_argument(
-        "--output-format",
-        choices=["bam", "sam"],
-        help="Specify the output file format: bam or sam",
-        default="bam",
+        "--input", "-i", type=str, help="Path to the input sam/bam file."
+    )
+    parser.add_argument(
+        "--output", "-o", type=str, help="Path to the output sam/bam file."
     )
     return parser
 
 
-def add_tag(tag_name, input_file, output_file, is_bam):
-    if is_bam:
+def add_tag(tag_name, input_file, output_file):
+    output_format = get_format(output_file)
+
+    if output_format == "bam":
         writing_mode = "wb"
-        reading_mode = "rb"
+    elif output_format == "unknown":
+        print("Unknown output format. Using default format 'bam'.")
+        writing_mode = "wb"
     else:
         writing_mode = "w"
-        reading_mode = "r"
 
-    with pysam.AlignmentFile(
-        input_file, reading_mode
-    ) as input_file, pysam.AlignmentFile(
+    with pysam.AlignmentFile(input_file) as input_file, pysam.AlignmentFile(
         output_file, writing_mode, header=input_file.header
     ) as output_file:
         for read in input_file:
@@ -60,13 +59,19 @@ def get_tag_value(tag_name, read):
     return tag_value
 
 
+def get_format(file):
+    while True:
+        file, extension = os.path.splitext(file)
+        if len(extension) == 0:
+            break
+        if extension[1:] in supported_formats:
+            return extension[1:]
+    return "unknown"
+
+
 def main(args):
     parser = argparse.ArgumentParser(description="Add tags to the sam/bam file.")
     args = get_parser(parser).parse_args(args)
-    if args.output_format == "bam":
-        is_bam = True
-    else:
-        is_bam = False
-    for tag_name in supported_tags:
-        if getattr(args, tag_name):
-            add_tag(tag_name, args.input, args.output, is_bam)
+
+    for tag_name in args.tags:
+        add_tag(tag_name, args.input, args.output)
