@@ -57,6 +57,7 @@ jobs:
 
       - name: Snakemake
         run:
+          cd snakemake
           snakemake --cores 1 --use-conda
         env:
           POSTGRES_HOST: postgres
