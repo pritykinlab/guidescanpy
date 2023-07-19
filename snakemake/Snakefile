@@ -129,7 +129,7 @@ rule guidescan_enumerate:
     input: rules.guidescan_index.output,
             rules.generate_kmers.output
     output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam"
-    params: index_file = f"{OUTPUT_DIR}/indices/{{organism}}/{{organism}}.fna.index",
+    params: index_file = f"{OUTPUT_DIR}/indices/{{organism}}.fna.index",
     shell:
         """
         guidescan enumerate {params.index_file} --kmers-file {input[1]} --output {output} --format sam
