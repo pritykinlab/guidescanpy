@@ -51,12 +51,13 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
+      - name: Install Snakemake
+        run:
+          pip3 install snakemake
+
       - name: Snakemake
-        uses: snakemake/snakemake-github-action@v1
-        with:
-          directory: 'snakemake'
-          snakefile: 'snakemake/Snakefile'
-          args: '--cores 1 --use-conda'
+        run:
+          snakemake --cores 1 --use-conda
         env:
           POSTGRES_HOST: postgres
           POSTGRES_DB: guidescan
