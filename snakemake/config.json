@@ -1,5 +1,5 @@
 {
-  "output_dir": "../data",
+  "output_dir": "data",
   "pams": {
     "cas9": "NGG",
     "cpf1": "TTTN"
