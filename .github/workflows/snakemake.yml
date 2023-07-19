@@ -56,7 +56,7 @@ jobs:
           pip3 install snakemake
 
       - name: Snakemake
-        run:
+        run: |
           cd snakemake
           snakemake --cores 1 --use-conda
         env:
