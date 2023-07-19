@@ -39,7 +39,6 @@ jobs:
       - name: Install essentials
         run: |
           sudo apt-get update && sudo apt-get install -y build-essential
-          conda install -n base -c conda-forge mamba
 
       - name: Upgrade setuptools
         run: |
@@ -58,7 +57,7 @@ jobs:
       - name: Snakemake
         run: |
           cd snakemake
-          snakemake --cores 1 --use-conda
+          snakemake --cores 1 --use-conda --conda-frontend conda
         env:
           POSTGRES_HOST: postgres
           POSTGRES_DB: guidescan
