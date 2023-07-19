@@ -51,7 +51,7 @@ jobs:
         with:
           directory: 'snakemake'
           snakefile: 'snakemake/Snakefile'
-          args: '--cores 1'
+          args: '--cores 1 --use-conda'
         env:
           POSTGRES_HOST: postgres
           POSTGRES_DB: guidescan
