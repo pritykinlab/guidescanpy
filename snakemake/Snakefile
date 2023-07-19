@@ -17,9 +17,7 @@ wildcard_constraints:
 localrules:
     download_sequence,
     download_annotations,
-    download_chr2acc,
-    install_guidescan,
-    install_guidescanpy
+    download_chr2acc
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
@@ -57,24 +55,8 @@ rule download_chr2acc:
     shell: "wget -O {output} {params.organism_url}" # Wildcard?
 
 
-rule install_guidescan:
-    output: f"{OUTPUT_DIR}/job_status/guidescan.txt"
-    shell: """
-    touch {output}
-    conda install -c bioconda guidescan
-    """
-
-rule install_guidescanpy:
-    output: f"{OUTPUT_DIR}/job_status/guidescanpy.txt"
-    shell: """
-    touch {output}
-    pip install -e ..[web]
-    """
-
-
 rule init_db:
-    input:
-        guidescanpy = rules.install_guidescanpy.output
+    conda: "env.yaml"
     output: f"{OUTPUT_DIR}/job_status/init_db.txt"
     shell: """
     touch {output}
@@ -83,6 +65,7 @@ rule init_db:
 
 
 rule add_organism:
+    conda: "env.yaml"
     input:
         gtf_gz = rules.download_annotations.output,
         chr2acc = rules.download_chr2acc.output,
@@ -97,8 +80,8 @@ rule add_organism:
 
 
 rule guidescan_index:
-    input: rules.download_sequence.output[1],
-            rules.install_guidescan.output
+    conda: "env.yaml"
+    input: rules.download_sequence.output[1]
     output: f"{OUTPUT_DIR}/indices/{{organism}}.fna.index.gs"
     params:
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.forward",
@@ -108,24 +91,25 @@ rule guidescan_index:
             f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.gs"
     shell:
         """
-        guidescan index {input[0]}
+        guidescan index {input}
         mv {params[4]} {output}
         mv {params[0]} {params[1]}
         mv {params[2]} {params[3]}
     """
 
 rule generate_kmers:
-    input: rules.download_sequence.output[1],
-            rules.install_guidescanpy.output
+    conda: "env.yaml"
+    input: rules.download_sequence.output[1]
     output: f"{OUTPUT_DIR}/kmers/{{enzyme}}/{{organism}}.csv"
     params: pam = lambda wildcards: config['pams'][wildcards.enzyme]
     shell:
         """
-        guidescanpy generate-kmers {input[0]} --max-kmers 100 --pam {params.pam} > {output}
+        guidescanpy generate-kmers {input} --max-kmers 100 --pam {params.pam} > {output}
     """
 
 
 rule guidescan_enumerate:
+    conda: "env.yaml"
     input: rules.guidescan_index.output,
             rules.generate_kmers.output
     output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam"
