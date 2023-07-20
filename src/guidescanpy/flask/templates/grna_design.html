@@ -25,9 +25,10 @@
                 var checked = $(this).prop('checked');
                 $('#txtFilterAboveSpecificity').prop('disabled', !checked);
             });
-            $('#checkFilterAboveGCContent').on('change', function () {
+            $('#checkFilterGCContent').on('change', function () {
                 var checked = $(this).prop('checked');
                 $('#txtFilterAboveGCContent').prop('disabled', !checked);
+                $('#txtFilterBelowGCContent').prop('disabled', !checked);
             });
             $('#selectOrganism').on('change', function () {
                 refreshMenu();
@@ -35,6 +36,20 @@
             });
             $('#selectEnzyme').on('change', function () {
                 refreshExamples();
+            });
+
+            var gcInputL = document.getElementById('txtFilterAboveGCContent');
+            var gcInputU = document.getElementById('txtFilterBelowGCContent');
+            gcInputL.addEventListener('change', function () {
+                if (parseFloat(gcInputU.value) < parseFloat(gcInputL.value)) {
+                    gcInputU.value = gcInputL.value;
+                }
+            });
+
+            gcInputU.addEventListener('change', function () {
+                if (parseFloat(gcInputU.value) < parseFloat(gcInputL.value)) {
+                    gcInputL.value = gcInputU.value;
+                }
             });
 
 
@@ -150,17 +165,27 @@
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="checkFilterAboveGCContent"
-                                               name="checkFilterAboveGCContent">
-                                        <label class="form-check-label" for="checkFilterAboveGCContent">
-                                            Filter above GC-Content <i class="fa-regular fa-circle-question"
+                                        <input class="form-check-input" type="checkbox" id="checkFilterGCContent"
+                                               name="checkFilterGCContent">
+                                        <label class="form-check-label" for="checkFilterGCContent">
+                                            Filter GC-Content <i class="fa-regular fa-circle-question"
                                                                         data-toggle="tooltip" data-placement="top"
-                                                                        title="Returns only gRNAs with GC-Content above this value."></i>
+                                                                        title="Returns only gRNAs with GC-Content in this range."></i>
                                         </label>
                                     </div>
-                                    <input type="number" class="form-control" id="txtFilterAboveGCContent" disabled
-                                           value="0"
-                                           min="0" max="1" step="0.1" name="txtFilterAboveGCContent">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <input type="number" class="form-control" id="txtFilterAboveGCContent" disabled
+                                                   value="0.2"
+                                                   min="0" max="1" step="0.1" name="txtFilterAboveGCContent">
+                                        </div>
+                                        <span>to</span>
+                                        <div class="col-md-5">
+                                            <input type="number" class="form-control" id="txtFilterBelowGCContent" disabled
+                                                   value="0.8"
+                                                   min="0" max="1" step="0.1" name="txtFilterBelowGCContent">
+                                        </div>
+                                   </div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <div class="form-check">

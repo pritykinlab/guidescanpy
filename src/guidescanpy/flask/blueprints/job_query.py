@@ -61,8 +61,9 @@ def get_result(job_id, region=None, start=0, end=None, orderby=None, asc=True):
     return result
 
 
-@bp.route("/result/<format>/<job_id>")
-def result(format, job_id):
+@bp.route("/result/<format>/<job_id>", defaults={"offtarget": False})
+@bp.route("/result/<format>/<offtarget>/<job_id>")
+def result(format, job_id, offtarget):
     region = request.args.get("region")
     orderby = request.args.get("orderby")
     asc = request.args.get("asc") == "asc"
@@ -96,32 +97,83 @@ def result(format, job_id):
             return response
 
         case "csv":
-            lines = [
-                "Region-name,gRNA-ID,gRNA-SeqNumber of off-targets,"
-                "Off-target summary,Cutting efficiency,Specificity,GC,Rank,Coordinates,Strand,Annotations"
-            ]
+            if offtarget:
+                lines = [
+                    "Region-name,gRNA-ID,gRNA-Seq,Number of off-targets,"
+                    "Off-target summary,Off-target accession,Off-target chromosome,"
+                    "Off-target direction,Off-target distance,Off-target position,"
+                    "Off-target region-string,"
+                    "Cutting efficiency,Specificity,GC,Rank,Coordinates,Strand,Annotations"
+                ]
+            else:
+                lines = [
+                    "Region-name,gRNA-ID,gRNA-Seq,Number of off-targets,"
+                    "Off-target summary,Cutting efficiency,Specificity,GC,Rank,Coordinates,Strand,Annotations"
+                ]
 
             for _, v in result["queries"].items():
                 for i, hit in enumerate(v["hits"], start=1):
-                    lines.append(
-                        ",".join(
-                            str(x)
-                            for x in [
-                                hit["region-string"],
-                                hit["region-string"] + f".{i}",
-                                hit["sequence"],
-                                hit["n-off-targets"],
-                                hit["off-target-summary"],
-                                hit["cutting-efficiency"],
-                                hit["specificity"],
-                                hit["gc-content"],
-                                i,
-                                hit["coordinate"],
-                                hit["direction"],
-                                hit["annotations"],
-                            ]
+                    if offtarget:
+                        n_off_targets = hit["n-off-targets"]
+                        if n_off_targets == 0:
+                            hit["off-targets"].append(
+                                {
+                                    "accession": "",
+                                    "chromosome": "",
+                                    "direction": "",
+                                    "distance": "",
+                                    "position": "",
+                                    "region-string": "",
+                                }
+                            )
+                        for off_target in range(max(1, n_off_targets)):
+                            lines.append(
+                                ",".join(
+                                    str(x)
+                                    for x in [
+                                        hit["region-string"],
+                                        hit["region-string"] + f".{i}",
+                                        hit["sequence"],
+                                        hit["n-off-targets"],
+                                        hit["off-target-summary"],
+                                        hit["off-targets"][off_target]["accession"],
+                                        hit["off-targets"][off_target]["chromosome"],
+                                        hit["off-targets"][off_target]["direction"],
+                                        hit["off-targets"][off_target]["distance"],
+                                        hit["off-targets"][off_target]["position"],
+                                        hit["off-targets"][off_target]["region-string"],
+                                        hit["cutting-efficiency"],
+                                        hit["specificity"],
+                                        hit["gc-content"],
+                                        i,
+                                        hit["coordinate"],
+                                        hit["direction"],
+                                        hit["annotations"],
+                                    ]
+                                )
+                            )
+                        if n_off_targets == 0:
+                            hit["off-targets"] = []
+                    else:
+                        lines.append(
+                            ",".join(
+                                str(x)
+                                for x in [
+                                    hit["region-string"],
+                                    hit["region-string"] + f".{i}",
+                                    hit["sequence"],
+                                    hit["n-off-targets"],
+                                    hit["off-target-summary"],
+                                    hit["cutting-efficiency"],
+                                    hit["specificity"],
+                                    hit["gc-content"],
+                                    i,
+                                    hit["coordinate"],
+                                    hit["direction"],
+                                    hit["annotations"],
+                                ]
+                            )
                         )
-                    )
 
             response = "\n".join(lines)
             response = make_response(response, 200)
