@@ -57,7 +57,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - BAM_PATH=/data/bams/
+      - BAM_PATH=/data/databases/
       - INDEX_PATH=/data/indices/
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
@@ -80,7 +80,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - BAM_PATH=/data/bams/
+      - BAM_PATH=/data/databases/
       - INDEX_PATH=/data/indices/
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
@@ -105,7 +105,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - BAM_PATH=/data/bams/
+      - BAM_PATH=/data/databases/
       - INDEX_PATH=/data/indices/
     extra_hosts:
       - "host.docker.internal:172.17.0.1"

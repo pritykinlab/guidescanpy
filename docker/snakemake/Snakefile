@@ -104,7 +104,7 @@ rule generate_kmers:
     params: pam = lambda wildcards: config['pams'][wildcards.enzyme]
     shell:
         """
-        guidescanpy generate-kmers {input} --max-kmers 100 --pam {params.pam} > {output}
+        guidescanpy generate-kmers {input} --pam {params.pam} > {output}
     """
 
 

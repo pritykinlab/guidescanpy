@@ -53,7 +53,9 @@ def cmd_enumerate(
         if returncode != 0:
             logger.error("stdout:\n" + stdout)
             logger.error("stderr:\n" + stderr)
-            raise RuntimeError(f"Command returned {returncode}")
+            raise RuntimeError(
+                f"Command returned {returncode};\nstdout={stdout};\nstderr={stderr}"
+            )
 
         data = pd.read_csv(output_path, header=0, sep=",")
         return data.to_dict(orient="records")
