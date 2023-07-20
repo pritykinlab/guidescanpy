@@ -171,6 +171,7 @@ class GenomeStructure:
         min_specificity=None,
         min_ce=None,
         min_gc=None,
+        max_gc=None,
         filter_annotated=False,
         as_dataframe=False,
         bam_filepath=None,
@@ -331,6 +332,8 @@ class GenomeStructure:
 
             if min_gc is not None:
                 results = results[results["gc-content"] >= min_gc]
+            if max_gc is not None:
+                results = results[results["gc-content"] <= max_gc]
 
             if filter_annotated:
                 results = results[results["annotations"] != ""]
