@@ -38,6 +38,20 @@
                 refreshExamples();
             });
 
+            var gcInputL = document.getElementById('txtFilterAboveGCContent');
+            var gcInputU = document.getElementById('txtFilterBelowGCContent');
+            gcInputL.addEventListener('change', function () {
+                if (parseFloat(gcInputU.value) < parseFloat(gcInputL.value)) {
+                    gcInputU.value = gcInputL.value;
+                }
+            });
+
+            gcInputU.addEventListener('change', function () {
+                if (parseFloat(gcInputU.value) < parseFloat(gcInputL.value)) {
+                    gcInputL.value = gcInputU.value;
+                }
+            });
+
 
             function refreshMenu() {
                 var organism = $('#selectOrganism').find(":selected").text();
@@ -161,7 +175,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <input type="number" class="form-control" placeholder="From" id="txtFilterAboveGCContent" disabled
+                                            <input type="number" class="form-control" id="txtFilterAboveGCContent" disabled
                                                    value="0.2"
                                                    min="0" max="1" step="0.1" name="txtFilterAboveGCContent">
                                         </div>
