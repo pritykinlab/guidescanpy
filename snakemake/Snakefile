@@ -84,11 +84,11 @@ rule guidescan_index:
     input: rules.download_sequence.output[1]
     output: f"{OUTPUT_DIR}/indices/{{organism}}.index.gs"
     params:
-            f"{OUTPUT_DIR}/raw/{{organism}}.index.forward",
+            f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.forward",
             f"{OUTPUT_DIR}/indices/{{organism}}.index.forward",
-            f"{OUTPUT_DIR}/raw/{{organism}}.index.reverse",
+            f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.reverse",
             f"{OUTPUT_DIR}/indices/{{organism}}.index.reverse",
-            f"{OUTPUT_DIR}/raw/{{organism}}.index.gs"
+            f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.gs"
     shell:
         """
         guidescan index {input}
