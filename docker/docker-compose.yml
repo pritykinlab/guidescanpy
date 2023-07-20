@@ -23,7 +23,6 @@ services:
         condition: service_healthy
     volumes:
       - guidescan_data:/data
-    environment:
     # No '--use-conda' flag used in snakemake since our Dockerfile bootstraps the environment with env.yaml anyway
     command: snakemake --cores 1 --config output_dir="/data"
     environment:
@@ -94,8 +93,8 @@ services:
     depends_on:
       guidescan_snakemake:
         condition: service_completed_successfully
-      guidescan_redis:
-        condition: service_healthy
+      guidescan_celery:
+        condition: service_started
     volumes:
       - guidescan_data:/data
     command: python -m guidescanpy web
