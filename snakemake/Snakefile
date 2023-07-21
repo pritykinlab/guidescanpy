@@ -59,8 +59,8 @@ rule init_db:
     conda: "env.yaml"
     output: f"{OUTPUT_DIR}/job_status/init_db.txt"
     shell: """
-    touch {output}
     guidescanpy init-db
+    touch {output}
     """
 
 
@@ -74,8 +74,8 @@ rule add_organism:
         organism = lambda wildcards: wildcards.organism
     output: f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt"
     shell: """
-    touch {output}
     guidescanpy add-organism {params.organism} {input[0]} {input[1]}
+    touch {output}
     """
 
 
@@ -121,13 +121,14 @@ rule guidescan_enumerate:
 
 
 rule add_ce:
-    conda: "env.yaml"
-    input: rules.guidescan_enumerate.output
-    output: f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam",
-            f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
+    conda: "rs2/env.yaml"
+    input: sam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam",
+           fna_file = f"{OUTPUT_DIR}/raw/{{organism}}.fna"
+    output: bam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam",
+            bam_sorted_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
     shell:
         """
-        guidescanpy add-tag ce -i {input} -o {output[0]}
-        python -c "import pysam; pysam.sort('-o', '{output[1]}', '{output[0]}'); pysam.index('{output[1]}')"
+        python rs2/main.py {input.sam_file} {input.fna_file} {output.bam_file}
+        python -c "import pysam; pysam.sort('-o', '{output.bam_sorted_file}', '{output.bam_file}'); pysam.index('{output.bam_sorted_file}')"
         """
 # -----------------------------------------------------------------------------
