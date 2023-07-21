@@ -1,5 +1,5 @@
 [flake8]
-exclude = .git,.env,build,src/guidescanpy/flask/static
+exclude = .git,.env,build,src/guidescanpy/flask/static,snakemake/
 extend-ignore = E203,E501
 max-complexity = 99
 max-line-length = 88

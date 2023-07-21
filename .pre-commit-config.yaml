@@ -12,7 +12,6 @@ repos:
     rev: '4.0.1'
     hooks:
     -   id: flake8
-        exclude: ^snakemake/rs2/
 
 -   repo: https://github.com/psf/black
     rev: 22.10.0
