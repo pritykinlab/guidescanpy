@@ -36,7 +36,7 @@ def get_parser(parser):
         "--max-kmers",
         help="Maximum number of kmers to generate (no limit by default).",
         type=int,
-        default=None,
+        default=-1,  # negative values or 0 will be taken as no limitation.
     )
 
     return parser
@@ -146,7 +146,7 @@ def output(fasta_file, args):
         ):
             kmers_count += 1
             output_kmer(args.prefix, record.name, kmer)
-            if args.max_kmers is not None and kmers_count >= args.max_kmers:
+            if args.max_kmers > 0 and kmers_count >= args.max_kmers:
                 return
 
 
