@@ -4,7 +4,7 @@ threads: 1
 # Setup
 # -----------------------------------------------------------------------------
 ORGANISMS = config["organisms"]
-ENZYMES = ["cas9", "cpf1"]
+ENZYMES = config["enzymes"]
 OUTPUT_DIR = config['output_dir']
 
 shell.executable("/bin/bash")
@@ -108,7 +108,7 @@ rule generate_kmers:
     output:
         f"{OUTPUT_DIR}/kmers/{{enzyme}}/{{organism}}.csv"
     shell: """
-        guidescanpy generate-kmers {input} --pam {params.pam} --max-kmers 100 > {output}
+        guidescanpy generate-kmers {input} --pam {params.pam} --max-kmers {config[max_kmers]} > {output}
         """
 
 
