@@ -60,7 +60,7 @@ rule init_db:
     output: init_db = f"{OUTPUT_DIR}/job_status/init_db.txt"
     shell: """
     guidescanpy init-db
-    touch {output.init_db_log}
+    touch {output.init_db}
     """
 
 
