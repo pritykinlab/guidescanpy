@@ -26,109 +26,117 @@ localrules:
 rule all:
     input:
         bam_files = expand(f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted", organism=ORGANISMS, enzyme=ENZYMES),
-        add_organism = expand(f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt",organism=ORGANISMS)
+        add_organism = expand(f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt", organism=ORGANISMS)
 
 
 rule download_sequence:
     params:
-        organism_url = lambda wildcards: config[wildcards.organism]['fna']
-    output: fna_gz_file = f"{OUTPUT_DIR}/raw/{{organism}}.fna.gz",
-            fna_file = f"{OUTPUT_DIR}/raw/{{organism}}.fna"
+        url = lambda wildcards: config[wildcards.organism]['fna'],
+        fna_gz = lambda wildcards: f"{OUTPUT_DIR}/raw/{wildcards.organism}.fna.gz"
+    output:
+        f"{OUTPUT_DIR}/raw/{{organism}}.fna"
     shell: """
-        wget -O {output.fna_gz_file} {params.organism_url}
-        gunzip -c {output.fna_gz_file} > {output.fna_file}
+        wget -O {params.fna_gz} {params.url}
+        gunzip -c {params.fna_gz} > {output}
+        rm {params.fna_gz}
         """
 
 
 rule download_annotations:
     params:
-        organism_url = lambda wildcards: config[wildcards.organism]['gtf']
-    output: gtf_gz_file = f"{OUTPUT_DIR}/raw/{{organism}}.gtf.gz"
+        url = lambda wildcards: config[wildcards.organism]['gtf']
+    output:
+        f"{OUTPUT_DIR}/raw/{{organism}}.gtf.gz"
     shell:
-        "wget -O {output.gtf_gz_file} {params.organism_url}"
+        "wget -O {output} {params.url}"
 
 
 rule download_chr2acc:
     params:
-        organism_url = lambda wildcards: config[wildcards.organism]['chr2acc'] # can it be improved?
-    output: chr2acc_file = f"{OUTPUT_DIR}/raw/{{organism}}_chr2acc"
-    shell: "wget -O {output.chr2acc_file} {params.organism_url}" # Wildcard?
+        url = lambda wildcards: config[wildcards.organism]['chr2acc']
+    output:
+        f"{OUTPUT_DIR}/raw/{{organism}}_chr2acc"
+    shell:
+        "wget -O {output} {params.url}"
 
 
 rule init_db:
-    conda: "env.yaml"
-    output: init_db = f"{OUTPUT_DIR}/job_status/init_db.txt"
+    conda:
+        "env.yaml"
+    output:
+         f"{OUTPUT_DIR}/job_status/init_db.txt"
     shell: """
-    guidescanpy init-db
-    touch {output.init_db}
-    """
+        guidescanpy init-db
+        touch {output}
+        """
 
 
 rule add_organism:
-    conda: "env.yaml"
+    conda:
+        "env.yaml"
     input:
-        gtf_gz_file = rules.download_annotations.output.gtf_gz_file,
-        chr2acc_file = rules.download_chr2acc.output.chr2acc_file,
-        init_db = rules.init_db.output.init_db
-    params:
-        organism = lambda wildcards: wildcards.organism
-    output: add_organism = f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt"
+        gtf_gz_file = f"{OUTPUT_DIR}/raw/{{organism}}.gtf.gz",
+        chr2acc_file = f"{OUTPUT_DIR}/raw/{{organism}}_chr2acc",
+        init_db = f"{OUTPUT_DIR}/job_status/init_db.txt"
+    output:
+        f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt"
     shell: """
-    guidescanpy add-organism {params.organism} {input.gtf_gz_file} {input.chr2acc_file}
-    touch {output.add_organism}
-    """
+        guidescanpy add-organism {wildcards.organism} {input.gtf_gz_file} {input.chr2acc_file}
+        touch {output}
+        """
 
 
 rule guidescan_index:
-    conda: "env.yaml"
-    input: fna_file = rules.download_sequence.output.fna_file
-    output: index_gs_file = f"{OUTPUT_DIR}/indices/{{organism}}.index.gs"
-    params:
-            index_forward_raw = f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.forward",
-            index_forward = f"{OUTPUT_DIR}/indices/{{organism}}.index.forward",
-            index_reverse_raw = f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.reverse",
-            index_reverse = f"{OUTPUT_DIR}/indices/{{organism}}.index.reverse",
-            index_gs_raw = f"{OUTPUT_DIR}/raw/{{organism}}.fna.index.gs"
-    shell:
+    conda:
+        "env.yaml"
+    input:
+        f"{OUTPUT_DIR}/raw/{{organism}}.fna"
+    output:
+        f"{OUTPUT_DIR}/indices/{{organism}}.index.gs"
+    shell: """
+        guidescan index {input} --index {OUTPUT_DIR}/indices/{wildcards.organism}.index
         """
-        guidescan index {input.fna_file}
-        mv {params.index_gs_raw} {output.index_gs_file}
-        mv {params.index_forward_raw} {params.index_forward}
-        mv {params.index_reverse_raw} {params.index_reverse}
-    """
+
 
 rule generate_kmers:
-    conda: "env.yaml"
-    input: fna_file = rules.download_sequence.output.fna_file
-    output: kmers_file = f"{OUTPUT_DIR}/kmers/{{enzyme}}/{{organism}}.csv"
-    params: pam = lambda wildcards: config['pams'][wildcards.enzyme]
-    shell:
+    conda:
+        "env.yaml"
+    params:
+        pam = lambda wildcards: config['pams'][wildcards.enzyme]
+    input:
+        f"{OUTPUT_DIR}/raw/{{organism}}.fna"
+    output:
+        f"{OUTPUT_DIR}/kmers/{{enzyme}}/{{organism}}.csv"
+    shell: """
+        guidescanpy generate-kmers {input} --pam {params.pam} --max-kmers 100 > {output}
         """
-        guidescanpy generate-kmers {input.fna_file} --pam {params.pam} --max-kmers 100 > {output.kmers_file}
-    """
 
 
 rule guidescan_enumerate:
-    conda: "env.yaml"
-    input: index_gs_file = rules.guidescan_index.output.index_gs_file,
-            kmers_file = rules.generate_kmers.output.kmers_file
-    output: sam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam"
-    params: index_file = f"{OUTPUT_DIR}/indices/{{organism}}.index",
-    shell:
-        """
-        guidescan enumerate {params.index_file} --kmers-file {input.kmers_file} --output {output.sam_file} --format sam
+    conda:
+        "env.yaml"
+    params:
+        index_file = f"{OUTPUT_DIR}/indices/{{organism}}.index",
+    input:
+        kmers_file = f"{OUTPUT_DIR}/kmers/{{enzyme}}/{{organism}}.csv",
+        index_gs = f"{OUTPUT_DIR}/indices/{{organism}}.index.gs"
+    output:
+        f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam"
+    shell: """
+        guidescan enumerate {params.index_file} --kmers-file {input.kmers_file} --output {output} --format sam
         """
 
 
 rule add_ce:
-    conda: "rs2/env.yaml"
-    input: sam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam",
-           fna_file = f"{OUTPUT_DIR}/raw/{{organism}}.fna"
-    output: bam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam",
-            bam_sorted_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
-    shell:
-        """
-        python rs2/main.py {input.sam_file} {input.fna_file} {output.bam_file}
-        python -c "import pysam; pysam.sort('-o', '{output.bam_sorted_file}', '{output.bam_file}'); pysam.index('{output.bam_sorted_file}')"
+    conda:
+        "rs2/env.yaml"
+    input:
+        sam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam",
+        fna_file = f"{OUTPUT_DIR}/raw/{{organism}}.fna"
+    output:
+        f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
+    shell: """
+        python rs2/main.py {input.sam_file} {input.fna_file} {output}
+        python -c "import pysam; pysam.sort('-o', '{output}', '{output}'); pysam.index('{output}')"
         """
 # -----------------------------------------------------------------------------
