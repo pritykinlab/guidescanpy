@@ -1,8 +1,10 @@
 import sys
 import os.path
 import pickle
+import logging
 import pysam
 from Bio import SeqIO
+
 
 this_dir = os.path.dirname(__file__)
 sys.path.append(os.path.join(this_dir, "analysis"))
@@ -45,20 +47,35 @@ def compute_rs2(guide_record, fasta_record_dict, model):
 
 if __name__ == "__main__":
 
-    input_file, fasta_file, output_file = sys.argv[1:4]
+    logger = logging.getLogger("guidescan2")
+    logger.setLevel(logging.DEBUG)
+
+    console_handler = logging.StreamHandler()
+    formatter = logging.Formatter(
+        "[%(asctime)s] [guidescan2] [\033[32m%(levelname)s\033[0m] %(message)s"
+    )
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
+
+    input_filename, fasta_filename, output_filename = sys.argv[1:4]
+
+    fasta_record_dict = SeqIO.to_dict(SeqIO.parse(fasta_filename, "fasta"))
+    write_mode = "w" if output_filename.endswith("sam") else "wb"
 
     with open(os.path.join(this_dir, "saved_models/V3_model_nopos.pickle"), "rb") as f:
         model = pickle.load(f)
 
-    fasta_record_dict = SeqIO.to_dict(SeqIO.parse(fasta_file, "fasta"))
-    write_mode = "w" if output_file.endswith("sam") else "wb"
+    with pysam.AlignmentFile(input_filename) as input_file:
+        n_reads = input_file.count()
 
-    with open(os.path.join(this_dir, "saved_models/V3_model_nopos.pickle"), "rb") as f:
-        model = pickle.load(f)
-    with pysam.AlignmentFile(input_file) as input_file, pysam.AlignmentFile(
-        output_file, write_mode, header=input_file.header
+    with pysam.AlignmentFile(input_filename) as input_file, pysam.AlignmentFile(
+        output_filename, write_mode, header=input_file.header
     ) as output_file:
-        for i, read in enumerate(input_file):
+
+        for i, read in enumerate(input_file, start=1):
             tag_value = compute_rs2(read, fasta_record_dict, model)
             read.set_tag("ce", tag_value)
             output_file.write(read)
+
+            if i % 100 == 0:
+                logger.info("Processed %d/%d records" % (i, n_reads))
