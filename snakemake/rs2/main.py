@@ -51,8 +51,7 @@ if __name__ == "__main__":
         model = pickle.load(f)
 
     fasta_record_dict = SeqIO.to_dict(SeqIO.parse(fasta_file, "fasta"))
-    output_format = os.path.splitext(output_file)[-1]
-    write_mode = "w" if output_format == "sam" else "wb"
+    write_mode = "w" if output_file.endswith("sam") else "wb"
 
     with open(os.path.join(this_dir, "saved_models/V3_model_nopos.pickle"), "rb") as f:
         model = pickle.load(f)
