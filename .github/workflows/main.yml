@@ -41,3 +41,4 @@ jobs:
         run: |
           pytest tests/test_config.py
           pytest tests/test_genome.py
+          pytest tests/test_add_organism.py
