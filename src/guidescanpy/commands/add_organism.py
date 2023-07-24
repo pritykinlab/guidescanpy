@@ -16,12 +16,18 @@ def insert_chromosome(organism, chr2acc_file):
     ) as f:
         reader = csv.DictReader(f, delimiter="\t")
         for row in reader:
+            if "# ucsc" in row:
+                accession = row["refseq"]
+                name = row["# ucsc"][3:]
+            else:
+                accession = row["Accession.version"]
+                name = row["#Chromosome"]
             insert_chromosome_query(
-                accession=row["Accession.version"],
-                name=row["#Chromosome"],
+                accession=accession,
+                name=name,
                 organism=organism,
             )
-            result.append(row["Accession.version"])
+            result.append(accession)
     return result
 
 
