@@ -1,5 +1,6 @@
 import argparse
 import csv
+import os
 from collections import defaultdict
 import gzip
 from guidescanpy.flask.db import (
@@ -11,23 +12,34 @@ from guidescanpy.flask.db import (
 
 def insert_chromosome(organism, chr2acc_file):
     result = []
-    with open(
-        chr2acc_file,
-    ) as f:
-        reader = csv.DictReader(f, delimiter="\t")
+    with open(chr2acc_file) as infile, open("temp", "w", newline="") as outfile:
+        reader = csv.DictReader(infile, delimiter="\t")
+        new_header = [
+            field.lower().replace("# ", "").replace("#", "")
+            for field in reader.fieldnames
+        ]  # format csv file header
+        reader.fieldnames = new_header
+
+        writer = csv.DictWriter(outfile, fieldnames=new_header, delimiter="\t")
+        writer.writeheader()  # write the chr2acc file with formatted header
+
         for row in reader:
-            if "# ucsc" in row:
+            writer.writerow(row)
+            if "ucsc" in row:
                 accession = row["refseq"]
-                name = row["# ucsc"][3:]
+                name = row["ucsc"]
             else:
-                accession = row["Accession.version"]
-                name = row["#Chromosome"]
+                accession = row["accession.version"]
+                name = row["chromosome"]
+            if name.startswith("chr"):
+                name = name[3:]
             insert_chromosome_query(
                 accession=accession,
                 name=name,
                 organism=organism,
             )
             result.append(accession)
+    os.rename("temp", chr2acc_file)
     return result
 
 
