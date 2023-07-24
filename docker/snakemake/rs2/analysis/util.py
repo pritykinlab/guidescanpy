@@ -1,4 +1,6 @@
 import pandas
+import matplotlib
+matplotlib.use('TkAgg')  # Set TkAgg as Matplotlib backend for macOS users
 import matplotlib.pylab as plt
 import scipy.stats
 import scipy as sp
