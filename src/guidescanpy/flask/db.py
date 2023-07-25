@@ -31,10 +31,6 @@ def insert_chromosome_query(**kwargs):
         conn.commit()
     except IntegrityError as e:
         if e.pgcode == errorcodes.UNIQUE_VIOLATION:
-            print(
-                "Unique constraint violation occurred:",
-                f"Chromosome {kwargs['accession']} already exists.",
-            )
             conn.rollback()
         else:
             raise e
@@ -60,10 +56,6 @@ def insert_gene_query(**kwargs):
         conn.commit()
     except IntegrityError as e:
         if e.pgcode == errorcodes.UNIQUE_VIOLATION:
-            print(
-                "Unique constraint violation occurred:",
-                f"Gene {kwargs['gene_symbol']} already exists.",
-            )
             conn.rollback()
         else:
             raise e
@@ -90,10 +82,6 @@ def insert_exon_query(**kwargs):
         conn.commit()
     except IntegrityError as e:
         if e.pgcode == errorcodes.UNIQUE_VIOLATION:
-            print(
-                "Unique constraint violation occurred:",
-                f"Exon {kwargs['entrez_id']} already exists.",
-            )
             conn.rollback()
         else:
             raise e

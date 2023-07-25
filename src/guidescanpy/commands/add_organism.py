@@ -1,11 +1,14 @@
 import argparse
 from collections import defaultdict
+import logging
 import gzip
 from guidescanpy.flask.db import (
     insert_chromosome_query,
     insert_gene_query,
     insert_exon_query,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def insert_chromosome(organism, file, delim="\t"):
@@ -115,7 +118,7 @@ def insert_gene(result, accessions):
     db_xrefs = get_attr(result, "db_xref", missing_ok=True, multiple=True)
     for db_xref in db_xrefs:
         if db_xref.startswith("GeneID:"):
-            if result["chr"] in accessions or True:
+            if result["chr"] in accessions:
                 entrez_id = int(db_xref[len("GeneID:") :])
                 for gene in genes:
                     row = {
@@ -140,7 +143,7 @@ def insert_exon(result, accessions):
     db_xrefs = get_attr(result, "db_xref", missing_ok=True, multiple=True)
     for db_xref in db_xrefs:
         if db_xref.startswith("GeneID:"):
-            if result["chr"] in accessions or True:
+            if result["chr"] in accessions:
                 entrez_id = int(db_xref[len("GeneID:") :])
                 row = {
                     "entrez_id": entrez_id,
@@ -175,6 +178,10 @@ def main(args):
 
     chromosome_accessions = insert_chromosome(organism, chr2acc)
 
+    # https://stackoverflow.com/questions/845058
+    with gzip.open(gtf_gz, "rt") as f:
+        num_lines = sum(1 for _ in f)
+
     with gzip.open(gtf_gz, "rt") as f:
         for i, line in enumerate(f, start=1):
             result = parse_gtf_line(line, line_no=i)
@@ -187,3 +194,6 @@ def main(args):
 
             if result["feature_type"] == "exon":
                 insert_exon(result, accessions=chromosome_accessions)
+
+            if i % 10_000 == 0:
+                logger.info(f"Annotations for {organism} - {i}/{num_lines} completed")
