@@ -1,0 +1,18 @@
+#Chromosome	Accession.version
+# Downloaded from https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc
+I	NC_001133.9
+II	NC_001134.8
+III	NC_001135.5
+IV	NC_001136.10
+V	NC_001137.3
+VI	NC_001138.5
+VII	NC_001139.9
+VIII	NC_001140.6
+IX	NC_001141.2
+X	NC_001142.9
+XI	NC_001143.9
+XII	NC_001144.5
+XIII	NC_001145.3
+XIV	NC_001146.8
+XV	NC_001147.6
+XVI	NC_001148.4

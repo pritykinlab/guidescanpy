@@ -1,5 +1,4 @@
 import argparse
-import csv
 from collections import defaultdict
 import gzip
 from guidescanpy.flask.db import (
@@ -9,19 +8,44 @@ from guidescanpy.flask.db import (
 )
 
 
-def insert_chromosome(organism, chr2acc_file):
+def insert_chromosome(organism, file, delim="\t"):
+
+    # Support both chr2acc and chromAlias formats, with the following (lower-cased)
+    # column mappings from chromosome names to accession names
+    mappings = {"chromosome": "accession.version", "ucsc": "refseq"}
+
+    mapping = None  # one of the `mappings` keys
+    header = None
     result = []
-    with open(
-        chr2acc_file,
-    ) as f:
-        reader = csv.DictReader(f, delimiter="\t")
-        for row in reader:
+
+    for line in open(file).readlines():
+        if line.startswith("#"):
+            if header is None:
+                header = [t.strip().lower() for t in line.lstrip("#").split(delim)]
+                for k in mappings:
+                    if k in header:
+                        mapping = k
+                assert mapping is not None, f"No recognizable header found for {file}"
+        else:
+            assert header is not None, f"No header found for {file}"
+            tokens = [t.strip() for t in line.split(delim)]
+            row = {k: v for k, v in zip(header, tokens)}
+
+            name, accession = row[mapping], row[mappings[mapping]]
+            if name.startswith("chr"):
+                name = name[3:]  # remove 'chr' prefix
+            if (
+                not name or not accession
+            ):  # handle blank lines (also, some rows in chromAlias files in the wild have no names/accessions!)
+                continue
+
             insert_chromosome_query(
-                accession=row["Accession.version"],
-                name=row["#Chromosome"],
+                name=name,
+                accession=accession,
                 organism=organism,
             )
-            result.append(row["Accession.version"])
+            result.append(accession)
+
     return result
 
 
