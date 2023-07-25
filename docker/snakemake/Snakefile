@@ -102,13 +102,14 @@ rule generate_kmers:
     conda:
         "env.yaml"
     params:
-        pam = lambda wildcards: config['pams'][wildcards.enzyme]
+        pam = lambda wildcards: config['pams'][wildcards.enzyme],
+        match_start = lambda wildcards: "--start" if wildcards.enzyme == "cpf1" else ""
     input:
         f"{OUTPUT_DIR}/raw/{{organism}}.fna"
     output:
         f"{OUTPUT_DIR}/kmers/{{enzyme}}/{{organism}}.csv"
     shell: """
-        guidescanpy generate-kmers {input} --pam {params.pam} --max-kmers {config[max_kmers]} > {output}
+        guidescanpy generate-kmers {input} --pam {params.pam} --max-kmers {config[max_kmers]} {params.match_start} > {output}
         """
 
 
