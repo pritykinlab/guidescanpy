@@ -40,7 +40,7 @@ def main(args):
 
     if args.mode == "succinct":
         print(
-            "id,sequence,chromosome,position,sense,distance_0_matches,distance_1_matches,distance_2_matches,distance_3_matches,specificity"
+            "id,sequence,chromosome,position,sense,distance_0_matches,distance_1_matches,distance_2_matches,distance_3_matches,specificity,cutting_efficiency"
         )
 
         for region in regions:
@@ -59,6 +59,7 @@ def main(args):
                     result["offtargets-by-distance"][2],
                     result["offtargets-by-distance"][3],
                     result["specificity"],
+                    result["cutting-efficiency"],
                 ]
                 print(",".join(str(col) for col in cols))
     else:
