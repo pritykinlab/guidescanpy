@@ -129,16 +129,27 @@ rule guidescan_enumerate:
         """
 
 
+rule sam_to_bam:
+    conda:
+        "env.yaml"
+    input:
+        f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam"
+    output:
+        f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam"
+    shell: """
+        python -c "import pysam; pysam.sort('-o', '{output}', '{input}'); pysam.index('{output}')"
+        """
+
+
 rule add_ce:
     conda:
         "rs2/env.yaml"
     input:
-        sam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam",
+        bam_file = f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam",
         fna_file = f"{OUTPUT_DIR}/raw/{{organism}}.fna"
     output:
         f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
     shell: """
-        python rs2/main.py {input.sam_file} {input.fna_file} {output}
-        python -c "import pysam; pysam.sort('-o', '{output}', '{output}'); pysam.index('{output}')"
+        python rs2/main.py {input.bam_file} {input.fna_file} {output}
         """
 # -----------------------------------------------------------------------------
