@@ -47,20 +47,21 @@ def main(args):
             results = genome.query(
                 region, bam_filepath=args.grna_database, reorder=False
             )
-            for i, result in enumerate(results):
-                cols = [
-                    result["id"],
-                    result["sequence"],  # Forward sequence regardless of strand
-                    result["reference-name"],
-                    result["start"],  # 1-indexed start position
-                    result["direction"],
-                    result["offtargets-by-distance"][0],
-                    result["offtargets-by-distance"][1],
-                    result["offtargets-by-distance"][2],
-                    result["offtargets-by-distance"][3],
-                    result["specificity"],
-                    result["cutting-efficiency"],
-                ]
-                print(",".join(str(col) for col in cols))
+            if results is not None:
+                for i, result in enumerate(results):
+                    cols = [
+                        result["id"],
+                        result["sequence"],  # Forward sequence regardless of strand
+                        result["reference-name"],
+                        result["start"],  # 1-indexed start position
+                        result["direction"],
+                        result["offtargets-by-distance"][0],
+                        result["offtargets-by-distance"][1],
+                        result["offtargets-by-distance"][2],
+                        result["offtargets-by-distance"][3],
+                        result["specificity"],
+                        result["cutting-efficiency"],
+                    ]
+                    print(",".join(str(col) for col in cols))
     else:
         raise RuntimeError("Not implemented yet")

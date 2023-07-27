@@ -2,6 +2,7 @@ import sys
 import os.path
 import pickle
 import logging
+import argparse
 import pysam
 from Bio import SeqIO
 
@@ -57,22 +58,35 @@ if __name__ == "__main__":
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    input_filename, fasta_filename, output_filename = sys.argv[1:4]
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('input_filename', type=str, help='input sam/bam file')
+    parser.add_argument('fasta_filename', type=str, help='fasta sequence file')
+    parser.add_argument('output_filename', type=str, help='output sam/bam file')
+    parser.add_argument('--contig', type=str, help='reference_name of the genomic region (chromosome)')
+    parser.add_argument('--start', type=int, default=1, help='start of the genomic region (1-based inclusive)')
+    parser.add_argument('--end', type=int, help='end of the genomic region (1-based inclusive)')
 
-    fasta_record_dict = SeqIO.to_dict(SeqIO.parse(fasta_filename, "fasta"))
-    write_mode = "w" if output_filename.endswith("sam") else "wb"
+    args = parser.parse_args()
+
+    fasta_record_dict = SeqIO.to_dict(SeqIO.parse(args.fasta_filename, "fasta"))
+    write_mode = "w" if args.output_filename.endswith("sam") else "wb"
 
     with open(os.path.join(this_dir, "saved_models/V3_model_nopos.pickle"), "rb") as f:
         model = pickle.load(f)
 
-    with pysam.AlignmentFile(input_filename) as input_file:
-        n_reads = input_file.count()
+    start = args.start - 1  # 1-indexed inclusive -> 0-indexed inclusive
+    end = args.end          # 1-indexed inclusive -> 0-indexed exclusive
 
-    with pysam.AlignmentFile(input_filename) as input_file, pysam.AlignmentFile(
-        output_filename, write_mode, header=input_file.header
+    with pysam.AlignmentFile(args.input_filename) as input_file:
+        n_reads = input_file.count(contig=args.contig, start=start, end=end)
+
+    with pysam.AlignmentFile(args.input_filename) as input_file, pysam.AlignmentFile(
+        args.output_filename, write_mode, header=input_file.header
     ) as output_file:
 
-        for i, read in enumerate(input_file, start=1):
+        reads = input_file.fetch(contig=args.contig, start=start, end=end)
+
+        for i, read in enumerate(reads, start=1):
             tag_value = compute_rs2(read, fasta_record_dict, model)
             read.set_tag("ce", tag_value)
             output_file.write(read)
