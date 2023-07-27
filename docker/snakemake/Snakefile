@@ -118,14 +118,15 @@ rule guidescan_enumerate:
         "env.yaml"
     params:
         index_file = f"{OUTPUT_DIR}/indices/{{organism}}.index",
-        alt_pam = lambda wildcards: "--alt-pam NAG" if wildcards.enzyme == "cas9" else ""
+        alt_pam = lambda wildcards: "--alt-pam NAG" if wildcards.enzyme == "cas9" else "",
+        match_start= lambda wildcards: "--start" if wildcards.enzyme == "cpf1" else ""
     input:
         kmers_file = f"{OUTPUT_DIR}/kmers/{{enzyme}}/{{organism}}.csv",
         index_gs = f"{OUTPUT_DIR}/indices/{{organism}}.index.gs"
     output:
         f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam"
     shell: """
-        guidescan enumerate {params.index_file} --kmers-file {input.kmers_file} --output {output} --format sam {params.alt_pam}
+        guidescan enumerate {params.index_file} --kmers-file {input.kmers_file} --output {output} --format sam {params.alt_pam} {params.match_start}
         """
 
 
