@@ -1,8 +1,7 @@
 import argparse
 import pysam
 
-supported_tags = ["ce"]
-supported_formats = ["sam", "bam"]
+supported_tags = ("ce",)
 
 
 def get_parser(parser):
@@ -13,10 +12,14 @@ def get_parser(parser):
         help="List of tags to add.",
     )
     parser.add_argument(
-        "--input", "-i", type=str, help="Path to the input sam/bam file."
+        "--input", "-i", type=str, required=True, help="Path to the input sam/bam file."
     )
     parser.add_argument(
-        "--output", "-o", type=str, help="Path to the output sam/bam file."
+        "--output",
+        "-o",
+        type=str,
+        required=True,
+        help="Path to the output sam/bam file.",
     )
     return parser
 

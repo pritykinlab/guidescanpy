@@ -76,18 +76,23 @@ if __name__ == "__main__":
 
     start = args.start - 1  # 1-indexed inclusive -> 0-indexed inclusive
     end = args.end          # 1-indexed inclusive -> 0-indexed exclusive
+    selective = args.contig is not None  # Are we doing selective tagging?
 
     with pysam.AlignmentFile(args.input_filename) as input_file:
-        n_reads = input_file.count(contig=args.contig, start=start, end=end)
+        n_reads = input_file.count()
 
     with pysam.AlignmentFile(args.input_filename) as input_file, pysam.AlignmentFile(
         args.output_filename, write_mode, header=input_file.header
     ) as output_file:
 
-        reads = input_file.fetch(contig=args.contig, start=start, end=end)
+        reads = input_file.fetch()
 
         for i, read in enumerate(reads, start=1):
-            tag_value = compute_rs2(read, fasta_record_dict, model)
+            if not selective or (read.reference_name == args.contig and start < read.reference_end and
+                                 ((end is None) or (read.reference_start < end))):
+                tag_value = compute_rs2(read, fasta_record_dict, model)
+            else:
+                tag_value = 0.0
             read.set_tag("ce", tag_value)
             output_file.write(read)
 
