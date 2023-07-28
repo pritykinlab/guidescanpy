@@ -234,7 +234,7 @@ class GenomeStructure:
                 off_target_tuples = hex_to_offtarget_info(
                     offtarget_hex, delim=self.off_target_delim
                 )
-                total_off_target = len(
+                total_off_target_tuples = len(
                     off_target_tuples
                 )  # This will be used to get the number of 0-off-target
 
@@ -243,7 +243,9 @@ class GenomeStructure:
 
                 off_targets = []
                 off_targets_by_distance = defaultdict(int)
-                off_targets_by_distance[0] = total_off_target - len(off_target_tuples)
+                off_targets_by_distance[0] = total_off_target_tuples - len(
+                    off_target_tuples
+                )
 
                 for dist, pos in off_target_tuples:
                     dist = int(dist)  # TODO: Do we need this?
