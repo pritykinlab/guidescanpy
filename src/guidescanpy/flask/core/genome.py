@@ -345,7 +345,21 @@ class GenomeStructure:
                 results = results[results["gc-content"] <= max_gc]
 
             if pattern_avoid is not None:
-                exclude_reg = r"^(?!.*" + re.escape(pattern_avoid) + r").*$"
+                wildcard_to_nuc = {"N": "ACTG", "V": "ACG"}
+
+                if pattern_avoid[0] in wildcard_to_nuc:
+                    pattern_wildcard = pattern_avoid[0]
+                    patterns_avoid = [
+                        pattern_avoid.replace(pattern_wildcard, x)
+                        for x in wildcard_to_nuc[pattern_wildcard]
+                    ]
+                else:
+                    patterns_avoid = [pattern_avoid]
+                exclude_reg = (
+                    r"^(?!.*"
+                    + "|".join(re.escape(pattern) for pattern in patterns_avoid)
+                    + r").*$"
+                )
                 results = results[results["sequence"].str.contains(exclude_reg)]
 
             if filter_annotated:
