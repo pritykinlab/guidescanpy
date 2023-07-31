@@ -24,29 +24,29 @@ def test_query_gene_symbol(app):
         assert (
             len(data["queries"]) == 1
         )  # We passed in a single line in query-text, so we get a single result
-        assert len(data["queries"]["CNE1"]["hits"]) == 150
+        assert len(data["queries"]["CNE1"]["hits"]) == 19
 
 
 def test_query_entrez_id(app):
     with config({"celery.eager": True}):
         response = app.test_client().get(
-            "py/query?organism=sacCer3&enzyme=cas9&query-text=852343"
+            "py/query?organism=sacCer3&enzyme=cas9&query-text=851237"
         )
         assert response.mimetype == "application/json"
         data = json.loads(response.data)
         assert len(data["queries"]) == 1
-        assert len(data["queries"]["YRO2"]["hits"]) == 89
+        assert len(data["queries"]["GDH3"]["hits"]) == 31
 
 
 def test_query_chr(app):
     with config({"celery.eager": True}):
         response = app.test_client().get(
-            "py/query?organism=sacCer3&enzyme=cas9&query-text=chrIX:202200-202300"
+            "py/query?organism=sacCer3&enzyme=cas9&query-text=chrI:1000-5000"
         )
         assert response.mimetype == "application/json"
         data = json.loads(response.data)
         assert len(data["queries"]) == 1
-        assert len(data["queries"]["chrIX:202200-202300"]["hits"]) == 4
+        assert len(data["queries"]["chrI:1000-5000"]["hits"]) == 32
 
 
 def test_query_chr_bad(app):
