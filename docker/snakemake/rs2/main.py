@@ -3,6 +3,8 @@ import os.path
 import pickle
 import logging
 import argparse
+import multiprocessing
+import tempfile
 import pysam
 from Bio import SeqIO
 
@@ -46,6 +48,31 @@ def compute_rs2(guide_record, fasta_record_dict, model):
     return model_comparison.predict(seq, -1, -1, model)
 
 
+def compute_rs2_contig(args):
+    input_filename, fasta_dict, contig = args
+    output_file = tempfile.NamedTemporaryFile(delete=False)
+    output_filename = output_file.name
+
+    with pysam.AlignmentFile(input_filename) as input_file, pysam.AlignmentFile(
+        output_filename, write_mode, header=input_file.header
+    ) as output_file:
+
+        count = input_file.count(contig=contig)
+        reads = input_file.fetch(contig=contig)
+
+        for i, read in enumerate(reads, start=1):
+            tag_value = compute_rs2(read, fasta_record_dict, model)
+            read.set_tag("ce", tag_value)
+            output_file.write(read)
+
+            if i % 1000 == 0:
+                with multiprocessing.Lock():
+                    logger.info('Processing %s (%d/%d reads).' % (contig, i, count))
+
+    pysam.index(output_filename)
+    return output_filename
+
+
 if __name__ == "__main__":
 
     logger = logging.getLogger("guidescan2")
@@ -62,9 +89,7 @@ if __name__ == "__main__":
     parser.add_argument('input_filename', type=str, help='input sam/bam file')
     parser.add_argument('fasta_filename', type=str, help='fasta sequence file')
     parser.add_argument('output_filename', type=str, help='output sam/bam file')
-    parser.add_argument('--contig', type=str, help='reference_name of the genomic region (chromosome)')
-    parser.add_argument('--start', type=int, default=1, help='start of the genomic region (1-based inclusive)')
-    parser.add_argument('--end', type=int, help='end of the genomic region (1-based inclusive)')
+    parser.add_argument('--workers', type=int, default=1, help='number of workers')
 
     args = parser.parse_args()
 
@@ -74,27 +99,22 @@ if __name__ == "__main__":
     with open(os.path.join(this_dir, "saved_models/V3_model_nopos.pickle"), "rb") as f:
         model = pickle.load(f)
 
-    start = args.start - 1  # 1-indexed inclusive -> 0-indexed inclusive
-    end = args.end          # 1-indexed inclusive -> 0-indexed exclusive
-    selective = args.contig is not None  # Are we doing selective tagging?
-
     with pysam.AlignmentFile(args.input_filename) as input_file:
-        n_reads = input_file.count()
+        header = input_file.header
+        stats = input_file.get_index_statistics()
+        n_contigs = len(stats)
 
-    with pysam.AlignmentFile(args.input_filename) as input_file, pysam.AlignmentFile(
-        args.output_filename, write_mode, header=input_file.header
-    ) as output_file:
+    pool = multiprocessing.Pool(min(args.workers, n_contigs))
+    compute_rs2_contig_args = zip([args.input_filename]*n_contigs, [fasta_record_dict]*n_contigs, [stat.contig for stat in stats])
+    temp_filenames = pool.map(compute_rs2_contig, compute_rs2_contig_args)
 
-        reads = input_file.fetch()
+    with pysam.AlignmentFile(args.output_filename, write_mode, header=header) as output_file:
+        for temp_filename in temp_filenames:
+            with pysam.AlignmentFile(temp_filename) as input_file:
+                for read in input_file.fetch():
+                    output_file.write(read)
 
-        for i, read in enumerate(reads, start=1):
-            if not selective or (read.reference_name == args.contig and start < read.reference_end and
-                                 ((end is None) or (read.reference_start < end))):
-                tag_value = compute_rs2(read, fasta_record_dict, model)
-            else:
-                tag_value = 0.0
-            read.set_tag("ce", tag_value)
-            output_file.write(read)
+    pysam.index(args.output_filename)
 
-            if i % 100 == 0:
-                logger.info("Processed %d/%d records" % (i, n_reads))
+    for temp_filename in temp_filenames:
+        os.remove(temp_filename)
