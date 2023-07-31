@@ -61,6 +61,9 @@ def main(args):
         output_file, writing_mode, header=input_file.header
     ) as output_file:
         for read in input_file:
-            for ki in ("k0", "k1", "k2", "k3"):
-                if read.has_tag(ki) and read.get_tag(ki) <= getattr(args, ki):
-                    output_file.write(read)
+            invalid_read = any(
+                read.has_tag(ki) and read.get_tag(ki) > getattr(args, ki)
+                for ki in ("k0", "k1", "k2", "k3")
+            )
+            if not invalid_read:
+                output_file.write(read)
