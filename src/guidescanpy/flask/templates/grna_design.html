@@ -56,6 +56,20 @@
                 }
             });
 
+            const inputPattern = document.getElementById('txtFilterGRNAPattern');
+            const errorMsg = document.getElementById('errorMsg');
+
+            inputPattern.addEventListener('input', () => {
+                const pattern = new RegExp(inputPattern.pattern);
+                const inputValue = inputPattern.value;
+
+                if (!pattern.test(inputValue)) {
+                    errorMsg.textContent = inputPattern.title;
+                } else {
+                    errorMsg.textContent = '';
+                }
+            });
+
 
             function refreshMenu() {
                 var organism = $('#selectOrganism').find(":selected").text();
@@ -207,13 +221,15 @@
                                         <input class="form-check-input" type="checkbox" id="checkFilterGRNAPattern"
                                                name="checkFilterGRNAPattern">
                                         <label class="form-check-label" for="checkFilterGRNAPattern">
-                                            gRNA pattern to avoid <i class="fa-regular fa-circle-question"
+                                            gRNA pattern to avoid (max 5 nucleotides)<i class="fa-regular fa-circle-question"
                                                                         data-toggle="tooltip" data-placement="top"
-                                                                        title="Avoid gRNA sequences that contain the input pattern."></i>
+                                                                        title="Avoid gRNA sequences that contain the input pattern. N and V are only used for same consecutive nucleotides."></i>
                                         </label>
                                     </div>
-                                    <input type="text" class="form-control" id="txtFilterGRNAPattern"
-                                           name="txtFilterGRNAPattern" placeholder="Accepted characters: A/C/T/G/N/V">
+                                    <input type="text" class="form-control" id="txtFilterGRNAPattern" maxlength="5" pattern="^(?:[ATGC]*|[NV]+)$" title="Allowed characters: 'A', 'T', 'G', 'C', 'N', 'V'.
+           If 'N' or 'V' appears, the string can only contain 'N' or 'V'." oninput="this.value = this.value.toUpperCase()"
+                                           name="txtFilterGRNAPattern" placeholder="Allowed characters: A, C, T, G, N, V" required>
+                                    <span id="errorMsg" style="color: #7abaff; font-size: 12px; display: block; margin-top: 5px;"></span>
                                 </div>
                             </div>
 
