@@ -26,6 +26,7 @@ def query(args):
     min_ce = float(args.get("ce-bounds-l", 0))
     min_gc = float(args.get("gc-bounds-l", 0))
     max_gc = float(args.get("gc-bounds-u", 1))
+    pattern_avoid = args.get("pattern_avoid", None)
     filter_annotated = args.get("filter-annotated", False)
     flanking = int(args.get("flanking", 0))
 
@@ -54,6 +55,7 @@ def query(args):
             min_ce=min_ce,
             min_gc=min_gc,
             max_gc=max_gc,
+            pattern_avoid=pattern_avoid,
             filter_annotated=filter_annotated,
         )
         if result:

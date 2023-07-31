@@ -1,4 +1,5 @@
 import os.path
+import re
 from functools import lru_cache
 from collections import OrderedDict, defaultdict
 import numpy as np
@@ -172,6 +173,7 @@ class GenomeStructure:
         min_ce=None,
         min_gc=None,
         max_gc=None,
+        pattern_avoid=None,
         filter_annotated=False,
         as_dataframe=False,
         bam_filepath=None,
@@ -341,6 +343,10 @@ class GenomeStructure:
                 results = results[results["gc-content"] >= min_gc]
             if max_gc is not None:
                 results = results[results["gc-content"] <= max_gc]
+
+            if pattern_avoid is not None:
+                exclude_reg = r"^(?!.*" + re.escape(pattern_avoid) + r").*$"
+                results = results[results["sequence"].str.contains(exclude_reg)]
 
             if filter_annotated:
                 results = results[results["annotations"] != ""]
