@@ -361,15 +361,11 @@ class GenomeStructure:
                 patterns_avoid = [
                     pattern
                     for pattern in patterns_avoid
-                    if ("N" not in pattern and "V" not in pattern)
+                    if all(key not in pattern for key in wildcard_to_nuc)
                 ]
 
-                exclude_reg = (
-                    r"^(?!.*("
-                    + "|".join(re.escape(pattern) for pattern in patterns_avoid)
-                    + r")).*$"
-                )
-                results = results[results["sequence"].str.contains(exclude_reg)]
+                exclude_reg = "|".join(re.escape(pattern) for pattern in patterns_avoid)
+                results = results[~results["sequence"].str.contains(exclude_reg)]
 
             if filter_annotated:
                 results = results[results["annotations"] != ""]
