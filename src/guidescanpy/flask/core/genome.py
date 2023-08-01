@@ -356,9 +356,9 @@ class GenomeStructure:
                 else:
                     patterns_avoid = [pattern_avoid]
                 exclude_reg = (
-                    r"^(?!.*"
+                    r"^(?!.*("
                     + "|".join(re.escape(pattern) for pattern in patterns_avoid)
-                    + r").*$"
+                    + r")).*$"
                 )
                 results = results[results["sequence"].str.contains(exclude_reg)]
 
