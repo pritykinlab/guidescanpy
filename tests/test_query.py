@@ -35,7 +35,7 @@ def test_query_entrez_id(app):
         assert response.mimetype == "application/json"
         data = json.loads(response.data)
         assert len(data["queries"]) == 1
-        assert len(data["queries"]["GDH3"]["hits"]) == 31
+        assert len(data["queries"]["FUN51"]["hits"]) == 31
 
 
 def test_query_chr(app):
