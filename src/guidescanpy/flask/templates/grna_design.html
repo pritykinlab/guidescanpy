@@ -226,9 +226,10 @@
                                                                         title="Avoid gRNA sequences that contain the input pattern. N and V are only used for same consecutive nucleotides."></i>
                                         </label>
                                     </div>
-                                    <input type="text" class="form-control" id="txtFilterGRNAPattern" maxlength="5" pattern="^(?:[ATGC]*|[NV]+)$" title="Allowed characters: 'A', 'T', 'G', 'C', 'N', 'V'.
-           If 'N' or 'V' appears, the string can only contain 'N' or 'V'." oninput="this.value = this.value.toUpperCase()"
-                                           name="txtFilterGRNAPattern" placeholder="Allowed characters: A, C, T, G, N, V" required>
+                                    <input type="text" class="form-control" id="txtFilterGRNAPattern" maxlength="5" pattern="^(?:[ATGC]*|[NV]+)$"
+                                           title="Allowed characters: 'A', 'T', 'G', 'C', 'N', 'V'. If 'N' or 'V' appears, the string can only contain 'N' or 'V'."
+                                           oninput="this.value = this.value.toUpperCase()"
+                                           name="txtFilterGRNAPattern" placeholder="Allowed characters: A, C, T, G, N, V">
                                     <span id="errorMsg" style="color: #7abaff; font-size: 12px; display: block; margin-top: 5px;"></span>
                                 </div>
                             </div>
