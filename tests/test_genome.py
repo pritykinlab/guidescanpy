@@ -299,7 +299,7 @@ def test_genome_structure_query_CNE1_filter_pattern(
     results = genome_structure.query(
         region,
         enzyme="cas9",
-        pattern_avoid="VVV",
+        pattern_avoid="AVNV",
         as_dataframe=True,
         bam_filepath=bam_file,
     )

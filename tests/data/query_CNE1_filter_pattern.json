@@ -38,54 +38,6 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
-        "cutting-efficiency": 0.590487,
-        "start": 37490,
-        "sequence": "GCTGTTTTTGAATCTAGCGTNGG",
-        "gc-content": 0.4,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 37512,
-        "specificity": 1.0,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.540485,
-        "start": 37497,
-        "sequence": "TTGAATCTAGCGTTGGTGAANGG",
-        "gc-content": 0.4,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 37519,
-        "specificity": 1.0,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
         "cutting-efficiency": 0.615468,
         "start": 37534,
         "sequence": "ATCTTCCGCTAATGTAACGTNGG",
@@ -110,9 +62,9 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
-        "cutting-efficiency": 0.187986,
-        "start": 37543,
-        "sequence": "CATTAGCGGAAGATTCTTTCNGG",
+        "cutting-efficiency": 0.164797,
+        "start": 37556,
+        "sequence": "TTCTTTCTGGGAGCATTTTCNGG",
         "gc-content": 0.4,
         "annotations": [
           {
@@ -127,105 +79,9 @@
         ],
         "off-targets": [],
         "n-off-targets": 0,
-        "end": 37565,
+        "end": 37578,
         "specificity": 1.0,
         "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.463101,
-        "start": 37544,
-        "sequence": "ATTAGCGGAAGATTCTTTCTNGG",
-        "gc-content": 0.35,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 37566,
-        "specificity": 1.0,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.388663,
-        "start": 37604,
-        "sequence": "CTTCACTTGTGATCCACTCTNGG",
-        "gc-content": 0.45,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 37626,
-        "specificity": 1.0,
-        "direction": "negative"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.532701,
-        "start": 37620,
-        "sequence": "AGTGAAGCCGTCAACAATGANGG",
-        "gc-content": 0.45,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 37642,
-        "specificity": 1.0,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.419196,
-        "start": 37627,
-        "sequence": "TTTAGAGCCTTCATTGTTGANGG",
-        "gc-content": 0.35,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 37649,
-        "specificity": 1.0,
-        "direction": "negative"
       },
       {
         "organism": "sacCer3",
@@ -326,6 +182,78 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
+        "cutting-efficiency": 0.369604,
+        "start": 37689,
+        "sequence": "CAAGGATCCGCATGGGATAANGG",
+        "gc-content": 0.5,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 37711,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.612132,
+        "start": 37696,
+        "sequence": "TGCGATTCCTTTATCCCATGNGG",
+        "gc-content": 0.45,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 37718,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.467123,
+        "start": 37707,
+        "sequence": "AAAGGAATCGCAGTTCGAACNGG",
+        "gc-content": 0.45,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 37729,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
         "cutting-efficiency": 0.467673,
         "start": 37728,
         "sequence": "GGCAATGCCGCAGCTATGATNGG",
@@ -398,6 +326,30 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
+        "cutting-efficiency": 0.504622,
+        "start": 37775,
+        "sequence": "TGTTTCAGAAACGGATACCTNGG",
+        "gc-content": 0.4,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 37797,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
         "cutting-efficiency": 0.69947,
         "start": 37792,
         "sequence": "AATTTCGTACTGGACAACCANGG",
@@ -418,6 +370,30 @@
         "end": 37814,
         "specificity": 1.0,
         "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.543152,
+        "start": 37799,
+        "sequence": "TGTCCAGTACGAAATTAAGTNGG",
+        "gc-content": 0.35,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 37821,
+        "specificity": 1.0,
+        "direction": "positive"
       },
       {
         "organism": "sacCer3",
@@ -490,30 +466,6 @@
         "end": 37938,
         "specificity": 1.0,
         "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.258762,
-        "start": 37950,
-        "sequence": "AATTGCACGCCATTTATTTCNGG",
-        "gc-content": 0.35,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 37972,
-        "specificity": 1.0,
-        "direction": "negative"
       },
       {
         "organism": "sacCer3",
@@ -638,10 +590,10 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
-        "cutting-efficiency": 0.611294,
-        "start": 38111,
-        "sequence": "AATTCTTATAGACGGTAAGANGG",
-        "gc-content": 0.3,
+        "cutting-efficiency": 0.644292,
+        "start": 38181,
+        "sequence": "ATTAAAGGCGGTGTAATGGGNGG",
+        "gc-content": 0.45,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -655,17 +607,137 @@
         ],
         "off-targets": [],
         "n-off-targets": 0,
-        "end": 38133,
+        "end": 38203,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.379665,
+        "start": 38184,
+        "sequence": "ATCATTAAAGGCGGTGTAATNGG",
+        "gc-content": 0.35,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38206,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.456676,
+        "start": 38185,
+        "sequence": "AATCATTAAAGGCGGTGTAANGG",
+        "gc-content": 0.35,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38207,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.696848,
+        "start": 38193,
+        "sequence": "ACATCAGGAATCATTAAAGGNGG",
+        "gc-content": 0.35,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38215,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.703649,
+        "start": 38229,
+        "sequence": "ATGCGATCATCCCAATCATGNGG",
+        "gc-content": 0.45,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38251,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.651992,
+        "start": 38249,
+        "sequence": "CATCCGAATCCCAGATCCTGNGG",
+        "gc-content": 0.55,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38271,
         "specificity": 1.0,
         "direction": "positive"
       },
       {
         "organism": "sacCer3",
         "off-target-summary": {},
-        "cutting-efficiency": 0.413849,
-        "start": 38117,
-        "sequence": "TATAGACGGTAAGACGGTTANGG",
-        "gc-content": 0.4,
+        "cutting-efficiency": 0.703037,
+        "start": 38252,
+        "sequence": "CCGAATCCCAGATCCTGAGGNGG",
+        "gc-content": 0.6,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -679,9 +751,33 @@
         ],
         "off-targets": [],
         "n-off-targets": 0,
-        "end": 38139,
+        "end": 38274,
         "specificity": 1.0,
         "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.40604,
+        "start": 38252,
+        "sequence": "CCGCCTCAGGATCTGGGATTNGG",
+        "gc-content": 0.6,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38274,
+        "specificity": 1.0,
+        "direction": "negative"
       },
       {
         "organism": "sacCer3",
@@ -758,54 +854,6 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
-        "cutting-efficiency": 0.515491,
-        "start": 38269,
-        "sequence": "AGGCGGTGAAGCTCAGTGATNGG",
-        "gc-content": 0.55,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 38291,
-        "specificity": 1.0,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.434371,
-        "start": 38270,
-        "sequence": "GGCGGTGAAGCTCAGTGATCNGG",
-        "gc-content": 0.6,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 38292,
-        "specificity": 1.0,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
         "cutting-efficiency": 0.533714,
         "start": 38303,
         "sequence": "CTGGATGTGGAATCATCAATNGG",
@@ -878,54 +926,6 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
-        "cutting-efficiency": 0.52878,
-        "start": 38316,
-        "sequence": "GGTTCAGTGCCATCTGGATGNGG",
-        "gc-content": 0.55,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 38338,
-        "specificity": 1.0,
-        "direction": "negative"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.42106,
-        "start": 38322,
-        "sequence": "TCTGGTGGTTCAGTGCCATCNGG",
-        "gc-content": 0.55,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 38344,
-        "specificity": 1.0,
-        "direction": "negative"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
         "cutting-efficiency": 0.570155,
         "start": 38326,
         "sequence": "ATGGCACTGAACCACCAGAANGG",
@@ -968,6 +968,30 @@
         "off-targets": [],
         "n-off-targets": 0,
         "end": 38359,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.290453,
+        "start": 38340,
+        "sequence": "GGGATGGAGCTGTTCCATTCNGG",
+        "gc-content": 0.55,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38362,
         "specificity": 1.0,
         "direction": "negative"
       },
@@ -1094,6 +1118,30 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
+        "cutting-efficiency": 0.486801,
+        "start": 38407,
+        "sequence": "AGGAACTTGAGCACGGGGAANGG",
+        "gc-content": 0.55,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38429,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
         "cutting-efficiency": 0.594324,
         "start": 38451,
         "sequence": "CCTCTTTGCACTGCAGAACGNGG",
@@ -1190,6 +1238,78 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
+        "cutting-efficiency": 0.480563,
+        "start": 38480,
+        "sequence": "TTATCAGCCCTGGTATCTGCNGG",
+        "gc-content": 0.5,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38502,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.52129,
+        "start": 38490,
+        "sequence": "TTGGCATTATTTATCAGCCCNGG",
+        "gc-content": 0.4,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38512,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.551968,
+        "start": 38505,
+        "sequence": "AATGCCAAGTACAAAGGTCCNGG",
+        "gc-content": 0.45,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38527,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
         "cutting-efficiency": 0.40056,
         "start": 38509,
         "sequence": "TTCGCCTGGACCTTTGTACTNGG",
@@ -1234,6 +1354,174 @@
         "end": 38545,
         "specificity": 1.0,
         "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.490793,
+        "start": 38540,
+        "sequence": "AATCATAAATCCCAATTACANGG",
+        "gc-content": 0.25,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38562,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.539384,
+        "start": 38541,
+        "sequence": "ATCATAAATCCCAATTACATNGG",
+        "gc-content": 0.25,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38563,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.71158,
+        "start": 38543,
+        "sequence": "CATAAATCCCAATTACATGGNGG",
+        "gc-content": 0.35,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38565,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.513314,
+        "start": 38548,
+        "sequence": "ATCCCAATTACATGGGGGAANGG",
+        "gc-content": 0.45,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38570,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.400742,
+        "start": 38550,
+        "sequence": "TGCCATTCCCCCATGTAATTNGG",
+        "gc-content": 0.45,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38572,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.259437,
+        "start": 38551,
+        "sequence": "ATGCCATTCCCCCATGTAATNGG",
+        "gc-content": 0.45,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38573,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.615502,
+        "start": 38558,
+        "sequence": "CATGGGGGAATGGCATCCACNGG",
+        "gc-content": 0.6,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38580,
+        "specificity": 1.0,
+        "direction": "positive"
       },
       {
         "organism": "sacCer3",
@@ -1382,33 +1670,9 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
-        "cutting-efficiency": 0.458119,
-        "start": 38682,
-        "sequence": "TTGATAAGCAACATTTATGTNGG",
-        "gc-content": 0.25,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 38704,
-        "specificity": 1.0,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.368096,
-        "start": 38751,
-        "sequence": "ATGAGAGACCGCGCGTTTAGNGG",
+        "cutting-efficiency": 0.498184,
+        "start": 38776,
+        "sequence": "TTTGCGTTCTGTGGGGCCATNGG",
         "gc-content": 0.55,
         "annotations": [
           {
@@ -1423,33 +1687,9 @@
         ],
         "off-targets": [],
         "n-off-targets": 0,
-        "end": 38773,
+        "end": 38798,
         "specificity": 1.0,
-        "direction": "positive"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {},
-        "cutting-efficiency": 0.550321,
-        "start": 38760,
-        "sequence": "CGCGCGTTTAGAGGCTCCGANGG",
-        "gc-content": 0.65,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [],
-        "n-off-targets": 0,
-        "end": 38782,
-        "specificity": 1.0,
-        "direction": "positive"
+        "direction": "negative"
       },
       {
         "organism": "sacCer3",
@@ -1526,10 +1766,10 @@
       {
         "organism": "sacCer3",
         "off-target-summary": {},
-        "cutting-efficiency": 0.667754,
-        "start": 38870,
-        "sequence": "CTAATATGCGATCTATAATGNGG",
-        "gc-content": 0.3,
+        "cutting-efficiency": 0.610248,
+        "start": 38854,
+        "sequence": "AATGCGGTCAAATGGATTAGNGG",
+        "gc-content": 0.4,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1543,17 +1783,17 @@
         ],
         "off-targets": [],
         "n-off-targets": 0,
-        "end": 38892,
+        "end": 38876,
         "specificity": 1.0,
         "direction": "negative"
       },
       {
         "organism": "sacCer3",
         "off-target-summary": {},
-        "cutting-efficiency": 0.770317,
-        "start": 38923,
-        "sequence": "CGACGTCGTCAAGAGCACGANGG",
-        "gc-content": 0.6,
+        "cutting-efficiency": 0.34307,
+        "start": 38855,
+        "sequence": "TAATGCGGTCAAATGGATTANGG",
+        "gc-content": 0.35,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1567,9 +1807,105 @@
         ],
         "off-targets": [],
         "n-off-targets": 0,
-        "end": 38945,
+        "end": 38877,
         "specificity": 1.0,
         "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.336609,
+        "start": 38856,
+        "sequence": "ATAATGCGGTCAAATGGATTNGG",
+        "gc-content": 0.35,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38878,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.479394,
+        "start": 38862,
+        "sequence": "CGATCTATAATGCGGTCAAANGG",
+        "gc-content": 0.4,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38884,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.640078,
+        "start": 38898,
+        "sequence": "GCAGTAAGCACAAATTTCAGNGG",
+        "gc-content": 0.4,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38920,
+        "specificity": 1.0,
+        "direction": "negative"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {},
+        "cutting-efficiency": 0.656503,
+        "start": 38900,
+        "sequence": "TCTGAAATTTGTGCTTACTGNGG",
+        "gc-content": 0.35,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [],
+        "n-off-targets": 0,
+        "end": 38922,
+        "specificity": 1.0,
+        "direction": "positive"
       },
       {
         "organism": "sacCer3",
@@ -1592,6 +1928,40 @@
         "off-targets": [],
         "n-off-targets": 0,
         "end": 38946,
+        "specificity": 1.0,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.623807,
+        "start": 38542,
+        "sequence": "TCATAAATCCCAATTACATGNGG",
+        "gc-content": 0.3,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 635416,
+            "chromosome": "X",
+            "direction": "positive",
+            "distance": 3,
+            "accession": "NC_001142.9"
+          }
+        ],
+        "n-off-targets": 1,
+        "end": 38564,
         "specificity": 1.0,
         "direction": "positive"
       },
@@ -1668,10 +2038,10 @@
         "off-target-summary": {
           "3": 1
         },
-        "cutting-efficiency": 0.381759,
-        "start": 38673,
-        "sequence": "ATGTTGCTTATCAACATGTTNGG",
-        "gc-content": 0.3,
+        "cutting-efficiency": 0.552895,
+        "start": 38103,
+        "sequence": "TCTTTTCAAATTCTTATAGANGG",
+        "gc-content": 0.2,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1685,27 +2055,27 @@
         ],
         "off-targets": [
           {
-            "position": 413156,
-            "chromosome": "VII",
+            "position": 707843,
+            "chromosome": "II",
             "direction": "negative",
             "distance": 3,
-            "accession": "NC_001139.9"
+            "accession": "NC_001134.8"
           }
         ],
         "n-off-targets": 1,
-        "end": 38695,
-        "specificity": 0.976365,
-        "direction": "negative"
+        "end": 38125,
+        "specificity": 0.929106,
+        "direction": "positive"
       },
       {
         "organism": "sacCer3",
         "off-target-summary": {
           "3": 1
         },
-        "cutting-efficiency": 0.35088,
-        "start": 37964,
-        "sequence": "CGTGCAATTTGCCATCAATANGG",
-        "gc-content": 0.4,
+        "cutting-efficiency": 0.464014,
+        "start": 37766,
+        "sequence": "ACCTATTAATGTTTCAGAAANGG",
+        "gc-content": 0.25,
         "annotations": [
           {
             "exons/entrez_id": 851241,
@@ -1719,16 +2089,50 @@
         ],
         "off-targets": [
           {
-            "position": 711885,
-            "chromosome": "XII",
+            "position": 194688,
+            "chromosome": "IV",
             "direction": "positive",
             "distance": 3,
-            "accession": "NC_001144.5"
+            "accession": "NC_001136.10"
           }
         ],
         "n-off-targets": 1,
-        "end": 37986,
-        "specificity": 0.921152,
+        "end": 37788,
+        "specificity": 0.914149,
+        "direction": "positive"
+      },
+      {
+        "organism": "sacCer3",
+        "off-target-summary": {
+          "3": 1
+        },
+        "cutting-efficiency": 0.117007,
+        "start": 37465,
+        "sequence": "TGAAATTTTCTGCGTATTTANGG",
+        "gc-content": 0.25,
+        "annotations": [
+          {
+            "exons/entrez_id": 851241,
+            "exons/exon_number": 1,
+            "exons/chromosome": "NC_001133.9",
+            "exons/product": "calnexin",
+            "exons/sense": true,
+            "exons/start_pos": 37464,
+            "exons/end_pos": 38972
+          }
+        ],
+        "off-targets": [
+          {
+            "position": 592010,
+            "chromosome": "X",
+            "direction": "negative",
+            "distance": 3,
+            "accession": "NC_001142.9"
+          }
+        ],
+        "n-off-targets": 1,
+        "end": 37487,
+        "specificity": 0.913884,
         "direction": "positive"
       },
       {
@@ -1763,47 +2167,6 @@
         "n-off-targets": 1,
         "end": 37824,
         "specificity": 0.844156,
-        "direction": "negative"
-      },
-      {
-        "organism": "sacCer3",
-        "off-target-summary": {
-          "3": 2
-        },
-        "cutting-efficiency": 0.454913,
-        "start": 37935,
-        "sequence": "ATTTCAGGAGCACAATAATCNGG",
-        "gc-content": 0.35,
-        "annotations": [
-          {
-            "exons/entrez_id": 851241,
-            "exons/exon_number": 1,
-            "exons/chromosome": "NC_001133.9",
-            "exons/product": "calnexin",
-            "exons/sense": true,
-            "exons/start_pos": 37464,
-            "exons/end_pos": 38972
-          }
-        ],
-        "off-targets": [
-          {
-            "position": 334318,
-            "chromosome": "XIV",
-            "direction": "negative",
-            "distance": 3,
-            "accession": "NC_001146.8"
-          },
-          {
-            "position": 295026,
-            "chromosome": "II",
-            "direction": "positive",
-            "distance": 3,
-            "accession": "NC_001134.8"
-          }
-        ],
-        "n-off-targets": 2,
-        "end": 37957,
-        "specificity": 0.78516,
         "direction": "negative"
       }
     ]
