@@ -346,15 +346,24 @@ class GenomeStructure:
 
             if pattern_avoid is not None:
                 wildcard_to_nuc = {"N": "ACTG", "V": "ACG"}
+                patterns_avoid = [pattern_avoid]
 
-                if pattern_avoid[0] in wildcard_to_nuc:
-                    pattern_wildcard = pattern_avoid[0]
-                    patterns_avoid = [
-                        pattern_avoid.replace(pattern_wildcard, x)
-                        for x in wildcard_to_nuc[pattern_wildcard]
-                    ]
-                else:
-                    patterns_avoid = [pattern_avoid]
+                for wildcard in wildcard_to_nuc:
+                    patterns_avoid.extend(
+                        [
+                            pattern.replace(wildcard, x)
+                            for x in wildcard_to_nuc[wildcard]
+                            for pattern in patterns_avoid
+                            if wildcard in pattern
+                        ]
+                    )
+
+                patterns_avoid = [
+                    pattern
+                    for pattern in patterns_avoid
+                    if ("N" not in pattern and "V" not in pattern)
+                ]
+
                 exclude_reg = (
                     r"^(?!.*("
                     + "|".join(re.escape(pattern) for pattern in patterns_avoid)
