@@ -349,6 +349,7 @@ class GenomeStructure:
                 nuc_map = {"A": "T", "T": "A", "C": "G", "G": "C"}
                 patterns_avoid = [pattern_avoid]
 
+                # Replace the two wildcards with all possible representations of nucleotides and store them in patterns_avoid
                 for wildcard in wildcard_to_nuc:
                     if any(wildcard in pattern for pattern in patterns_avoid):
                         patterns_avoid = [
@@ -358,9 +359,10 @@ class GenomeStructure:
                             if wildcard in pattern
                         ]
 
+                # Also add the reverse complemented patterns to patterns_avoid
                 patterns_avoid.extend(
                     [
-                        "".join(list(map(lambda n: nuc_map[n], list(dna)))[::-1])
+                        "".join(list(map(lambda n: nuc_map[n], dna))[::-1])
                         for dna in patterns_avoid
                     ]
                 )
