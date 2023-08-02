@@ -346,6 +346,7 @@ class GenomeStructure:
 
             if pattern_avoid is not None:
                 wildcard_to_nuc = {"N": "ACTG", "V": "ACG"}
+                nuc_map = {"A": "T", "T": "A", "C": "G", "G": "C"}
                 patterns_avoid = [pattern_avoid]
 
                 for wildcard in wildcard_to_nuc:
@@ -356,6 +357,13 @@ class GenomeStructure:
                             for pattern in patterns_avoid
                             if wildcard in pattern
                         ]
+
+                patterns_avoid.extend(
+                    [
+                        "".join(list(map(lambda n: nuc_map[n], list(dna)))[::-1])
+                        for dna in patterns_avoid
+                    ]
+                )
 
                 exclude_reg = "|".join(re.escape(pattern) for pattern in patterns_avoid)
                 results = results[~results["sequence"].str.contains(exclude_reg)]
