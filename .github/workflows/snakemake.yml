@@ -54,10 +54,10 @@ jobs:
         run:
           pip3 install snakemake
 
-      - name: Snakemake
+      - name: Pytest in Snakemake
         run: |
           cd docker/snakemake
-          snakemake --cores 1 --use-conda --config max_kmers=100 --conda-frontend conda
+          snakemake guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
         env:
           POSTGRES_HOST: localhost
           POSTGRES_DB: guidescan
