@@ -349,20 +349,13 @@ class GenomeStructure:
                 patterns_avoid = [pattern_avoid]
 
                 for wildcard in wildcard_to_nuc:
-                    patterns_avoid.extend(
-                        [
+                    if any(wildcard in pattern for pattern in patterns_avoid):
+                        patterns_avoid = [
                             pattern.replace(wildcard, x)
                             for x in wildcard_to_nuc[wildcard]
                             for pattern in patterns_avoid
                             if wildcard in pattern
                         ]
-                    )
-
-                patterns_avoid = [
-                    pattern
-                    for pattern in patterns_avoid
-                    if all(key not in pattern for key in wildcard_to_nuc)
-                ]
 
                 exclude_reg = "|".join(re.escape(pattern) for pattern in patterns_avoid)
                 results = results[~results["sequence"].str.contains(exclude_reg)]
