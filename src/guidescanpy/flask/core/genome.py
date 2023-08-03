@@ -1,4 +1,5 @@
 import os.path
+import re
 from functools import lru_cache
 from collections import OrderedDict, defaultdict
 import numpy as np
@@ -172,6 +173,7 @@ class GenomeStructure:
         min_ce=None,
         min_gc=None,
         max_gc=None,
+        pattern_avoid=None,
         filter_annotated=False,
         as_dataframe=False,
         bam_filepath=None,
@@ -341,6 +343,32 @@ class GenomeStructure:
                 results = results[results["gc-content"] >= min_gc]
             if max_gc is not None:
                 results = results[results["gc-content"] <= max_gc]
+
+            if pattern_avoid is not None:
+                wildcard_to_nuc = {"N": "ACTG", "V": "ACG"}
+                nuc_map = {"A": "T", "T": "A", "C": "G", "G": "C"}
+                patterns_avoid = [pattern_avoid]
+
+                # Replace the two wildcards with all possible representations of nucleotides and store them in patterns_avoid
+                for wildcard in wildcard_to_nuc:
+                    if any(wildcard in pattern for pattern in patterns_avoid):
+                        patterns_avoid = [
+                            pattern.replace(wildcard, x)
+                            for x in wildcard_to_nuc[wildcard]
+                            for pattern in patterns_avoid
+                            if wildcard in pattern
+                        ]
+
+                # Also add the reverse complemented patterns to patterns_avoid
+                patterns_avoid.extend(
+                    [
+                        "".join(list(map(lambda n: nuc_map[n], dna))[::-1])
+                        for dna in patterns_avoid
+                    ]
+                )
+
+                exclude_reg = "|".join(re.escape(pattern) for pattern in patterns_avoid)
+                results = results[~results["sequence"].str.contains(exclude_reg)]
 
             if filter_annotated:
                 results = results[results["annotations"] != ""]

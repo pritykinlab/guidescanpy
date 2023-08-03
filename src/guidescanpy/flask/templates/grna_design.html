@@ -30,6 +30,10 @@
                 $('#txtFilterAboveGCContent').prop('disabled', !checked);
                 $('#txtFilterBelowGCContent').prop('disabled', !checked);
             });
+            $('#checkFilterGRNAPattern').on('change', function () {
+                var checked = $(this).prop('checked');
+                $('#txtFilterGRNAPattern').prop('disabled', !checked);
+            });
             $('#selectOrganism').on('change', function () {
                 refreshMenu();
                 refreshExamples();
@@ -49,6 +53,20 @@
             gcInputU.addEventListener('change', function () {
                 if (parseFloat(gcInputU.value) < parseFloat(gcInputL.value)) {
                     gcInputL.value = gcInputU.value;
+                }
+            });
+
+            const inputPattern = document.getElementById('txtFilterGRNAPattern');
+            const errorMsg = document.getElementById('errorMsg');
+
+            inputPattern.addEventListener('input', () => {
+                const pattern = new RegExp(inputPattern.pattern);
+                const inputValue = inputPattern.value;
+
+                if (!pattern.test(inputValue)) {
+                    errorMsg.textContent = inputPattern.title;
+                } else {
+                    errorMsg.textContent = '';
                 }
             });
 
@@ -197,6 +215,26 @@
                                                                            title="Returns only gRNAs that cut within RefSeq annotated exons."></i>
                                         </label>
                                     </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkFilterGRNAPattern"
+                                               name="checkFilterGRNAPattern">
+                                        <label class="form-check-label" for="checkFilterGRNAPattern">
+                                            gRNA pattern to avoid (max 5 nucleotides)
+                                            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="top"
+                                                title="Avoid gRNA sequences that contain the input pattern.
+&#8226; You can have Ns or Vs in the pattern in addition to A/C/T/G.
+&#8226; All Ns are expanded to A/C/T/G, with all occurrences of N matching the same nucleotide.
+&#8226; All Vs are expanded to A/C/G, with all occurrences of V matching the same nucleotide.">
+                                            </i>
+                                        </label>
+                                    </div>
+                                    <input type="text" class="form-control" id="txtFilterGRNAPattern" maxlength="5" pattern="^(?:[ATGCNV]*)$"
+                                           title="Allowed characters: 'A', 'T', 'G', 'C', 'N', 'V'."
+                                           oninput="this.value = this.value.toUpperCase()" disabled
+                                           name="txtFilterGRNAPattern" placeholder="Allowed characters: A, C, T, G, N, V">
+                                    <span id="errorMsg" style="color: #7abaff; font-size: 12px; display: block; margin-top: 5px;"></span>
                                 </div>
                             </div>
 

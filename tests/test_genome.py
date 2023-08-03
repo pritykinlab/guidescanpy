@@ -280,6 +280,36 @@ def test_genome_structure_query_CNE1_min_gc_content(
 @patch("guidescanpy.flask.core.genome.get_chromosome_interval_trees")
 @patch("guidescanpy.flask.core.parser.create_region_query")
 @patch("guidescanpy.flask.core.genome.get_chromosome_names")
+def test_genome_structure_query_CNE1_filter_pattern(
+    patched_fn1,
+    patched_fn2,
+    patched_fn3,
+    data_folder,
+    bam_file,
+    sacCer3_chromosome_names,
+    sacCer3_region_CNE1,
+):
+    patched_fn1.return_value = sacCer3_chromosome_names
+    patched_fn2.return_value = sacCer3_region_CNE1
+    patched_fn3.return_value = pickle.load(
+        open(os.path.join(data_folder, "sacCer3_chrI_II_IX_itrees.pkl"), "rb")
+    )
+    genome_structure = get_genome_structure(organism="sacCer3", bam_filepath=bam_file)
+    region = genome_structure.parse_regions("CNE1")[0]
+    results = genome_structure.query(
+        region,
+        enzyme="cas9",
+        pattern_avoid="AVNV",
+        as_dataframe=True,
+        bam_filepath=bam_file,
+    )
+
+    assert len(results) == 48
+
+
+@patch("guidescanpy.flask.core.genome.get_chromosome_interval_trees")
+@patch("guidescanpy.flask.core.parser.create_region_query")
+@patch("guidescanpy.flask.core.genome.get_chromosome_names")
 def test_genome_structure_query_offtarget_on_scaffold(
     patched_fn1,
     patched_fn2,
