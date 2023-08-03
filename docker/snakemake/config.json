@@ -4,7 +4,7 @@
     "cas9": "NGG",
     "cpf1": "TTTN"
   },
-  "organisms": ["sacCer3"],
+  "organisms": ["sacCer3", "hg38", "ce11", "dm6", "mm10", "mm39", "rn6", "t2t_chm13"],
   "enzymes": ["cas9", "cpf1"],
   "max_kmers": -1,
   "sacCer3": {
