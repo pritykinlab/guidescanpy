@@ -12,14 +12,13 @@
 	- [Run Snakemake workflow](#run-snakemake-workflow)
 	- [Data Files Structure](#data-files-structure)
 	- [Project Structure](#project-structure)
+    - [Configuration](#configuration)
 	- [Running the Project](#running-the-project)
-	- [Configuration](#configuration)
 
 ## Run Guidescan in Docker
 For detailed instructions on running Guidescan in Docker, refer to this [page](https://github.com/pritykinlab/guidescanpy/tree/main/docker#running-guidescan-in-docker).
 ## Run Guidescan Locally
 ### Prerequisites
-Guidescan relies on Snakemake to handle both its installation and data generation workflow. The Snakemake workflow will manage the project's environment, so you don't need to install the dependencies manually.
 
 To run Guidescan locally, make sure you have the following prerequisites installed:
 
@@ -66,7 +65,7 @@ Here is a DAG for the workflow:
 ### Data File Structure
 
 After running the workflow with `--config organisms=[\"sacCer3\"]`, the output data folder should have the following structure:
-
+```
 	├── databases
 	│   ├── cas9
 	│   │   ├── sacCer3.bam
@@ -97,6 +96,7 @@ After running the workflow with `--config organisms=[\"sacCer3\"]`, the output d
 	    ├── sacCer3.fna.gz
 	    ├── sacCer3.fna.reverse.dna
 	    └── sacCer3.gtf.gz
+```
 The `.bam.sorted` files are the databases the backend is using.
 
 ### Project Structure
