@@ -178,8 +178,9 @@ This command will decode the given bam file to a human-readable data file.
 	- `--region REGION`: One or more region strings.
 	- `--mode {succinct,complete}`: Succinct or complete off-target information.
 
-- **Output**:
-Print a CSV-formatted output with the following columns:
+- **Output:**
+
+	Print a CSV-formatted output with the following columns:
 	- `id`: The identifier for each sequence.
 	- `sequence`: The target DNA sequence.
 	- `chromosome`: The chromosome where the target sequence is located.
@@ -192,7 +193,7 @@ Print a CSV-formatted output with the following columns:
 	- `specificity`: The specificity of the sequence.
 	- `cutting_efficiency`: The cutting efficiency of the sequence.
 
-- **Example**
+- **Example:**
 	```
 	guidescanpy decode data/databases/cas9/sacCer3.bam.sorted data/raw/sacCer3.fna data/raw/sacCer3_chr2acc
 	```
@@ -223,8 +224,9 @@ This command will generate kmers from the given FASTA file, based on the specifi
 	- `--start` Match PAM at start of kmer instead at end (default).
 	- `--max-kmers` MAX_KMERS Maximum number of kmers to generate. The default is no limit.
 
-- **Output**:
-Print a CSV-formatted output with the following columns:
+- **Output:**
+
+	Print a CSV-formatted output with the following columns:
 	- `id`: The identifier for each sequence.
 	- `sequence`: The target DNA sequence.
 	- `pam`: The PAM of the target.
@@ -232,7 +234,7 @@ Print a CSV-formatted output with the following columns:
 	- `position`: The position of the target sequence on the chromosome.
 	- `sense`: The direction of the sequence (`+` or `-`).
 
-- **Example**
+- **Example:**
 	```
 	guidescanpy generate-kmers data/raw/sacCer3.fna --max-kmers 100
 	```
@@ -267,7 +269,7 @@ This command will add all data of the given organism to the PostgreSQL database.
 - **Options and flags:**
 	- `-h`, `--help`:  show this help message and exit
 
-- **Example:**:
+- **Example:**
 	```
 	guidescanpy add-organism sacCer3 data/raw/sacCer3.gtf.gz data/raw/sacCer3_chr2acc
 	```
@@ -288,11 +290,11 @@ This command can filter a SAM/BAM file based on the number of offtargets at a gi
 		- `--k2 K2`: Max number of off-targets at distance 2. The default is `inf`.
 		- `--k3 K3`: Max number of off-targets at distance 3. The default is `inf`.
 
-- **Output**
+- **Output:**
 
 	A filtered SAM/BAM file.
 
-- **Example**
+- **Example:**
 	```
 	guidescanpy filter-tag --input data/databases/cas9/sacCer3.sam --output data/databases/cas9/sacCer3.bam
 	```
@@ -314,6 +316,6 @@ This **incomplete** command can add new tags to the SAM/BAM files. It was origin
 	- `--input INPUT` (Required), `-i INPUT`: Path to the input sam/bam file.
 	- `--output OUTPUT` (Required), `-o OUTPUT`: Path to the output sam/bam file.
 
-- **Output**
+- **Output:**
 
 	The SAM/BAM file with added tag(s).
