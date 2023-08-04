@@ -15,6 +15,7 @@
 	- [Project Structure](#project-structure)
 	- [Configuration](#configuration)
 	- [Run the Project](#running-the-project)
+- [Command Line Interface](#command-line-interface)
 
 ## Run Guidescan in Docker
 For detailed instructions on running Guidescan in Docker, refer to this [page](https://github.com/pritykinlab/guidescanpy/tree/main/docker#running-guidescan-in-docker).
@@ -106,7 +107,20 @@ After running the workflow with `--config organisms=[\"sacCer3\"]`, the output d
 The `.bam.sorted` files are the databases the backend is using.
 
 ### Project Structure
-[explain main files]
+This project consists of several key directories and files, organized as follows:
+1. **`docker/`**: Contains Docker-related files, including the Dockerfile, docker-compose.yml and snakemake related files.
+	- **`snakemake/`**: Contains Snakefile, snakemake config file, and environment files for snakemake rules.
+2. **`src/guidescanpy/`**: Contains the main source code for Guidescan.
+	- **`commands/`**: Contains various command-line utilities for the project.
+	- **`flask/`**: Contains the Flask application components.
+		- **`core/`**: Class `GenomeStructure` is defined in `genome.py`, which contains the core code for the implementation of  the query functionality.
+		- **`blueprints/`**: Contains the blueprints for the Flask app.
+		- **`templates/`**: Contains HTML templates.
+		- **`db.py`**: The functions related to database operations and querying.
+	- **`tasks/`**: Contains Celery tasks definitions.
+	- **`config.json`**: The main configuration file for the project.
+3. **`tests/`**: Contains pytest unit test files and test data files. `@patch` decorators helps prevent actual database communication.
+4. **`pyproject.toml`**: The TOML configuration file for project metadata and dependencies.
 
 ### Configuration
 1. **Environment Virables**
@@ -120,3 +134,12 @@ The `.bam.sorted` files are the databases the backend is using.
 
 
 ### Run the Project
+1. **Run Celery Worker**
+	```
+	celery -A guidescanpy.tasks.app worker -l INFO
+	```
+2. **Run Guidescan Web**
+	```
+	guidescanpy web
+	```
+## Command Line Interface
