@@ -279,7 +279,7 @@ guidescanpy filter-tag [options]
 ```
 This command can filter a SAM/BAM file based on the number of offtargets at a given distance.
 
-- **Options and flags**
+- **Options and flags:**
 		- `-h`, `--help`:  Show this help message and exit
 		- `--input INPUT`, `-i INPUT` (Required): Path to the input sam/bam file.
 		- `--output OUTPUT`, `-o OUTPUT` (Required): Path to the output sam/bam file.
@@ -289,7 +289,8 @@ This command can filter a SAM/BAM file based on the number of offtargets at a gi
 		- `--k3 K3`: Max number of off-targets at distance 3. The default is `inf`.
 
 - **Output**
-A filtered SAM/BAM file.
+
+	A filtered SAM/BAM file.
 
 - **Example**
 	```
@@ -314,4 +315,5 @@ This **incomplete** command can add new tags to the SAM/BAM files. It was origin
 	- `--output OUTPUT` (Required), `-o OUTPUT`: Path to the output sam/bam file.
 
 - **Output**
-The SAM/BAM file with added tag(s).
+
+	The SAM/BAM file with added tag(s).
