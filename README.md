@@ -12,9 +12,9 @@
 	- [Installation](#installation)
 	- [Run Snakemake workflow](#run-snakemake-workflow)
 	- [Data Files Structure](#data-files-structure)
-	- [Project Structure](#project-structure)
 	- [Configuration](#configuration)
 	- [Run the Project](#running-the-project)
+- [Project Structure](#project-structure)
 - [Command Line Interface](#command-line-interface)
 
 ## Run Guidescan in Docker
@@ -106,22 +106,6 @@ After running the workflow with `--config organisms=[\"sacCer3\"]`, the output d
 	    └── sacCer3.gtf.gz
 The `.bam.sorted` files are the databases the backend is using.
 
-### Project Structure
-This project consists of several key directories and files, organized as follows:
-1. **`docker/`**: Contains Docker-related files, including the Dockerfile, docker-compose.yml and snakemake related files.
-	- **`snakemake/`**: Contains Snakefile, snakemake config file, and environment files for snakemake rules.
-2. **`src/guidescanpy/`**: Contains the main source code for Guidescan.
-	- **`commands/`**: Contains various command-line utilities for the project.
-	- **`flask/`**: Contains the Flask application components.
-		- **`core/`**: Class `GenomeStructure` is defined in `genome.py`, which contains the core code for the implementation of  the query functionality.
-		- **`blueprints/`**: Contains the blueprints for the Flask app.
-		- **`templates/`**: Contains HTML templates.
-		- **`db.py`**: The functions related to database operations and querying.
-	- **`tasks/`**: Contains Celery tasks definitions.
-	- **`config.json`**: The main configuration file for the project.
-3. **`tests/`**: Contains pytest unit test files and test data files. `@patch` decorators helps prevent actual database communication.
-4. **`pyproject.toml`**: The TOML configuration file for project metadata and dependencies.
-
 ### Configuration
 1. **Environment Virables**
 	Set the following environment variables:
@@ -142,4 +126,21 @@ This project consists of several key directories and files, organized as follows
 	```
 	guidescanpy web
 	```
+
+## Project Structure
+This project consists of several key directories and files, organized as follows:
+1. **`docker/`**: Contains Docker-related files, including the Dockerfile, docker-compose.yml and snakemake related files.
+	- **`snakemake/`**: Contains Snakefile, snakemake config file, and environment files for snakemake rules.
+2. **`src/guidescanpy/`**: Contains the main source code for Guidescan.
+	- **`commands/`**: Contains various command-line utilities for the project.
+	- **`flask/`**: Contains the Flask application components.
+		- **`core/`**: Class `GenomeStructure` is defined in `genome.py`, which contains the core code for the implementation of  the query functionality.
+		- **`blueprints/`**: Contains the blueprints for the Flask app.
+		- **`templates/`**: Contains HTML templates.
+		- **`db.py`**: The functions related to database operations and querying.
+	- **`tasks/`**: Contains Celery tasks definitions.
+	- **`config.json`**: The main configuration file for the project.
+3. **`tests/`**: Contains pytest unit test files and test data files. `@patch` decorators helps prevent actual database communication.
+4. **`pyproject.toml`**: The TOML configuration file for project metadata and dependencies.
+
 ## Command Line Interface
