@@ -16,6 +16,13 @@
 	- [Run the Project](#running-the-project)
 - [Project Structure](#project-structure)
 - [Command Line Interface](#command-line-interface)
+	- [Web](#web)
+	- [Decode](#decode)
+	- [Generate Kmers](#generate-kmers)
+	- [Initialize Database](#initialize-database)
+	- [Add Organism](#add-organism)
+	- [Filter Tag](#filter-tag)
+	- [Add Tag](#add-tag)
 
 ## Run Guidescan in Docker
 For detailed instructions on running Guidescan in Docker, refer to this [page](https://github.com/pritykinlab/guidescanpy/tree/main/docker#running-guidescan-in-docker).
@@ -241,13 +248,13 @@ Print a CSV-formatted output with the following columns:
 	...... (100 records in total)
 	```
 
-### Initialize database
+### Initialize Database
 ```
 guidescanpy init-db
 ```
 This command serves to initialize the PostgreSQL database by creating five tables: `libraries`, `chromosomes`, `genes`, `exons`, and `essential_genes`, if they do not already exist.
 
-### Add organism
+### Add Organism
 ```
 guidescanpy add-organism [options] [arguments]
 ```
@@ -264,6 +271,34 @@ This command will add all data of the given organism to the PostgreSQL database.
 	```
 	guidescanpy add-organism sacCer3 data/raw/sacCer3.gtf.gz data/raw/sacCer3_chr2acc
 	```
+
+
+### Filter Tag
+```
+guidescanpy filter-tag [options]
+```
+This command can filter a SAM/BAM file based on the number of offtargets at a given distance.
+
+- **Options and flags**
+		- `-h`, `--help`:  Show this help message and exit
+		- `--input INPUT`, `-i INPUT` (Required): Path to the input sam/bam file.
+		- `--output OUTPUT`, `-o OUTPUT` (Required): Path to the output sam/bam file.
+		- `--k0 K0`: Max number of off-targets at distance 0. The default is `1`.
+		- `--k1 K1`: Max number of off-targets at distance 1. The default is `0`.
+		- `--k2 K2`: Max number of off-targets at distance 2. The default is `inf`.
+		- `--k3 K3`: Max number of off-targets at distance 3. The default is `inf`.
+
+- **Output**
+A filtered SAM/BAM file.
+
+- **Example**
+	```
+	guidescanpy filter-tag --input data/databases/cas9/sacCer3.sam --output data/databases/cas9/sacCer3.bam
+	```
+
+
+
+
 ### Add Tag
 ```
 guidescanpy add-tag [options] [arguments]
@@ -274,6 +309,9 @@ This **incomplete** command can add new tags to the SAM/BAM files. It was origin
 	- `tag`: List of tags to add.
 
 - **Options and flags:**
-	- `-h`, `--help`: show this help message and exit
-	- `--input INPUT`, `-i INPUT`: Path to the input sam/bam file.
-	- `--output OUTPUT`, `-o OUTPUT`: Path to the output sam/bam file.
+	- `-h`, `--help`: Show this help message and exit
+	- `--input INPUT` (Required), `-i INPUT`: Path to the input sam/bam file.
+	- `--output OUTPUT` (Required), `-o OUTPUT`: Path to the output sam/bam file.
+
+- **Output**
+The SAM/BAM file with added tag(s).
