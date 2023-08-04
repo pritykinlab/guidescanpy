@@ -144,3 +144,136 @@ This project consists of several key directories and files, organized as follows
 4. **`pyproject.toml`**: The TOML configuration file for project metadata and dependencies.
 
 ## Command Line Interface
+Guidescanpy has a command line interface to perform certain functionalities, mostly for developers use. To use the CLI tool, run the command in the format:
+```
+guidescanpy command [options] [arguments]
+```
+
+### Web
+```
+guidescanpy web
+```
+This command will start the Guidescanpy web application on localhost. The default port is 5001, with debug mode on. Port number and debug mode can be changed in [`/src/guidescanpy/__main__.py`](https://github.com/pritykinlab/guidescanpy/blob/main/src/guidescanpy/__main__.py).
+
+### Decode
+```
+guidescanpy decode [options] [arguments]
+```
+This command will decode the given bam file to a human-readable data file.
+
+- **Positional arguments:**
+	- `grna_database`:  SAM/BAM file containing Guidescan2 processed gRNAs. Commonly as `guidescanpy/docker/snakemake/data/databases/[enzyme]/[organism].bam.sorted`.
+	- `fasta_file`  FASTA file for resolving off-target sequences. Commonly as `guidescanpy/docker/snakemake/data/raw/[organism].fna`.
+	- `chr2acc_file`  chr2acc file for chromosome resolution. Commonly as `guidescanpy/docker/snakemake/data/raw/[organism]_chr2acc`.
+
+- **Options and flags:**
+	- `-h`, `--help`:  Show this help message and exit.
+	- `--region REGION`: One or more region strings.
+	- `--mode {succinct,complete}`: Succinct or complete off-target information.
+
+- **Output**:
+Print a CSV-formatted output with the following columns:
+	- `id`: The identifier for each sequence.
+	- `sequence`: The target DNA sequence.
+	- `chromosome`: The chromosome where the target sequence is located.
+	- `position`: The position of the target sequence on the chromosome.
+	- `sense`: The direction of the sequence (`+` or `-`).
+	- `distance_0_matches`: The number of perfect matches found.
+	- `distance_1_matches`: The number of matches with 1 mismatch found.
+	- `distance_2_matches`: The number of matches with 2 mismatches found.
+	- `distance_3_matches`: The number of matches with 3 mismatches found.
+	- `specificity`: The specificity of the sequence.
+	- `cutting_efficiency`: The cutting efficiency of the sequence.
+
+- **Example**
+	```
+	guidescanpy decode data/databases/cas9/sacCer3.bam.sorted data/raw/sacCer3.fna data/raw/sacCer3_chr2acc
+	```
+	The output is:
+	```
+	id,sequence,chromosome,position,sense,distance_0_matches,distance_1_matches,distance_2_matches,distance_3_matches,specificity,cutting_efficiency
+	NC_001133.9:44:-,AGGATGTGTGTGTGTGGGTGNGG,NC_001133.9,44,-,0,0,4,20,0.10518199950456619,0.46371179819107056
+	NC_001133.9:49:-,GTGTTAGGATGTGTGTGTGTNGG,NC_001133.9,49,-,0,0,2,2,0.54339200258255,0.4851852059364319
+	NC_001133.9:50:-,AGTGTTAGGATGTGTGTGTGNGG,NC_001133.9,50,-,0,0,1,2,0.8631880283355713,0.5173904299736023
+	NC_001133.9:64:-,GGCTGTGTTAGGGTAGTGTTNGG,NC_001133.9,64,-,0,0,3,5,0.39531800150871277,0.38337841629981995
+	NC_001133.9:74:-,GTTAGATTAGGGCTGTGTTANGG,NC_001133.9,74,-,0,0,0,4,0.4179899990558624,0.5174511671066284
+	......
+	```
+### Generate Kmers
+```
+guidescanpy generate-kmers [options] [arguments]
+```
+This command will generate kmers from the given FASTA file, based on the specified PAM sequence.
+- **Positional arguments:**
+	- `fasta`:  FASTA file to use as a reference for kmer generation. Commonly as `guidescanpy/docker/snakemake/data/raw/[organism].fna`.
+
+- **Options and flags:**
+	- `-h`, `--help`:  Show this help message and exit.
+	- `--pam PAM` Protospacer adjacent motif to match. The default is `NGG`.
+	- `--kmer-length KMER_LENGTH` Length of kmers to generate. The default is `20`.
+	- `--min-chr-length MIN_CHR_LENGTH` Minimum chromosome length to consider for kmer generation. The default is `0`.
+	- `--prefix PREFIX` Prefix to use for kmer identifiers. The default is no prefix.
+	- `--start` Match PAM at start of kmer instead at end (default).
+	- `--max-kmers` MAX_KMERS Maximum number of kmers to generate. The default is no limit.
+
+- **Output**:
+Print a CSV-formatted output with the following columns:
+	- `id`: The identifier for each sequence.
+	- `sequence`: The target DNA sequence.
+	- `pam`: The PAM of the target.
+	- `chromosome`: The chromosome where the target sequence is located.
+	- `position`: The position of the target sequence on the chromosome.
+	- `sense`: The direction of the sequence (`+` or `-`).
+
+- **Example**
+	```
+	guidescanpy generate-kmers data/raw/sacCer3.fna --max-kmers 100
+	```
+	The output is:
+	```
+	id,sequence,pam,chromosome,position,sense
+	NC_001133.9:882:+,AGAATATTTCGTACTTACAC,NGG,NC_001133.9,882,+
+	NC_001133.9:1079:+,ATGTGACACTACTCATACGA,NGG,NC_001133.9,1079,+
+	NC_001133.9:1112:+,AGTCAAGACGATACTGTGAT,NGG,NC_001133.9,1112,+
+	NC_001133.9:1128:+,TGATAGGTACGTTATTTAAT,NGG,NC_001133.9,1128,+
+	NC_001133.9:1340:+,ATTTTACGTGTCAAAAAATG,NGG,NC_001133.9,1340,+
+	NC_001133.9:1488:+,CAGCGACTCATTTTTATTTA,NGG,NC_001133.9,1488,+
+	...... (100 records in total)
+	```
+
+### Initialize database
+```
+guidescanpy init-db
+```
+This command serves to initialize the PostgreSQL database by creating five tables: `libraries`, `chromosomes`, `genes`, `exons`, and `essential_genes`, if they do not already exist.
+
+### Add organism
+```
+guidescanpy add-organism [options] [arguments]
+```
+This command will add all data of the given organism to the PostgreSQL database.
+- **Positional arguments:**
+	- `organism`: Organism that needs to be added to the database.
+	- `gtf_gz`: The gtf.gz file for the organism. Commonly as `guidescanpy/docker/snakemake/data/raw/[organism].gtf.gz`
+	- `chr2acc`: The chr2acc file for the organism. Commonly as `guidescanpy/docker/snakemake/data/raw/[organism]_chr2acc`
+
+- **Options and flags:**
+	- `-h`, `--help`:  show this help message and exit
+
+- **Example:**:
+	```
+	guidescanpy add-organism sacCer3 data/raw/sacCer3.gtf.gz data/raw/sacCer3_chr2acc
+	```
+### Add Tag
+```
+guidescanpy add-tag [options] [arguments]
+```
+This **incomplete** command can add new tags to the SAM/BAM files. It was originally designed to add `ce` tag to the SAM files generated by `guidescan enumerate`, but due to model version incompatibility, this command wasn't put into use. It may have potential usage in the future.
+
+- **Positional arguments:**
+	- `tag`: List of tags to add.
+
+- **Options and flags:**
+	- `-h`, `--help`: show this help message and exit
+	- `--input INPUT`, `-i INPUT`: Path to the input sam/bam file.
+	- `--output OUTPUT`, `-o OUTPUT`: Path to the output sam/bam file.
