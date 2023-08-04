@@ -46,6 +46,7 @@ Snakemake workflow is used to initialize databases and generate required data fo
 
 
 Here is a DAG for the workflow:
+
 ![Snakemake DAG](https://github.com/pritykinlab/guidescanpy/blob/main/docker/snakemake/rulegraph.png)
 
 
