@@ -1,9 +1,12 @@
 from guidescanpy.core.guidescan import cmd_enumerate
 
 
-def test_enumerate_cas9(index_prefix):
+def test_enumerate_cas9_exact(index_prefix):
     kmers = ["AGAATATTTCGTACTTACAC", "ATGTGACACTACTCATACGA"]
-    results = cmd_enumerate(kmers=kmers, pam="NGG", index_filepath_prefix=index_prefix)
+    results = cmd_enumerate(
+        kmers=kmers, pam="NGG", index_filepath_prefix=index_prefix, mismatches=0
+    )
+    results = results.to_dict(orient="records")
     assert isinstance(results, list)
     assert results == [
         {
@@ -33,11 +36,16 @@ def test_enumerate_cas9(index_prefix):
     ]
 
 
-def test_enumerate_cpf1(index_prefix):
+def test_enumerate_cpf1_exact(index_prefix):
     kmers = ["GCATATAATATCAATTAATT", "ATTTATGCCGTCTGGGATTG"]
     results = cmd_enumerate(
-        kmers=kmers, pam="TTTN", index_filepath_prefix=index_prefix, start=True
+        kmers=kmers,
+        pam="TTTN",
+        index_filepath_prefix=index_prefix,
+        start=True,
+        mismatches=0,
     )
+    results = results.to_dict(orient="records")
     assert isinstance(results, list)
     assert results == [
         {
@@ -50,7 +58,7 @@ def test_enumerate_cpf1(index_prefix):
             "match_sequence": "AATTAATTGATATTATATGCCAAA",
             "rna_bulges": 0,
             "dna_bulges": 0,
-            "specificity": 1.0,
+            "specificity": 0.0,
         },
         {
             "id": "id_00000001",
@@ -62,6 +70,6 @@ def test_enumerate_cpf1(index_prefix):
             "match_sequence": "CAATCCCAGACGGCATAAATGAAA",
             "rna_bulges": 0,
             "dna_bulges": 0,
-            "specificity": 1.0,
+            "specificity": 0.0,
         },
     ]
