@@ -4,37 +4,45 @@
     {{ super() }}
     {% if result.status == 'SUCCESS' %}
         <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <h5 class="card-header">Results</h5>
-                        <div class="card-body">
-                            <table class="display datatable resulttable">
-                                <thead>
-                                <tr>
-                                    <th>chromosome</th>
-                                    <th>position</th>
-                                    <th>sequence</th>
-                                    <th>strand</th>
-                                    <th>specificity</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for d in result.result['results'] %}
-                                    <tr>
-                                        <td>{{ d['match_chrm'] }}</td>
-                                        <td>{{ d['match_position'] }}</td>
-                                        <td>{{ d['match_sequence'] }}</td>
-                                        <td>{{ d['match_strand'] }}</td>
-                                        <td>{{ '%0.2f' | format(d['specificity'] | float) }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+            {% for matches in result.result['matches'].values() %}
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <h5 class="card-header">Sequence {{ loop.index }}</h5>
+                            <div class="card-body">
+                                <span class="badge badge-primary">{{ matches['sequence'] }}</span>
+                                {% if matches['num-off-targets'] > 0 %}
+                                    <span class="badge badge-success">Matches: {{ matches['num-exact-matches'] }} exact, {{ matches['num-inexact-matches'] }} inexact</span>
+                                {% else %}
+                                    <span class="badge badge-danger">Matches: None found</span>
+                                {% endif %}
+                                <span class="badge badge-light">Specificity: {{ matches['specificity'] }}</span>
+                                <span class="badge badge-light">Off-target Summary: {{ matches['off-target-summary'] }}</span>
+                                {% if matches['num-off-targets'] > 0 %}
+                                    <table class="display datatable resulttable">
+                                        <thead>
+                                        <tr>
+                                            <th>distance</th>
+                                            <th>coordinate</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for distance, offtarget_details in matches['off-targets'].items() %}
+                                            {% for offtarget_detail in offtarget_details[:1000] %}
+                                                <tr>
+                                                    <td>{{ distance }}</td>
+                                                    <td>{{ offtarget_detail['coordinate'] }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
     {% endif %}
 {% endblock %}
@@ -58,7 +66,18 @@
                         searching: false,
                         lengthChange: false,
                         bInfo: false,
-                        pagingType: "numbers"
+                        pagingType: "numbers",
+                        columns: [
+                            {
+                                data: 'distance'
+                            },
+                            {
+                                data: 'coordinate',
+                                render: function (data) {
+                                    return '<a target="_blank" href="https://igv.org/app/?genome={{ result.result['organism'] }}&locus=' + data + '">' + data + '</a>';
+                                }
+                            }
+                        ]
                     });
                 });
             </script>
