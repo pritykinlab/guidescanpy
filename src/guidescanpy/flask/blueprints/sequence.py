@@ -38,7 +38,7 @@ def sequence(args):
     if len(sequences) > max_sequences:
         raise GuidescanException(f"Maximimum {max_sequences} sequences allowed.")
 
-    for i, seq in enumerate(sequences):
+    for i, seq in enumerate(sequences, start=1):
         if len(seq) < min_sequence_length or len(seq) > max_sequence_length:
             raise GuidescanException(
                 f"Sequence {i} is not between {min_sequence_length} and {max_sequence_length} NUCs in length."

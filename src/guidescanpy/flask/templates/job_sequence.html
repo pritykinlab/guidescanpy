@@ -19,6 +19,7 @@
                                 <span class="badge badge-light">Specificity: {{ matches['specificity'] }}</span>
                                 <span class="badge badge-light">Off-target Summary: {{ matches['off-target-summary'] }}</span>
                                 {% if matches['num-off-targets'] > 0 %}
+                                    <p><small>The first 1000 matches for each unique distance are reported below.</small></p>
                                     <table class="display datatable resulttable">
                                         <thead>
                                         <tr>
