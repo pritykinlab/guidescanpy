@@ -6,27 +6,14 @@
             var examples;
             $.getJSON(window.location.origin + '{{ url_for('info.example_sequences') }}', (data) => {
                 examples = data;
-                refreshMenu();
                 refreshExamples();
             });
             $('#selectOrganism').on('change', function () {
-                refreshMenu();
                 refreshExamples();
             });
             $('#selectEnzyme').on('change', function () {
                 refreshExamples();
             });
-
-            function refreshMenu() {
-                var organism = $('#selectOrganism').find(":selected").text();
-                var enzymeOptions = examples[organism];
-                $('#selectEnzyme').empty();
-                if (enzymeOptions) {
-                    for (var enzyme in enzymeOptions) {
-                        $('#selectEnzyme').append("<option value='"+enzyme+"'>"+enzyme+"</option>");
-                    }
-                }
-            }
 
             function refreshExamples() {
                 var organism = $('#selectOrganism').find(":selected").text();
@@ -45,10 +32,12 @@
                 <div class="card">
                     <h5 class="card-header">gRNA Sequence Search</h5>
                     <div class="card-body">
-                        <p class="card-text">Search for Guidescan2 vetted gRNAs by their sequence directly.</p>
+                        <p class="card-text">Search for gRNAs by their sequence directly. Max 10 sequences allowed,
+                            between 10 and 30 nucleotides in length. Note that the calculated
+                            specificity value will depend on the maximum offtargets that you search for.</p>
                         <form action="" method="post">
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="selectOrganism">Organism</label>
                                     <select class="form-control" id="selectOrganism" name="selectOrganism">
                                         <option>hg38</option>
@@ -60,20 +49,35 @@
                                         <option>sacCer3</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="selectEnzyme">Enzyme</label>
                                     <select class="form-control" id="selectEnzyme" name="selectEnzyme">
                                         <option>cas9</option>
                                         <option>cpf1</option>
+                                        <option>None</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="selectMismatches">Max. Mismatches</label>
+                                    <select class="form-control" id="selectMismatches" name="selectMismatches">
+                                        <option>0</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option selected>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <label for="txtSequence">Input gRNAs to search against in the
-                                        Guidescan2 database. The PAM is added automatically based on enzyme
-                                        selection.</label>
+                                    <label for="txtSequence">Input gRNAs to search against the
+                                        Guidescan2 index for the organism, one per line. <b>If you do not wish to
+                                            include PAMs automatically, specify *None*
+                                            for enzyme selection. Otherwise, PAMs are automatically added depending on
+                                            the selected enzyme.</b></label>
                                     <textarea class="form-control" id="txtSequence" rows="4"
                                               name="txtSequence"></textarea>
                                 </div>

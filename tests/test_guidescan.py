@@ -1,10 +1,12 @@
 from guidescanpy.core.guidescan import cmd_enumerate
 
 
-def test_enumerate_cas9(index_prefix):
+def test_enumerate_cas9_exact(index_prefix):
     kmers = ["AGAATATTTCGTACTTACAC", "ATGTGACACTACTCATACGA"]
-    results = cmd_enumerate(kmers=kmers, pam="NGG", index_filepath_prefix=index_prefix)
-    assert isinstance(results, list)
+    results = cmd_enumerate(
+        kmers=kmers, pam="NGG", index_filepath_prefix=index_prefix, mismatches=0
+    )
+    results = results.to_dict(orient="records")
     assert results == [
         {
             "id": "id_00000000",
@@ -33,12 +35,16 @@ def test_enumerate_cas9(index_prefix):
     ]
 
 
-def test_enumerate_cpf1(index_prefix):
+def test_enumerate_cpf1_exact(index_prefix):
     kmers = ["GCATATAATATCAATTAATT", "ATTTATGCCGTCTGGGATTG"]
     results = cmd_enumerate(
-        kmers=kmers, pam="TTTN", index_filepath_prefix=index_prefix, start=True
+        kmers=kmers,
+        pam="TTTN",
+        index_filepath_prefix=index_prefix,
+        start=True,
+        mismatches=0,
     )
-    assert isinstance(results, list)
+    results = results.to_dict(orient="records")
     assert results == [
         {
             "id": "id_00000000",
@@ -65,3 +71,36 @@ def test_enumerate_cpf1(index_prefix):
             "specificity": 1.0,
         },
     ]
+
+
+def test_enumerate_arbitrary(index_prefix):
+    # Sequences can be arbitrary in length and don't have to include PAMs at all
+    kmers = ["AGAATATTTCGTA", "ATGTGACCTCATACGA"]
+    results = cmd_enumerate(
+        kmers=kmers,
+        pam="",
+        index_filepath_prefix=index_prefix,
+        mismatches=1,
+        alt_pam=None,
+    )
+
+    kmer0_exact_matches = results[
+        (results.sequence == kmers[0])
+        & (~results.match_position.isna())
+        & (results.match_distance == 0)
+    ]
+    assert len(kmer0_exact_matches) == 10
+
+    kmer0_distance1_matches = results[
+        (results.sequence == kmers[0])
+        & (~results.match_position.isna())
+        & (results.match_distance == 1)
+    ]
+    assert len(kmer0_distance1_matches) == 53
+
+    kmer1_exact_matches = results[
+        (results.sequence == kmers[1])
+        & (~results.match_position.isna())
+        & (results.match_distance == 0)
+    ]
+    assert len(kmer1_exact_matches) == 0

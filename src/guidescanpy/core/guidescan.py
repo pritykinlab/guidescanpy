@@ -5,16 +5,31 @@ import logging
 import pandas as pd
 from guidescanpy import config
 
-
 logger = logging.getLogger(__name__)
+
+
+# Default data types to use for columns produced by `guidescan enumerate`
+CMD_ENUMERATE_COLUMN_DTYPES = {
+    "id": str,
+    "sequence": str,
+    "match_chrm": str,
+    "match_position": "Int64",  # int but with NAs allowed
+    "match_strand": str,
+    "match_distance": int,
+    "match_sequence": str,
+    "rna_bulges": "Int64",
+    "dna_bulges": "Int64",
+    "specificity": float,
+}
 
 
 def cmd_enumerate(
     kmers: list[str],
     pam: str,
     index_filepath_prefix: str,
-    mismatches: int = 0,
+    mismatches: int = 4,
     start: bool = False,
+    alt_pam=None,
 ) -> dict:
     # Most of the columns we write here are never looked at by the enumerate command and thus not important!
     with tempfile.TemporaryDirectory() as tmp:
@@ -33,12 +48,16 @@ def cmd_enumerate(
             output_path,
             "--mismatches",
             f"{mismatches}",
+            "--format",
+            "csv",
             "--threads",
             "1",
         ]
 
         if start:
             cmd_parts.append("--start")
+        if alt_pam is not None:
+            cmd_parts.extend(["--alt-pam", alt_pam])
 
         cmd_parts.append(index_filepath_prefix)
 
@@ -57,5 +76,8 @@ def cmd_enumerate(
                 f"Command returned {returncode};\nstdout={stdout};\nstderr={stderr}"
             )
 
-        data = pd.read_csv(output_path, header=0, sep=",")
-        return data.to_dict(orient="records")
+        data = pd.read_csv(
+            output_path, header=0, sep=",", dtype=CMD_ENUMERATE_COLUMN_DTYPES
+        )
+
+        return data

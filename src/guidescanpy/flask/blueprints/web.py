@@ -108,9 +108,14 @@ def gene_targeting_library():
 def grna_sequence_search():
     if request.method == "POST":
         form = request.form
+        enzyme = form["selectEnzyme"]
+        if enzyme == "None":
+            enzyme = None
+
         form_data = {
             "organism": form["selectOrganism"],
-            "enzyme": form["selectEnzyme"],
+            "enzyme": enzyme,
+            "mismatches": int(form["selectMismatches"]),
             "sequences": form["txtSequence"],
         }
         results = sequence_endpoint(form_data)

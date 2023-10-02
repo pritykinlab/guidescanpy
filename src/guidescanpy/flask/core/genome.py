@@ -140,29 +140,60 @@ class GenomeStructure:
 
         return chrom, coord, strand
 
-    def to_coordinate_string(self, read, offset=0):
-        direction = "+" if read.is_forward else "-"
-        chr = self.acc_to_chr[read.reference_name]
+    def to_coordinate_string(
+        self,
+        read=None,
+        accession=None,
+        start=None,
+        end=None,
+        direction=None,
+        offset=0,
+        is_one_indexed=False,
+    ):
+
+        if read is None:
+            assert all(x is not None for x in (accession, start, end, direction))
+            # All subsequent logic assumed incoming 0-indexed position values
+            # If they are 1-indexed, then we'll add -1 to them before proceeding
+            if is_one_indexed:
+                start -= 1
+                end -= 1
+        else:
+            accession = read.reference_name
+            direction = "+" if read.is_forward else "-"
+            start = read.reference_start
+            end = read.reference_end
+
+        chr = self.acc_to_chr[accession]
         # Convert from 0-indexed (start, end] to 1-indexed [start, end]
         # Fix offset for certain databases
-        return f"{chr}:{read.reference_start+1+offset}-{read.reference_end+offset}:{direction}"
+        return f"{chr}:{start+1+offset}-{end+offset}:{direction}"
 
-    def off_target_region_string(self, off_target_dict):
-        chr = "chr" + off_target_dict["chromosome"]
-        # TODO: Just decide on '+' or 'positive' throughout!
-        # TODO: Get rid of the magic 22 here
+    def off_target_region_string(self, off_target_dict, reference_length):
+        position = off_target_dict["position"]
+        chromosome = off_target_dict.get("chromosome")
+
+        if chromosome is None:
+            assert (
+                "accession" in off_target_dict
+            ), "If not specifying chromosome, please specify accession"
+            chromosome = self.acc_to_chr[off_target_dict["accession"]]
+        if not chromosome.startswith("chr"):
+            chromosome = "chr" + chromosome
+
         if off_target_dict["direction"] == "+":
             # For + strand, position denotes the (0-indexed, inclusive) end of the match
             # Convert this to (1-indexed, inclusive)
-            end = off_target_dict["position"] + 1
+            end = position + 1
             # The start index (1-indexed, inclusive) is end - len(seq_including_pam) + 1
-            start = end - 22
+            start = end - reference_length + 1
         else:
             # For - strand, position denotes the (0-indexed, inclusive) start of the match
             # Convert this to (1-indexed, inclusive)
-            start = off_target_dict["position"] + 1
-            end = start + 22
-        return f"{chr}:{start}-{end}"
+            start = position + 1
+            # The end index (1-indexed, inclusive) is start + len(seq_including_pam) - 1
+            end = start + reference_length - 1
+        return f"{chromosome}:{start}-{end}"
 
     def query(
         self,
@@ -276,7 +307,7 @@ class GenomeStructure:
                         "accession": genomic_chrom,
                     }
                     off_target["region-string"] = self.off_target_region_string(
-                        off_target
+                        off_target, read.reference_length
                     )
                     off_targets.append(off_target)
                     off_targets_by_distance[dist] += 1
