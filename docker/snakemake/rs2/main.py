@@ -56,7 +56,6 @@ def compute_rs2_contig(args):
     with pysam.AlignmentFile(input_filename) as input_file, pysam.AlignmentFile(
         output_filename, write_mode, header=input_file.header
     ) as output_file:
-
         count = input_file.count(contig=contig)
         reads = input_file.fetch(contig=contig)
 
@@ -67,14 +66,13 @@ def compute_rs2_contig(args):
 
             if i % 1000 == 0:
                 with multiprocessing.Lock():
-                    logger.info('Processing %s (%d/%d reads).' % (contig, i, count))
+                    logger.info("Processing %s (%d/%d reads)." % (contig, i, count))
 
     pysam.index(output_filename)
     return output_filename
 
 
 if __name__ == "__main__":
-
     logger = logging.getLogger("guidescan2")
     logger.setLevel(logging.DEBUG)
 
@@ -85,11 +83,11 @@ if __name__ == "__main__":
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument('input_filename', type=str, help='input sam/bam file')
-    parser.add_argument('fasta_filename', type=str, help='fasta sequence file')
-    parser.add_argument('output_filename', type=str, help='output sam/bam file')
-    parser.add_argument('--workers', type=int, default=1, help='number of workers')
+    parser = argparse.ArgumentParser(description="Process some integers.")
+    parser.add_argument("input_filename", type=str, help="input sam/bam file")
+    parser.add_argument("fasta_filename", type=str, help="fasta sequence file")
+    parser.add_argument("output_filename", type=str, help="output sam/bam file")
+    parser.add_argument("--workers", type=int, default=1, help="number of workers")
 
     args = parser.parse_args()
 
@@ -105,10 +103,16 @@ if __name__ == "__main__":
         n_contigs = len(stats)
 
     pool = multiprocessing.Pool(min(args.workers, n_contigs))
-    compute_rs2_contig_args = zip([args.input_filename]*n_contigs, [fasta_record_dict]*n_contigs, [stat.contig for stat in stats])
+    compute_rs2_contig_args = zip(
+        [args.input_filename] * n_contigs,
+        [fasta_record_dict] * n_contigs,
+        [stat.contig for stat in stats],
+    )
     temp_filenames = pool.map(compute_rs2_contig, compute_rs2_contig_args)
 
-    with pysam.AlignmentFile(args.output_filename, write_mode, header=header) as output_file:
+    with pysam.AlignmentFile(
+        args.output_filename, write_mode, header=header
+    ) as output_file:
         for temp_filename in temp_filenames:
             with pysam.AlignmentFile(temp_filename) as input_file:
                 for read in input_file.fetch():

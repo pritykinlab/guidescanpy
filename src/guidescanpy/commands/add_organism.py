@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 
 
 def insert_chromosome(organism, file, delim="\t"):
-
     # Support both chr2acc and chromAlias formats, with the following (lower-cased)
     # column mappings from chromosome names to accession names
     mappings = {"chromosome": "accession.version", "ucsc": "refseq"}

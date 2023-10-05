@@ -150,7 +150,6 @@ class GenomeStructure:
         offset=0,
         is_one_indexed=False,
     ):
-
         if read is None:
             assert all(x is not None for x in (accession, start, end, direction))
             # All subsequent logic assumed incoming 0-indexed position values
@@ -194,6 +193,55 @@ class GenomeStructure:
             # The end index (1-indexed, inclusive) is start + len(seq_including_pam) - 1
             end = start + reference_length - 1
         return f"{chromosome}:{start}-{end}"
+
+    def off_targets_from_read(self, read):
+        offtarget_hex = read.get_tag("of")
+        off_target_tuples = hex_to_offtarget_info(
+            offtarget_hex, delim=self.off_target_delim
+        )
+        total_off_target_tuples = len(
+            off_target_tuples
+        )  # This will be used to get the number of 0-off-target
+
+        # Remove off-target entries with distance = 0 (should be just the first, but we go through all anyway)
+        off_target_tuples = tuple(t for t in off_target_tuples if t[0] != 0)
+
+        off_targets = []
+        off_targets_by_distance = defaultdict(int)
+        off_targets_by_distance[0] = total_off_target_tuples - len(off_target_tuples)
+        for dist, pos in off_target_tuples:
+            dist = int(dist)
+            (
+                genomic_chrom,
+                genomic_coord,
+                genomic_strand,
+            ) = self.to_genomic_coordinates(pos)
+
+            # If the off-target is on a contig/scaffold, ignore it
+            if genomic_chrom not in self.acc_to_chr:
+                continue
+
+            # remove 'chr' prefix
+            chr = (
+                self.acc_to_chr[genomic_chrom][3:]
+                if genomic_chrom in self.acc_to_chr
+                else None
+            )
+
+            off_target = {
+                "position": int(genomic_coord),
+                "chromosome": chr,
+                "direction": genomic_strand,
+                "distance": dist,
+                "accession": genomic_chrom,
+            }
+            off_target["region-string"] = self.off_target_region_string(
+                off_target, read.reference_length
+            )
+            off_targets.append(off_target)
+            off_targets_by_distance[dist] += 1
+
+        return off_targets, off_targets_by_distance
 
     def query(
         self,
@@ -263,54 +311,7 @@ class GenomeStructure:
                         exon, product = overlap.data
                         annotations.append(f"Exon {exon} of {product}")
 
-                offtarget_hex = read.get_tag("of")
-                off_target_tuples = hex_to_offtarget_info(
-                    offtarget_hex, delim=self.off_target_delim
-                )
-                total_off_target_tuples = len(
-                    off_target_tuples
-                )  # This will be used to get the number of 0-off-target
-
-                # Remove off-target entries with distance = 0 (should be just the first, but we go through all anyway)
-                off_target_tuples = tuple(t for t in off_target_tuples if t[0] != 0)
-
-                off_targets = []
-                off_targets_by_distance = defaultdict(int)
-                off_targets_by_distance[0] = total_off_target_tuples - len(
-                    off_target_tuples
-                )
-
-                for dist, pos in off_target_tuples:
-                    dist = int(dist)  # TODO: Do we need this?
-                    (
-                        genomic_chrom,
-                        genomic_coord,
-                        genomic_strand,
-                    ) = self.to_genomic_coordinates(pos)
-
-                    # If the off-target is on a contig/scaffold, ignore it
-                    if genomic_chrom not in self.acc_to_chr:
-                        continue
-
-                    # remove 'chr' prefix
-                    chr = (
-                        self.acc_to_chr[genomic_chrom][3:]
-                        if genomic_chrom in self.acc_to_chr
-                        else None
-                    )
-
-                    off_target = {
-                        "position": int(genomic_coord),
-                        "chromosome": chr,
-                        "direction": genomic_strand,
-                        "distance": dist,
-                        "accession": genomic_chrom,
-                    }
-                    off_target["region-string"] = self.off_target_region_string(
-                        off_target, read.reference_length
-                    )
-                    off_targets.append(off_target)
-                    off_targets_by_distance[dist] += 1
+                off_targets, off_targets_by_distance = self.off_targets_from_read(read)
 
                 cutting_efficiency = specificity = None
                 if read.has_tag("ce"):  # new guidescan BAM format
