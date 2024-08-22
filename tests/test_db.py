@@ -42,6 +42,3 @@ def test_get_chromosome_names():
     assert results["NC_001140.6"] == "chrVIII"
     assert results["NC_001147.6"] == "chrXV"
 
-
-def test0():
-    results = get_library_info_by_gene("hg38", ["A2M", "A3GALT2"], n_guides=100)
