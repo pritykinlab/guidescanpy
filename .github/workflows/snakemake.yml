@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ['3.10']
+        python: ['3.11']
       fail-fast: false
 
     services:
@@ -57,13 +57,13 @@ jobs:
       - name: Pytest in Snakemake (postgres)
         run: |
           cd docker/snakemake
-          snakemake guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
+          snakemake -F guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
         env:
           DB_URL: postgresql+psycopg2://scott:tiger@localhost/guidescan
 
       - name: Pytest in Snakemake (sqlite)
         run: |
           cd docker/snakemake
-          snakemake guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
+          snakemake -F guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
         env:
           DB_URL: sqlite:///guidescan.db

@@ -38,7 +38,9 @@ def get_connection():
 
 def insert_chromosome_query(**kwargs):
     conn = get_connection()
-    query = text("INSERT INTO chromosomes (accession, name, organism) VALUES (:accession, :name, :organism)")
+    query = text(
+        "INSERT INTO chromosomes (accession, name, organism) VALUES (:accession, :name, :organism)"
+    )
     try:
         conn.execute(query, kwargs)
         conn.commit()
@@ -48,7 +50,9 @@ def insert_chromosome_query(**kwargs):
 
 def insert_gene_query(**kwargs):
     conn = get_connection()
-    query = text("INSERT INTO genes (entrez_id, gene_symbol, chromosome, sense, start_pos, end_pos) VALUES (:entrez_id, :gene_symbol, :chromosome, :sense, :start_pos, :end_pos)")
+    query = text(
+        "INSERT INTO genes (entrez_id, gene_symbol, chromosome, sense, start_pos, end_pos) VALUES (:entrez_id, :gene_symbol, :chromosome, :sense, :start_pos, :end_pos)"
+    )
     try:
         conn.execute(
             query,
@@ -61,7 +65,9 @@ def insert_gene_query(**kwargs):
 
 def insert_exon_query(**kwargs):
     conn = get_connection()
-    query = text("INSERT INTO exons (entrez_id, exon_number, chromosome, product, sense, start_pos, end_pos) VALUES (:entrez_id, :exon_number, :chromosome, :product, :sense, :start_pos, :end_pos)")
+    query = text(
+        "INSERT INTO exons (entrez_id, exon_number, chromosome, product, sense, start_pos, end_pos) VALUES (:entrez_id, :exon_number, :chromosome, :product, :sense, :start_pos, :end_pos)"
+    )
     try:
         conn.execute(
             query,
@@ -93,7 +99,7 @@ def create_region_query(organism, region):
         query += " AND genes.gene_symbol=:entrez_id"
 
     query = text(query)
-    results = conn.execute(query, {'organism': organism, 'entrez_id': region})
+    results = conn.execute(query, {"organism": organism, "entrez_id": region})
     for row in results.mappings():
         return dict(row)
 
@@ -103,7 +109,7 @@ def get_chromosome_names(organism):
     query = text(
         "SELECT accession, CONCAT('chr', name) FROM chromosomes WHERE organism = :organism"
     )
-    results = conn.execute(query, {'organism': organism})
+    results = conn.execute(query, {"organism": organism})
     return dict([row for row in results]) or None
 
 
@@ -118,7 +124,9 @@ def get_library_info_by_gene(organism, genes, n_guides=6):
     return_value = {}
     for gene in genes:
         return_value[gene] = []
-        results = conn.execute(query, {'organism': organism, 'gene': gene, 'n_guides': n_guides})
+        results = conn.execute(
+            query, {"organism": organism, "gene": gene, "n_guides": n_guides}
+        )
         for row in results.mappings():
             return_value[gene].append(dict(row))
 
@@ -130,7 +138,7 @@ def get_essential_genes(organism, n=1):
     query = text(
         "SELECT gene_symbol FROM essential_genes WHERE organism = :organism LIMIT :n"
     )
-    results = conn.execute(query, {'organism': organism, 'n': n})
+    results = conn.execute(query, {"organism": organism, "n": n})
     return [r[0] for r in results]  # TODO: Ugly!
 
 
@@ -140,7 +148,7 @@ def get_control_guides(organism, n=1):
     query = text(
         "SELECT * FROM libraries WHERE organism = :organism AND (grna_type='safe_targeting_control' OR grna_type='non_targeting_control') LIMIT :n"
     )
-    results = conn.execute(query, {'organism': organism, 'n': n})
+    results = conn.execute(query, {"organism": organism, "n": n})
     return [dict(row) for row in results.mappings()]
 
 

@@ -31,7 +31,6 @@ web = [
     "numpy",
     "pandas",
     "psycopg2-binary",
-    "pulp<2.8",
     "pysam",
     "Redis",
     "snakemake",

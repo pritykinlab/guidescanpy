@@ -8,9 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_parser(parser):
-    parser.add_argument(
-        "--force", action="store_true", help="Force drop all tables."
-    )
+    parser.add_argument("--force", action="store_true", help="Force drop all tables.")
     return parser
 
 

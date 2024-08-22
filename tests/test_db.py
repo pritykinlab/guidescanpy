@@ -1,5 +1,8 @@
-from guidescanpy.flask.db import create_region_query, get_chromosome_names, \
-    get_library_info_by_gene
+from guidescanpy.flask.db import (
+    create_region_query,
+    get_chromosome_names,
+    get_library_info_by_gene,
+)
 
 
 def test_create_region_query_CNE1():
