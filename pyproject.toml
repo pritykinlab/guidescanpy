@@ -35,6 +35,7 @@ web = [
     "pysam",
     "Redis",
     "snakemake",
+    "sqlalchemy",
     "werkzeug"
 ]
 dev = [
