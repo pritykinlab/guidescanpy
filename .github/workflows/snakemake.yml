@@ -54,12 +54,16 @@ jobs:
         run:
           pip3 install snakemake
 
-      - name: Pytest in Snakemake
+      - name: Pytest in Snakemake (postgres)
         run: |
           cd docker/snakemake
           snakemake guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
         env:
-          POSTGRES_HOST: localhost
-          POSTGRES_DB: guidescan
-          POSTGRES_USER: scott
-          POSTGRES_PASSWORD: tiger
+          DB_URL: postgresql+psycopg2://scott:tiger@localhost/guidescan
+
+      - name: Pytest in Snakemake (sqlite)
+        run: |
+          cd docker/snakemake
+          snakemake guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
+        env:
+          DB_URL: sqlite:///guidescan.db

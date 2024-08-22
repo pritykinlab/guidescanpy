@@ -2,11 +2,9 @@ import logging
 import os.path
 from intervaltree import IntervalTree
 from functools import cache
-from psycopg2 import sql, OperationalError, errorcodes
-from psycopg2.errors import IntegrityError
-from psycopg2.extras import DictCursor, RealDictCursor
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
+from sqlalchemy.exc import IntegrityError
 from guidescanpy import config
 
 engine = None
@@ -33,7 +31,7 @@ def get_connection():
     if conn is None:
         try:
             conn = get_engine().connect()
-        except OperationalError as e:
+        except Exception as e:  # noqa
             logger.error(str(e))
     return conn
 
