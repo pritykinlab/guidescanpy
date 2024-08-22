@@ -1,8 +1,4 @@
-from guidescanpy.flask.db import (
-    create_region_query,
-    get_chromosome_names,
-    get_library_info_by_gene,
-)
+from guidescanpy.flask.db import create_region_query, get_chromosome_names
 
 
 def test_create_region_query_CNE1():
@@ -41,4 +37,3 @@ def test_get_chromosome_names():
     assert len(results) == 16
     assert results["NC_001140.6"] == "chrVIII"
     assert results["NC_001147.6"] == "chrXV"
-
