@@ -98,7 +98,7 @@
         "None": "AGAATATTTCGTA\nATGTGACCTCATACGA"
       }
     },
-    "db": "host={POSTGRES_HOST} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}",
+    "db": "{DB_URL}",
     "cachedir": "/tmp",
     "region_size_limit": 1e7
   },
