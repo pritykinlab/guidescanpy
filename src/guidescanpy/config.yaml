@@ -1,0 +1,176 @@
+# A section for testing purposes
+pytest:
+  astring: foo
+  atrue: true
+  afalse: false
+  nested:
+    aint: 42
+  # A variable that is obtained from an environment variable
+  # If no environment variable exists, then no value is substituted.
+  adynamic: "{GUIDESCAN_PYTEST_ENV_VAR}"
+
+
+guidescan:
+  bin: guidescan
+  grna_database_path_prefix: "{BAM_PATH}"
+  grna_database_path_map:
+    ce11:
+      cas9: cas9/ce11.bam.sorted
+      cpf1: cpf1/ce11.bam.sorted
+    dm6:
+      cas9: cas9/dm6.bam.sorted
+    hg38:
+      cas9: cas9/hg38.bam.sorted
+      cpf1: cpf1/hg38.bam.sorted
+    mm10:
+      cas9: cas9/mm10.bam.sorted
+      cpf1: cpf1/mm10.bam.sorted
+    mm39:
+      cas9: cas9/mm39.bam.sorted
+    rn6:
+      cas9: cas9/rn6.bam.sorted
+    sacCer3:
+      cas9: cas9/sacCer3.bam.sorted
+
+  example_queries:
+    ce11:
+      cas9: |-
+        rad-51
+        act-3
+        cdk-1
+        let-363
+        gspd-1
+      cpf1: |-
+        rad-51
+        act-3
+        cdk-1
+        let-363
+        gspd-1
+    dm6:
+      cas9: |-
+        spn-A
+        Act5C
+        Cdk1
+        Tor
+        Zw
+    hg38:
+      cas9: |-
+        RAD51
+        ACTB
+        CDK1
+        MTOR
+        G6PD
+      cpf1: |-
+        RAD51
+        ACTB
+        CDK1
+        MTOR
+        G6PD
+    mm10:
+      cas9: |-
+        Rad51
+        Actb
+        Cdk1
+        Mtor
+        G6pd
+      cpf1: |-
+        Rad51
+        Actb
+        Cdk1
+        Mtor
+        G6pd
+    mm39:
+      cas9: |-
+        Rad51
+        Actb
+        Cdk1
+        Mtor
+        G6pd
+    rn6:
+      cas9: |-
+        rad51
+        actb1
+        Cdk1
+        Mtor
+        G6pd
+    sacCer3:
+      cas9: |-
+        RAD51
+        ACTB
+        CDC28
+        TOR1
+        ZWF1
+
+  index_files_path_prefix: "{INDEX_PATH}"
+  index_files_path_map:
+    ce11: ce11.index
+    dm6: dm6.index
+    hg38: hg38.index
+    mm10: mm10.index
+    mm39: mm39.index
+    rn6: rn6.index
+    sacCer3: sacCer3.index
+
+  grna_db_offset_map:
+    hg38:cas9: 1
+    hg38:cpf1: 1
+    ce11:cpf1: 1
+    mm10:cpf1: 1
+
+  example_sequences:
+    ce11:
+      cas9: |-
+        GAACAGAGCAAATTGTAGTG
+        ATGTATGTTGTCTCTCGCCC
+      cpf1: |-
+        GAAGGATCTCGTCGAGTGTC
+        TCGCACAAAATCTTGTTACT
+    dm6:
+      cas9: |-
+        CGAAGTTTAATTCTTAGTCT
+        TAAGTAATCATTAGAAAGTT
+    hg38:
+      cas9: |-
+        GGGATACGTTACGTCGACGC
+        CGTAACGTATCCCCGCCTCC
+      cpf1: |-
+        GCGTGGCAGTGAGTTTTAGT
+        AGGCATTGTCTTGTGCAGCA
+    mm10:
+      cas9: |-
+        CAACGAAGCGCGTTCGAGCC
+        GTGGGTCAGTTAGCGTCGGT
+      cpf1: |-
+        TGGTTCGAGCGTGGTGCCCT
+        GAATACCGATACGAGTGTAC
+    mm39:
+      cas9: |-
+        CATACGGACATTGCAAACGT
+        CCCAGGCGCGGATCTGCGCA
+    rn6:
+      cas9: |-
+        GTCCAGACTCACGGCAATTG
+        GGAGTAGATCCGCCGGCCTA
+    sacCer3:
+      cas9: |-
+        TACAAAAGACTTGAGAAAGT
+        AATCTAAAACTAGGTGATTT
+      None: |-
+        AGAATATTTCGTA
+        ATGTGACCTCATACGA
+
+  db: sqlite:///guidescan.db
+  cachedir: "/tmp"
+  region_size_limit: 10000000
+
+flask:
+  DEBUG: 0
+  SECRET_KEY: Dfsf00_34aslaS~~t5))pVls0$aGkxlas[q%91;
+  SQLALCHEMY_TRACK_MODIFICATIONS: 0
+  UPLOAD_FOLDER: "/tmp"
+  SERVER_NAME: 127.0.0.1:5001
+
+celery:
+  broker: sqla+sqlite:///guidescan.db
+  backend: db+sqlite:///guidescan.db
+  eager: false

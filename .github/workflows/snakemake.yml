@@ -54,16 +54,14 @@ jobs:
         run:
           pip3 install snakemake "pulp<2.8"
 
+      - name: Pytest in Snakemake (default sqlite)
+        run: |
+          cd docker/snakemake
+          snakemake -F guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
+
       - name: Pytest in Snakemake (postgres)
         run: |
           cd docker/snakemake
           snakemake -F guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
         env:
-          DB_URL: postgresql+psycopg2://scott:tiger@localhost/guidescan
-
-      - name: Pytest in Snakemake (sqlite)
-        run: |
-          cd docker/snakemake
-          snakemake -F guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
-        env:
-          DB_URL: sqlite:///guidescan.db
+          GUIDESCAN_GUIDESCAN_DB: postgresql+psycopg2://scott:tiger@localhost/guidescan
