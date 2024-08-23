@@ -101,7 +101,10 @@ def create_region_query(organism, region):
     query = text(query)
     results = conn.execute(query, {"organism": organism, "entrez_id": region})
     for row in results.mappings():
-        return dict(row)
+        return_value = dict(row)
+        # TODO: sqlite backend seems to return boolean as int
+        return_value["sense"] = bool(return_value["sense"])
+        return return_value
 
 
 def get_chromosome_names(organism):
