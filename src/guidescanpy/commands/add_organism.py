@@ -126,7 +126,7 @@ def insert_gene(result, accessions):
                         "start_pos": result["start"],
                         "end_pos": result["end"],
                         "gene_symbol": gene,
-                        "sense": "true" if result["sense"] else "false",
+                        "sense": result["sense"],
                     }
                     insert_gene_query(**row)
 
@@ -151,7 +151,7 @@ def insert_exon(result, accessions):
                     "end_pos": result["end"],
                     "product": product,
                     "exon_number": exon_number,
-                    "sense": "true" if result["sense"] else "false",
+                    "sense": result["sense"],
                 }
                 insert_exon_query(**row)
 

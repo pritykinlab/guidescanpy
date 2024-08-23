@@ -1,6 +1,7 @@
 import sys
 import guidescanpy
 from guidescanpy.flask import create_app
+from guidescanpy.tasks import app as celery_app
 from guidescanpy.commands.decode import main as decode  # noqa: F401
 from guidescanpy.commands.generate_kmers import main as generate_kmers  # noqa: F401
 from guidescanpy.commands.add_organism import main as add_organism  # noqa: F401
@@ -11,6 +12,7 @@ from guidescanpy.commands.add_tag import main as add_tag  # noqa: F401
 
 commands = (
     "web",
+    "worker",
     "decode",
     "generate-kmers",
     "init-db",
@@ -29,6 +31,11 @@ def print_usage():
 def web(args):
     app = create_app()
     return app.run(host="0.0.0.0", port=5001, debug=True)
+
+
+def worker(args):
+    _worker = celery_app.Worker()
+    _worker.start()
 
 
 def main():

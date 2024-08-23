@@ -1,7 +1,7 @@
-from importlib.resources import read_text
+from importlib.resources import files
 import logging
 import guidescanpy
-from guidescanpy.config import Config
+from guidescanpy.configuration import Config
 
 try:
     from guidescanpy._version import version as __version__  # type: ignore
@@ -10,7 +10,7 @@ except ModuleNotFoundError:
     __version__ = "src"
 
 
-config = Config(read_text(guidescanpy, "config.json"))
+config = Config(files(guidescanpy) / "config.yaml")
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )

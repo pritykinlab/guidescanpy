@@ -31,9 +31,11 @@ web = [
     "numpy",
     "pandas",
     "psycopg2-binary",
+    "pulp<2.8",
     "pysam",
     "Redis",
     "snakemake",
+    "sqlalchemy",
     "werkzeug"
 ]
 dev = [
@@ -59,7 +61,7 @@ where = ["src"]
 include = ["guidescanpy*"]
 
 [tool.setuptools.package-data]
-guidescanpy = ["config.json"]
+guidescanpy = ["config.yaml"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"

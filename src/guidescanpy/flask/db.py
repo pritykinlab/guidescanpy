@@ -1,91 +1,81 @@
 import logging
-
+import os.path
 from intervaltree import IntervalTree
 from functools import cache
-import psycopg2
-from psycopg2 import sql, OperationalError, errorcodes
-from psycopg2.errors import IntegrityError
-from psycopg2.extras import DictCursor, RealDictCursor
+from sqlalchemy import create_engine
+from sqlalchemy.sql import text
+from sqlalchemy.exc import IntegrityError
 from guidescanpy import config
 
+engine = None
 conn = None
 logger = logging.getLogger(__name__)
+
+
+def get_engine():
+    global engine
+    if engine is None:
+        db = config.guidescan.db
+        if db.startswith("sqlite:///"):
+            db_path = db[len("sqlite:///") :]
+            # resolve db_path relative to this file
+            db_path = os.path.join(os.path.dirname(__file__), db_path)
+            logger.info(f"{db_path=}")
+            db = f"sqlite:///{db_path}"
+        engine = create_engine(db)
+    return engine
 
 
 def get_connection():
     global conn
     if conn is None:
         try:
-            conn = psycopg2.connect(config.guidescan.db)
-        except OperationalError as e:
+            conn = get_engine().connect()
+        except Exception as e:  # noqa
             logger.error(str(e))
     return conn
 
 
 def insert_chromosome_query(**kwargs):
     conn = get_connection()
-    query = "INSERT INTO chromosomes (accession, name, organism) VALUES (%s, %s, %s)"
-    cur = conn.cursor()
+    query = text(
+        "INSERT INTO chromosomes (accession, name, organism) VALUES (:accession, :name, :organism)"
+    )
     try:
-        cur.execute(query, (kwargs["accession"], kwargs["name"], kwargs["organism"]))
+        conn.execute(query, kwargs)
         conn.commit()
-    except IntegrityError as e:
-        if e.pgcode == errorcodes.UNIQUE_VIOLATION:
-            conn.rollback()
-        else:
-            raise e
-    cur.close()
+    except IntegrityError:
+        conn.rollback()
 
 
 def insert_gene_query(**kwargs):
     conn = get_connection()
-    query = "INSERT INTO genes (entrez_id, gene_symbol, chromosome, sense, start_pos, end_pos) VALUES (%s, %s, %s, %s, %s, %s)"
-    cur = conn.cursor()
+    query = text(
+        "INSERT INTO genes (entrez_id, gene_symbol, chromosome, sense, start_pos, end_pos) VALUES (:entrez_id, :gene_symbol, :chromosome, :sense, :start_pos, :end_pos)"
+    )
     try:
-        cur.execute(
+        conn.execute(
             query,
-            (
-                kwargs["entrez_id"],
-                kwargs["gene_symbol"],
-                kwargs["chromosome"],
-                kwargs["sense"],
-                kwargs["start_pos"],
-                kwargs["end_pos"],
-            ),
+            kwargs,
         )
         conn.commit()
-    except IntegrityError as e:
-        if e.pgcode == errorcodes.UNIQUE_VIOLATION:
-            conn.rollback()
-        else:
-            raise e
-    cur.close()
+    except IntegrityError:
+        conn.rollback()
 
 
 def insert_exon_query(**kwargs):
     conn = get_connection()
-    query = "INSERT INTO exons (entrez_id, exon_number, chromosome, product, sense, start_pos, end_pos) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    cur = conn.cursor()
+    query = text(
+        "INSERT INTO exons (entrez_id, exon_number, chromosome, product, sense, start_pos, end_pos) VALUES (:entrez_id, :exon_number, :chromosome, :product, :sense, :start_pos, :end_pos)"
+    )
     try:
-        cur.execute(
+        conn.execute(
             query,
-            (
-                kwargs["entrez_id"],
-                kwargs["exon_number"],
-                kwargs["chromosome"],
-                kwargs["product"],
-                kwargs["sense"],
-                kwargs["start_pos"],
-                kwargs["end_pos"],
-            ),
+            kwargs,
         )
         conn.commit()
-    except IntegrityError as e:
-        if e.pgcode == errorcodes.UNIQUE_VIOLATION:
-            conn.rollback()
-        else:
-            raise e
-    cur.close()
+    except IntegrityError:
+        conn.rollback()
 
 
 def create_region_query(organism, region):
@@ -100,53 +90,47 @@ def create_region_query(organism, region):
     query = (
         "SELECT genes.entrez_id, genes.gene_symbol AS region_name, genes.start_pos AS start_pos, genes.end_pos AS end_pos, "
         "genes.sense, 'chr' || chromosomes.name AS chromosome_name, chromosomes.accession AS chromosome_accession FROM genes, chromosomes "
-        "WHERE genes.chromosome=chromosomes.accession AND chromosomes.organism = %s"
+        "WHERE genes.chromosome=chromosomes.accession AND chromosomes.organism = :organism"
     )
 
     if is_entrez_id:
-        query += " AND genes.entrez_id=%s"
+        query += " AND genes.entrez_id=:entrez_id"
     else:
-        query += " AND genes.gene_symbol=%s"
+        query += " AND genes.gene_symbol=:entrez_id"
 
-    query = sql.SQL(query)
-    cur = conn.cursor(cursor_factory=DictCursor)
-    cur.execute(query, (organism, region))
-    result = cur.fetchone()
-    if result is not None:
-        return dict(result)
-    else:
-        return None
+    query = text(query)
+    results = conn.execute(query, {"organism": organism, "entrez_id": region})
+    for row in results.mappings():
+        return_value = dict(row)
+        # TODO: sqlite backend seems to return boolean as int
+        return_value["sense"] = bool(return_value["sense"])
+        return return_value
 
 
 def get_chromosome_names(organism):
     conn = get_connection()
-    query = sql.SQL(
-        "SELECT accession, CONCAT('chr', name) FROM chromosomes " "WHERE organism = %s"
+    query = text(
+        "SELECT accession, CONCAT('chr', name) FROM chromosomes WHERE organism = :organism"
     )
-    cur = conn.cursor(cursor_factory=DictCursor)
-    cur.execute(query, (organism,))
-    result = cur.fetchall()
-    if result is not None:
-        return dict(result)
-    else:
-        return None
+    results = conn.execute(query, {"organism": organism})
+    return dict([row for row in results]) or None
 
 
 def get_library_info_by_gene(organism, genes, n_guides=6):
     conn = get_connection()
     # TODO: Do we need an ORDER BY here?
     #   See https://github.com/pritykinlab/guidescan-web/blob/master/src/guidescan_web/query/library_design.clj#L150
-    query = sql.SQL(
-        "SELECT * FROM libraries WHERE organism = %s AND gene_symbol IN (SELECT gene_symbol FROM genes WHERE entrez_id IN (SELECT entrez_id FROM genes WHERE gene_symbol = %s)) LIMIT %s"
+    query = text(
+        "SELECT * FROM libraries WHERE organism = :organism AND gene_symbol IN (SELECT gene_symbol FROM genes WHERE entrez_id IN (SELECT entrez_id FROM genes WHERE gene_symbol = :gene)) LIMIT :n_guides"
     )
-    cur = conn.cursor(cursor_factory=RealDictCursor)
 
     return_value = {}
     for gene in genes:
         return_value[gene] = []
-        cur.execute(query, (organism, gene, n_guides))
-        results = cur.fetchall()
-        for row in results:
+        results = conn.execute(
+            query, {"organism": organism, "gene": gene, "n_guides": n_guides}
+        )
+        for row in results.mappings():
             return_value[gene].append(dict(row))
 
     return return_value
@@ -154,41 +138,35 @@ def get_library_info_by_gene(organism, genes, n_guides=6):
 
 def get_essential_genes(organism, n=1):
     conn = get_connection()
-    query = sql.SQL(
-        "SELECT gene_symbol FROM essential_genes WHERE organism = %s LIMIT %s"
+    query = text(
+        "SELECT gene_symbol FROM essential_genes WHERE organism = :organism LIMIT :n"
     )
-    cur = conn.cursor(cursor_factory=DictCursor)
-    cur.execute(query, (organism, n))
-    result = cur.fetchall()
-    return [r[0] for r in result]  # TODO: Ugly!
+    results = conn.execute(query, {"organism": organism, "n": n})
+    return [r[0] for r in results]  # TODO: Ugly!
 
 
 def get_control_guides(organism, n=1):
     conn = get_connection()
     # TODO: Order by?
-    query = sql.SQL(
-        "SELECT * FROM libraries WHERE organism = %s AND (grna_type='safe_targeting_control' OR grna_type='non_targeting_control') LIMIT %s"
+    query = text(
+        "SELECT * FROM libraries WHERE organism = :organism AND (grna_type='safe_targeting_control' OR grna_type='non_targeting_control') LIMIT :n"
     )
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute(query, (organism, n))
-    result = cur.fetchall()
-    return [dict(row) for row in result]
+    results = conn.execute(query, {"organism": organism, "n": n})
+    return [dict(row) for row in results.mappings()]
 
 
 @cache
 def get_chromosome_interval_trees():
     conn = get_connection()
-    query = sql.SQL(
+    query = text(
         "SELECT chromosome, start_pos, end_pos, exon_number, product FROM exons"
     )
     if conn is None:
         return {}
-    cur = conn.cursor(cursor_factory=DictCursor)
-    cur.execute(query)
-    result = cur.fetchall()
+    results = conn.execute(query)
 
     chromosomes = {}
-    for chr, start, end, exon_number, product in result:
+    for chr, start, end, exon_number, product in results:
         if chr not in chromosomes:
             chromosomes[chr] = IntervalTree()
         # Convert 1-indexed [start, end] to 0-indexed [start, end)

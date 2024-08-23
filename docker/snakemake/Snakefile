@@ -21,16 +21,6 @@ localrules:
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
-# Environment Variables
-# -----------------------------------------------------------------------------
-envvars:
-    "POSTGRES_HOST",
-    "POSTGRES_DB",
-    "POSTGRES_USER",
-    "POSTGRES_PASSWORD"
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------------------------------------
 # Rules
 # -----------------------------------------------------------------------------
 rule all:
@@ -170,10 +160,7 @@ rule guidescan_pytest:
     conda:
         "env.yaml"
     params:
-         POSTGRES_HOST=os.environ["POSTGRES_HOST"],
-         POSTGRES_DB=os.environ["POSTGRES_DB"],
-         POSTGRES_USER=os.environ["POSTGRES_USER"],
-         POSTGRES_PASSWORD=os.environ["POSTGRES_PASSWORD"],
+         DB_URL=os.getenv("DB_URL", ""),
          BAM_PATH=f"{OUTPUT_DIR}/databases",
          INDEX_PATH=f"{OUTPUT_DIR}/indices"
     input:
@@ -181,7 +168,7 @@ rule guidescan_pytest:
          f"{OUTPUT_DIR}/job_status/add_sacCer3.txt",
          f"{OUTPUT_DIR}/databases/cas9/sacCer3.bam.sorted"
     shell: """
-         export POSTGRES_HOST={params.POSTGRES_HOST} POSTGRES_DB={params.POSTGRES_DB} POSTGRES_USER={params.POSTGRES_USER} POSTGRES_PASSWORD={params.POSTGRES_PASSWORD}
+         export DB_URL={params.DB_URL}
          export BAM_PATH={params.BAM_PATH}
          export INDEX_PATH={params.INDEX_PATH}
          pytest ../../tests
