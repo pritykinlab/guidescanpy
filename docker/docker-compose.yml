@@ -7,9 +7,7 @@ services:
     volumes:
       - guidescan_postgres_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost/${POSTGRES_DB}
     ports:
       - "5433:5432"
     healthcheck:
@@ -23,13 +21,9 @@ services:
         condition: service_healthy
     volumes:
       - guidescan_data:/data
-    # No '--use-conda' flag used in snakemake since our Dockerfile bootstraps the environment with env.yaml anyway
-    command: snakemake --cores 1 --config output_dir="/data"
+    command: snakemake --use-conda --cores 1 --config output_dir="/data" max_kmers=1000 organisms=[\"sacCer3\"] enzymes=[\"cas9\"]
     environment:
-      - POSTGRES_HOST=guidescan_db
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@guidescan_db/${POSTGRES_DB}
 
   guidescan_redis:
     container_name: guidescan_redis
@@ -51,12 +45,9 @@ services:
       - guidescan_data:/data
     command: python -m celery -A guidescanpy.tasks.app worker -l INFO
     environment:
-      - CELERY_BROKER=redis://guidescan_redis
-      - CELERY_BACKEND=redis://guidescan_redis
-      - POSTGRES_HOST=guidescan_db
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - GUIDESCAN_CELERY_BROKER=redis://guidescan_redis
+      - GUIDESCAN_CELERY_BACKEND=redis://guidescan_redis
+      - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@guidescan_db/${POSTGRES_DB}
       - BAM_PATH=/data/databases/
       - INDEX_PATH=/data/indices/
     extra_hosts:
@@ -74,12 +65,9 @@ services:
       - guidescan_data:/data
     command: python -m celery -A guidescanpy.tasks.app flower --port=5555
     environment:
-      - CELERY_BROKER=redis://guidescan_redis
-      - CELERY_BACKEND=redis://guidescan_redis
-      - POSTGRES_HOST=guidescan_db
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - GUIDESCAN_CELERY_BROKER=redis://guidescan_redis
+      - GUIDESCAN_CELERY_BACKEND=redis://guidescan_redis
+      - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@guidescan_db/${POSTGRES_DB}
       - BAM_PATH=/data/databases/
       - INDEX_PATH=/data/indices/
     extra_hosts:
@@ -99,12 +87,9 @@ services:
       - guidescan_data:/data
     command: python -m guidescanpy web
     environment:
-      - CELERY_BROKER=redis://guidescan_redis
-      - CELERY_BACKEND=redis://guidescan_redis
-      - POSTGRES_HOST=guidescan_db
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - GUIDESCAN_CELERY_BROKER=redis://guidescan_redis
+      - GUIDESCAN_CELERY_BACKEND=redis://guidescan_redis
+      - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@guidescan_db/${POSTGRES_DB}
       - BAM_PATH=/data/databases/
       - INDEX_PATH=/data/indices/
     extra_hosts:
