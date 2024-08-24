@@ -1,5 +1,6 @@
 {
   "output_dir": "data",
+  "workers": -1,
   "pams": {
     "cas9": "NGG",
     "cpf1": "TTTN"

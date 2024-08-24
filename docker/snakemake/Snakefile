@@ -61,8 +61,6 @@ rule download_chr2acc:
 
 
 rule init_db:
-    conda:
-        "env.yaml"
     output:
          f"{OUTPUT_DIR}/job_status/init_db.txt"
     shell: """
@@ -72,8 +70,6 @@ rule init_db:
 
 
 rule add_organism:
-    conda:
-        "env.yaml"
     input:
         gtf_gz_file = f"{OUTPUT_DIR}/raw/{{organism}}.gtf.gz",
         chr2acc_file = f"{OUTPUT_DIR}/raw/{{organism}}_chr2acc",
@@ -87,8 +83,6 @@ rule add_organism:
 
 
 rule guidescan_index:
-    conda:
-        "env.yaml"
     input:
         f"{OUTPUT_DIR}/raw/{{organism}}.fna"
     output:
@@ -99,8 +93,6 @@ rule guidescan_index:
 
 
 rule generate_kmers:
-    conda:
-        "env.yaml"
     params:
         pam = lambda wildcards: config['pams'][wildcards.enzyme],
         match_start = lambda wildcards: "--start" if wildcards.enzyme == "cpf1" else ""
@@ -114,8 +106,6 @@ rule generate_kmers:
 
 
 rule guidescan_enumerate:
-    conda:
-        "env.yaml"
     params:
         index_file = f"{OUTPUT_DIR}/indices/{{organism}}.index",
         alt_pam = lambda wildcards: "--alt-pam NAG" if wildcards.enzyme == "cas9" else "",
@@ -131,8 +121,6 @@ rule guidescan_enumerate:
 
 
 rule guidescan_filter_tag:
-    conda:
-        "env.yaml"
     input:
         f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.sam"
     output:
@@ -152,24 +140,22 @@ rule guidescan_add_ce:
     output:
         f"{OUTPUT_DIR}/databases/{{enzyme}}/{{organism}}.bam.sorted"
     shell: """
-        python rs2/main.py {input.bam_file} {input.fna_file} {output}
+        python rs2/main.py {input.bam_file} {input.fna_file} {output} --workers {config[workers]}
         python -c "import pysam; pysam.sort('-o', '{output}', '{output}'); pysam.index('{output}')"
         """
 
 rule guidescan_pytest:
-    conda:
-        "env.yaml"
     params:
-         DB_URL=os.getenv("DB_URL", ""),
-         BAM_PATH=f"{OUTPUT_DIR}/databases",
-         INDEX_PATH=f"{OUTPUT_DIR}/indices"
+         GUIDESCAN_GUIDESCAN_DB=os.getenv("GUIDESCAN_GUIDESCAN_DB", ""),
+         GUIDESCAN_BAM_PATH=f"{OUTPUT_DIR}/databases",
+         GUIDESCAN_INDEX_PATH=f"{OUTPUT_DIR}/indices"
     input:
          f"{OUTPUT_DIR}/job_status/init_db.txt",
          f"{OUTPUT_DIR}/job_status/add_sacCer3.txt",
          f"{OUTPUT_DIR}/databases/cas9/sacCer3.bam.sorted"
     shell: """
-         export DB_URL={params.DB_URL}
-         export BAM_PATH={params.BAM_PATH}
-         export INDEX_PATH={params.INDEX_PATH}
+         export GUIDESCAN_GUIDESCAN_DB={params.GUIDESCAN_GUIDESCAN_DB}
+         export GUIDESCAN_BAM_PATH={params.GUIDESCAN_BAM_PATH}
+         export GUIDESCAN_INDEX_PATH={params.GUIDESCAN_INDEX_PATH}
          pytest ../../tests
          """
