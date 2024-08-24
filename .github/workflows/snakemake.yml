@@ -10,6 +10,11 @@ jobs:
   run_snakemake:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        # Required when using an activated conda environment in steps
+        # See https://github.com/conda-incubator/setup-miniconda#IMPORTANT
+        shell: bash -l {0}
     strategy:
       matrix:
         python: ['3.10']
@@ -40,19 +45,18 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y build-essential
 
-      - name: Upgrade setuptools
-        run: |
-          pip3 install wheel --upgrade
-          pip3 install setuptools --upgrade
-
-      - name: Setup Python
-        uses: actions/setup-python@v2
+      - name: Set up conda environment
+        uses: conda-incubator/setup-miniconda@v3
         with:
+          auto-update-conda: true
           python-version: ${{ matrix.python }}
 
-      - name: Install Snakemake
+      - name: Install pip
+        run: conda install pip
+
+      - name: Install package
         run:
-          pip3 install snakemake "pulp<2.8"
+          pip install .[web,dev]
 
       - name: Pytest in Snakemake (default sqlite)
         run: |
