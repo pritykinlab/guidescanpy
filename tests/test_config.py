@@ -1,4 +1,5 @@
 import os
+from os.path import abspath, dirname
 from guidescanpy import config
 
 
@@ -16,6 +17,10 @@ def test_config_bool_false():
 
 def test_config_nested_int():
     assert config.pytest.nested.aint == 42
+
+
+def test_config_special():
+    assert config.pytest.aspecial == f"foo{abspath(dirname(config.file_path))}/bar"
 
 
 # Configuration can be overridden by environment variables

@@ -8,6 +8,10 @@ pytest:
   # A variable that is obtained from an environment variable
   # If no environment variable exists, then no value is substituted.
   adynamic: "{GUIDESCAN_PYTEST_ENV_VAR}"
+  # A special variable __dir__that points to the directory of this config
+  # file. It has a leading slash but no trailing slash
+  # A prefix and suffix are added for illustrative purposes
+  aspecial: foo__dir__/bar  # foo/path/to/this/dir/bar
 
 guidescan:
   bin: guidescan
@@ -158,7 +162,7 @@ guidescan:
         AGAATATTTCGTA
         ATGTGACCTCATACGA
 
-  db: sqlite:///./guidescan.db
+  db: sqlite:///__dir__/guidescan.db
   cachedir: "/tmp"
   region_size_limit: 10000000
 
@@ -170,6 +174,6 @@ flask:
   SERVER_NAME: 127.0.0.1:5001
 
 celery:
-  broker: sqla+sqlite:///./guidescan.db
-  backend: db+sqlite:///./guidescan.db
+  broker: sqla+sqlite:///__dir__/guidescan.db
+  backend: db+sqlite:///__dir__/guidescan.db
   eager: false

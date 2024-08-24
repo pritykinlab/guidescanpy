@@ -19,10 +19,6 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
 ]
 dependencies = [
-]
-
-[project.optional-dependencies]
-web = [
     "biopython",
     "celery",
     "Flask",
@@ -38,6 +34,8 @@ web = [
     "sqlalchemy",
     "werkzeug"
 ]
+
+[project.optional-dependencies]
 dev = [
     "build",
     "pre-commit",
