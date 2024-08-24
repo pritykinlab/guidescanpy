@@ -102,7 +102,11 @@ if __name__ == "__main__":
         stats = input_file.get_index_statistics()
         n_contigs = len(stats)
 
-    pool = multiprocessing.Pool(min(args.workers, n_contigs))
+    workers = args.workers
+    if workers < 0:
+        workers = multiprocessing.cpu_count() - 1
+
+    pool = multiprocessing.Pool(min(workers, n_contigs))
     compute_rs2_contig_args = zip(
         [args.input_filename] * n_contigs,
         [fasta_record_dict] * n_contigs,

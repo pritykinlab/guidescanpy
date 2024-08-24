@@ -9,10 +9,9 @@ pytest:
   # If no environment variable exists, then no value is substituted.
   adynamic: "{GUIDESCAN_PYTEST_ENV_VAR}"
 
-
 guidescan:
   bin: guidescan
-  grna_database_path_prefix: "{BAM_PATH}"
+  grna_database_path_prefix: "{GUIDESCAN_BAM_PATH}"
   grna_database_path_map:
     ce11:
       cas9: cas9/ce11.bam.sorted
@@ -101,7 +100,7 @@ guidescan:
         TOR1
         ZWF1
 
-  index_files_path_prefix: "{INDEX_PATH}"
+  index_files_path_prefix: "{GUIDESCAN_INDEX_PATH}"
   index_files_path_map:
     ce11: ce11.index
     dm6: dm6.index
@@ -159,7 +158,7 @@ guidescan:
         AGAATATTTCGTA
         ATGTGACCTCATACGA
 
-  db: sqlite:///guidescan.db
+  db: sqlite:///./guidescan.db
   cachedir: "/tmp"
   region_size_limit: 10000000
 
@@ -171,6 +170,6 @@ flask:
   SERVER_NAME: 127.0.0.1:5001
 
 celery:
-  broker: sqla+sqlite:///guidescan.db
-  backend: db+sqlite:///guidescan.db
+  broker: sqla+sqlite:///./guidescan.db
+  backend: db+sqlite:///./guidescan.db
   eager: false
