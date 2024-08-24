@@ -7,7 +7,9 @@ services:
     volumes:
       - guidescan_postgres_data:/var/lib/postgresql/data
     environment:
-      - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost/${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - "5433:5432"
     healthcheck:
@@ -21,7 +23,7 @@ services:
         condition: service_healthy
     volumes:
       - guidescan_data:/data
-    command: snakemake --use-conda --conda-frontend conda --cores 1 --config output_dir="/data" max_kmers=1000 organisms=[\"sacCer3\"] enzymes=[\"cas9\"]
+    command: snakemake --use-conda --conda-frontend conda --cores 1 --config output_dir="/data" organisms=[\"sacCer3\"] enzymes=[\"cas9\"]
     environment:
       - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@guidescan_db/${POSTGRES_DB}
 
