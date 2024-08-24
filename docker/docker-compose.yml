@@ -21,7 +21,7 @@ services:
         condition: service_healthy
     volumes:
       - guidescan_data:/data
-    command: snakemake --use-conda --cores 1 --config output_dir="/data" max_kmers=1000 organisms=[\"sacCer3\"] enzymes=[\"cas9\"]
+    command: snakemake --use-conda --conda-frontend conda --cores 1 --config output_dir="/data" max_kmers=1000 organisms=[\"sacCer3\"] enzymes=[\"cas9\"]
     environment:
       - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@guidescan_db/${POSTGRES_DB}
 
@@ -48,8 +48,8 @@ services:
       - GUIDESCAN_CELERY_BROKER=redis://guidescan_redis
       - GUIDESCAN_CELERY_BACKEND=redis://guidescan_redis
       - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@guidescan_db/${POSTGRES_DB}
-      - BAM_PATH=/data/databases/
-      - INDEX_PATH=/data/indices/
+      - GUIDESCAN_BAM_PATH=/data/databases/
+      - GUIDESCAN_INDEX_PATH=/data/indices/
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
 
@@ -68,8 +68,8 @@ services:
       - GUIDESCAN_CELERY_BROKER=redis://guidescan_redis
       - GUIDESCAN_CELERY_BACKEND=redis://guidescan_redis
       - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@guidescan_db/${POSTGRES_DB}
-      - BAM_PATH=/data/databases/
-      - INDEX_PATH=/data/indices/
+      - GUIDESCAN_BAM_PATH=/data/databases/
+      - GUIDESCAN_INDEX_PATH=/data/indices/
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
 
@@ -90,8 +90,8 @@ services:
       - GUIDESCAN_CELERY_BROKER=redis://guidescan_redis
       - GUIDESCAN_CELERY_BACKEND=redis://guidescan_redis
       - GUIDESCAN_GUIDESCAN_DB=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@guidescan_db/${POSTGRES_DB}
-      - BAM_PATH=/data/databases/
-      - INDEX_PATH=/data/indices/
+      - GUIDESCAN_BAM_PATH=/data/databases/
+      - GUIDESCAN_INDEX_PATH=/data/indices/
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
 
