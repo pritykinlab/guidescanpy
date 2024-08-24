@@ -55,7 +55,7 @@ jobs:
         run: conda install pip
 
       - name: Install package
-        run: pip install .[web,dev]
+        run: pip install .[dev]
 
       - name: Install guidescan
         run: conda install -c conda-forge -c bioconda guidescan

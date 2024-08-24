@@ -1,5 +1,4 @@
 import logging
-import os.path
 from intervaltree import IntervalTree
 from functools import cache
 from sqlalchemy import create_engine
@@ -16,12 +15,6 @@ def get_engine():
     global engine
     if engine is None:
         db = config.guidescan.db
-        if db.startswith("sqlite:///"):
-            db_path = db[len("sqlite:///") :]
-            # resolve db_path relative to this file
-            db_path = os.path.join(os.path.dirname(__file__), db_path)
-            logger.info(f"{db_path=}")
-            db = f"sqlite:///{db_path}"
         engine = create_engine(db)
     return engine
 

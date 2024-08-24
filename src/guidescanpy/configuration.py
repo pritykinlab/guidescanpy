@@ -1,12 +1,14 @@
 import os
+from os.path import dirname, abspath
 import yaml
 from collections.abc import Mapping
 
 
 class ConfigNode:
-    def __init__(self, data, parent_keys=None):
+    def __init__(self, data, parent_keys=None, extra=None):
         self._data = data
         self._parent_keys = parent_keys or []
+        self.extra = extra or {}
 
     def __getattr__(self, key):
         if key not in self._data:
@@ -15,7 +17,7 @@ class ConfigNode:
         value = self._data[key]
 
         if isinstance(value, Mapping):
-            return ConfigNode(value, self._parent_keys + [key])
+            return ConfigNode(value, self._parent_keys + [key], extra=self.extra)
         else:
             typ = type(value)  # typecast according to pre-set config value
             if isinstance(value, str) and value.startswith("{") and value.endswith("}"):
@@ -35,6 +37,9 @@ class ConfigNode:
                     return False
                 return typ(value)
 
+            if isinstance(value, str):
+                for k, v in self.extra.items():
+                    value = value.replace(k, v)
             return value
 
     def __getitem__(self, key):
@@ -46,9 +51,12 @@ class ConfigNode:
 
 class Config(ConfigNode):
     def __init__(self, yaml_file):
+        self.file_path = yaml_file
+        self.file_dir = abspath(dirname(self.file_path))
+
         with open(yaml_file) as f:
             data = yaml.safe_load(f)
-        super().__init__(data)
+        super().__init__(data, extra={"__dir__": self.file_dir})
 
         # All attributes are available as a dict using the .json attribute
         # For backwards compatibility with a previous implementation
