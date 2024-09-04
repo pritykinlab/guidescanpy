@@ -47,7 +47,7 @@ def sequence(args):
     if enzyme is None:
         start, pam, alt_pam = False, "", None  # start arbitrary
     elif enzyme == "cpf1":
-        start, pam = True, "TTTN"
+        start, pam, alt_pam = True, "TTTN", None
     elif enzyme == "cas9":
         start, pam, alt_pam = False, "NGG", "NAG"
     else:
