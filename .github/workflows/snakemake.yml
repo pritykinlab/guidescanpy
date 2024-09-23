@@ -20,23 +20,29 @@ jobs:
         python: ['3.10']
       fail-fast: false
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: scott
-          POSTGRES_PASSWORD: tiger
-          POSTGRES_DB: guidescan
-
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
-
     steps:
       - uses: actions/checkout@v2
+
+      - name: Install essentials
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential
+
+      - name: Set up conda environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python }}
+
+      - name: Install pip
+        run: conda install pip
+
+      - name: Install package
+        run: pip install .[dev]
+
+      - name: Install guidescan
+        run: conda install -c conda-forge -c bioconda guidescan
+
+      - name: Pytest in Snakemake (default sqlite)
+        run: |
+          cd docker/snakemake
+          snakemake -F guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
