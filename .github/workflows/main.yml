@@ -9,7 +9,7 @@ on:
 jobs:
   run_tests:
 
-    runs-on: [macos-latest]
+    runs-on: [ubuntu-latest, macos-latest]
     strategy:
       matrix:
         python: ['3.10']

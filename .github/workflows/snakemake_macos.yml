@@ -1,4 +1,4 @@
-name: Snakemake
+name: Snakemake (MacOS)
 
 on:
   push:
@@ -42,3 +42,11 @@ jobs:
         run: |
           cd docker/snakemake
           snakemake -F guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
+        env:
+          # Ask conda to use the Rosetta 2 emulator, since otherwise we're
+          # unable to install Python 2.7
+          # see https://stackoverflow.com/questions/67380286/anaconda-channel-for-installing-python-2-7
+          # Since the only Snakemake rule with a `conda` directive is the one
+          # that needs Python 2.7, we can set this environment variable for the
+          # entire step.
+          CONDA_SUBDIR: osx-64
