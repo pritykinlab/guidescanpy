@@ -9,7 +9,7 @@ on:
 jobs:
   run_snakemake:
 
-    runs-on: [ubuntu-latest, macos-latest]
+    runs-on: [macos-latest]
     defaults:
       run:
         # Required when using an activated conda environment in steps
