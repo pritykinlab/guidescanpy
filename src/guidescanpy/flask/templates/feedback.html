@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block js %}
+
+<script>
+  // Change textbox labels and show/hide fields based on selected feedback type
+  function updateFormFields() {
+    const selectedFeedback = this.value;
+    const descriptionLabel = document.getElementById("txtDescriptionLabel");
+    const queryIdGroup = document.getElementById("txtFeedbackQueryIdGroup");
+    const featureTypeGroup = document.getElementById(
+      "selectFeedbackFeatureTypeGroup"
+    );
+    const alternativeGroup = document.getElementById("txtAlternativeGroup");
+    const featureType = document.getElementById("selectFeedbackFeatureType");
+    const queryId = document.getElementById("txtFeedbackQueryId");
+    const alternative = document.getElementById("txtAlternative");
+
+    // Update fields based on selected feedback type
+    if (selectedFeedback === "Bug report") {
+      descriptionLabel.innerHTML = "Bug description";
+
+      // Enable query field
+      queryIdGroup.style.display = "block";
+
+      // Disable featureType and alternative fields
+      featureType.removeAttribute("required");
+      featureTypeGroup.style.display = "none";
+      alternativeGroup.style.display = "none";
+      alternative.value = "";
+      featureType.value = "";
+    } else if (selectedFeedback === "Feature request") {
+      descriptionLabel.innerHTML = "Feature description";
+
+      // Enable featureType and alternative fields
+      featureType.setAttribute("required", "true");
+      featureTypeGroup.style.display = "block";
+      alternativeGroup.style.display = "block";
+
+      // Disable query field
+      queryIdGroup.style.display = "none";
+      queryId.value = "";
+    } else {
+      descriptionLabel.innerHTML = "General feedback";
+
+      // Disable query, alternative, and featureType fields
+      featureType.removeAttribute("required");
+      queryIdGroup.style.display = "none";
+      featureTypeGroup.style.display = "none";
+      alternativeGroup.style.display = "none";
+      queryId.value = "";
+      alternative.value = "";
+      featureType.value = "";
+    }
+
+    descriptionLabel.innerHTML += ' <span class="text-danger">*</span>';
+  }
+
+  // Display success message and reset form
+  function handleSubmitSuccess(event) {
+    document.getElementById("feedbackMessage").innerText =
+      "Thank you for your feedback!";
+    document.getElementById("feedbackMessage").classList.remove("d-none");
+
+    event.target.reset();
+    updateFormFields.call(document.getElementById("selectFeedbackType"));
+  }
+
+  // Display error message
+  function handleSubmitError() {
+    document.getElementById("feedbackMessage").innerText =
+      "There was an error submitting your feedback. Please try again.";
+    document.getElementById("feedbackMessage").classList.remove("d-none");
+  }
+
+  // Gather form data and submit response
+  async function submitResponse(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(event.target);
+    const actionUrl = event.target.action;
+
+    try {
+      const response = await fetch(actionUrl, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        handleSubmitSuccess(event);
+      } else {
+        handleSubmitError();
+      }
+    } catch (error) {
+      handleSubmitError();
+    }
+  }
+
+  // Initialize form fields on page load
+  window.onload = function () {
+    // Set default feedback type
+    document.getElementById("selectFeedbackType").value = "General feedback";
+
+    // Clear text boxes
+    document.getElementById("txtFeedbackQueryId").value = "";
+    document.getElementById("txtDescription").value = "";
+    document.getElementById("txtAlternative").value = "";
+    document.getElementById("txtFeedbackEmail").value = "";
+
+    // Set event listener for feedback type selection
+    updateFormFields.call(document.getElementById("selectFeedbackType"));
+    document
+      .getElementById("selectFeedbackType")
+      .addEventListener("change", updateFormFields);
+
+    // Set event listener for form submission
+    document
+      .getElementById("feedbackForm")
+      .addEventListener("submit", submitResponse);
+  };
+</script>
+
+{% endblock %}
+
+{% block main %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <h5 class="card-header">User Feedback Form</h5>
+        <div class="card-body">
+          <p class="card-text">
+            Please provide your feedback about GuideScan2 overall, as well as
+            any feature requests. In particular, describe any visualization or
+            interactivity features of interest.
+            <br />
+            For bug reports, also consider opening a
+            <a
+              href="https://github.com/pritykinlab/guidescanpy/issues/new/choose"
+              >GitHub issue</a
+            >
+            to provide as much detail as possible.
+          </p>
+          <hr />
+          <div
+            id="feedbackMessage"
+            class="alert alert-success d-none"
+            role="alert"
+          ></div>
+
+          <form
+            id="feedbackForm"
+            action="{{ url_for('web.submit_feedback') }}"
+            method="post"
+          >
+            <div class="form-row">
+              <div class="form-group col-md-6" id="selectFeedbackTypeGroup">
+                <label for="selectFeedbackType"
+                  >Feedback type <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-control"
+                  id="selectFeedbackType"
+                  name="selectFeedbackType"
+                  required
+                >
+                  <option value="General feedback">General feedback</option>
+                  <option value="Feature request">Feature request</option>
+                  <option value="Bug report">Bug report</option>
+                </select>
+              </div>
+              <div
+                class="form-group col-md-6"
+                id="txtFeedbackQueryIdGroup"
+                style="display: none"
+              >
+                <label for="txtFeedbackQueryId">Query Id (if applicable)</label>
+                <textarea
+                  class="form-control"
+                  id="txtFeedbackQueryId"
+                  rows="1"
+                  name="txtFeedbackQueryId"
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6" id="selectFeedbackOverallGroup">
+                <label for="selectFeedbackOverall"
+                  >Overall experience <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-control"
+                  id="selectFeedbackOverall"
+                  name="selectFeedbackOverall"
+                  required
+                >
+                  <option value="Excellent">Excellent</option>
+                  <option value="Good">Good</option>
+                  <option value="Average">Average</option>
+                  <option value="Poor">Poor</option>
+                </select>
+              </div>
+              <div
+                class="form-group col-md-6"
+                id="selectFeedbackFeatureTypeGroup"
+                style="display: none"
+              >
+                <label for="selectFeedbackFeatureType"
+                  >Feature type <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-control"
+                  id="selectFeedbackFeatureType"
+                  name="selectFeedbackFeatureType"
+                >
+                  <option value="Interactivity">Interactivity</option>
+                  <option value="Visualization">Visualization</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12" id="txtDescriptionLabelGroup">
+                <label for="txtDescription" id="txtDescriptionLabel"
+                  >Description <span class="text-danger">*</span></label
+                >
+                <textarea
+                  class="form-control"
+                  id="txtDescription"
+                  rows="4"
+                  name="txtDescription"
+                  required
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div
+                class="form-group col-md-12"
+                id="txtAlternativeGroup"
+                style="display: none"
+              >
+                <label for="txtAlternative" id="txtAlternativeLabel"
+                  >Is this feature request inspired by a GuideScan2 alternative
+                  (e.g. Benchling, CRISPick, Cas-OFFinder)? If so, please name
+                  it.</label
+                >
+                <textarea
+                  class="form-control"
+                  id="txtAlternative"
+                  rows="1"
+                  name="txtAlternative"
+                ></textarea>
+              </div>
+            </div>
+            <hr />
+            <p>
+              Your feedback is anonymous. If you would like a response, please
+              provide your email address below.
+            </p>
+            <div class="form-row">
+              <div class="form-group col-md-6" id="txtFeedbackEmailGroup">
+                <label for="txtFeedbackEmail">Email address</label>
+                <textarea
+                  type="email"
+                  class="form-control"
+                  rows="1"
+                  id="txtFeedbackEmail"
+                  name="txtFeedbackEmail"
+                ></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              Submit Feedback
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
