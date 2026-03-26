@@ -1,4 +1,3 @@
-
 [![CI](https://github.com/pritykinlab/guidescan/actions/workflows/main.yml/badge.svg)](https://github.com/pritykinlab/guidescan/actions/workflows/main.yml)
 
 # Guidescan
