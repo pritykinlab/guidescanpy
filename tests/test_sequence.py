@@ -1,4 +1,5 @@
 from guidescanpy.flask.blueprints.sequence import sequence
+import pytest
 
 
 def test_cas9_sequences_sacCer3():
@@ -132,3 +133,102 @@ def test_arbitrary_sequences_sacCer3():
     assert results["matches"]["id_00000000"]["off-target-summary"] == "0:10 | 1:53"
     assert results["matches"]["id_00000001"]["off-target-summary"] == "0:0 | 1:0"
     print(results)
+
+
+def test_too_many_mismatches():
+    # Mismatches > 6 should raise RuntimeError
+    args = {
+        "organism": "sacCer3",
+        "enzyme": "cas9",
+        "sequences": "CCAGATCCAAAGAAGCCTAT",
+        "mismatches": 7,
+    }
+
+    try:
+        sequence(args)
+        assert False, "Expected RuntimeError"
+    except RuntimeError:
+        pass
+
+
+def test_sequence_invalid_enzyme():
+    # Invalid enzyme should raise RuntimeError
+    args = {
+        "organism": "sacCer3",
+        "enzyme": "incorrect_enzyme",
+        "sequences": "CCAGATCCAAAGAAGCCTAT",
+        "mismatches": 4,
+    }
+
+    try:
+        sequence(args)
+        assert False, "Expected RuntimeError"
+    except RuntimeError:
+        pass
+
+
+def test_sequence_too_short():
+    # Sequence shorter than min_sequence_length should raise GuidescanException
+    args = {
+        "organism": "sacCer3",
+        "enzyme": "cas9",
+        "sequences": "ACGT",
+        "mismatches": 4,
+    }
+
+    try:
+        sequence(args)
+        assert False, "Expected GuidescanException"
+    except Exception as e:
+        assert "not between" in str(e)
+
+
+def test_sequence_too_long():
+    # Sequence longer than max_sequence_length should raise GuidescanException
+    args = {
+        "organism": "sacCer3",
+        "enzyme": "cas9",
+        "sequences": "ACGT" * 10,  # 40 nucleotides, max is 30
+        "mismatches": 4,
+    }
+
+    try:
+        sequence(args)
+        assert False, "Expected GuidescanException"
+    except Exception as e:
+        assert "not between" in str(e)
+
+
+def test_too_many_sequences():
+    # More sequences than max_sequences should raise GuidescanException
+    sequences = "\r\n".join(["CCAGATCCAAAGAAGCCTAT"] * 11)  # 11 sequences, max is 10
+    args = {
+        "organism": "sacCer3",
+        "enzyme": "cas9",
+        "sequences": sequences,
+        "mismatches": 4,
+    }
+
+    try:
+        sequence(args)
+        assert False, "Expected GuidescanException"
+    except Exception as e:
+        assert "sequences allowed" in str(e)
+
+
+@pytest.mark.xfail(
+    reason="known bug: split('\\r\\n') doesn't handle Unix line endings, fixed in fix-seqence-todos branch"
+)
+def test_sequence_unix_line_endings():
+
+    # Sequences separated by \n should work the same as \r\n
+    args = {
+        "organism": "sacCer3",
+        "enzyme": None,
+        "sequences": "AGAATATTTCGTA\nATGTGACCTCATACGA",
+        "mismatches": 1,
+    }
+
+    results = sequence(args)
+    assert results["matches"]["id_00000000"]["off-target-summary"] == "0:10 | 1:53"
+    assert results["matches"]["id_00000001"]["off-target-summary"] == "0:0 | 1:0"
