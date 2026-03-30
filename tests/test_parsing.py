@@ -76,15 +76,13 @@ def test_parse_txt_empty_input():
 
 
 def test_parse_unknown_gene_only():
-    file = "UNKNOWNGENE"
-    parser = region_parser(file, organism="sacCer3")
+    parser = region_parser("UNKNOWNGENE", organism="sacCer3")
     regions = list(region for region in parser)
     assert regions == []
 
 
 def test_parse_unknown_and_real_genes():
-    file = "RAD51\nUNKNOWNGENE\nchrII:5000-8000"
-    parser = region_parser(file, organism="sacCer3")
+    parser = region_parser("RAD51\nUNKNOWNGENE\nchrII:5000-8000", organism="sacCer3")
     regions = list(region for region in parser)
     assert regions == [
         ("RAD51", "chrV", 349980, 351182),
