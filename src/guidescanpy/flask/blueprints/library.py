@@ -56,7 +56,7 @@ def library(
     append5: bool = False,
 ):
     # TODO: Why is this \r\n and not just \n?
-    genes = genes.split("\r\n")
+    genes = genes.splitlines()
 
     library_info = get_library_info_by_gene(organism, genes, n_guides)
 
