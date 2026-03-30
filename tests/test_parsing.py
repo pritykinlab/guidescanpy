@@ -1,3 +1,4 @@
+import pytest
 import os.path
 from guidescanpy.flask.core.parser import region_parser
 
@@ -62,11 +63,8 @@ def test_parse_gtf(data_folder):
 
 def test_parse_unrecognized_extension(data_folder):
     file = os.path.join(data_folder, "test_invalid.csv")
-    try:
+    with pytest.raises(TypeError):
         region_parser(file, organism="sacCer3")
-        assert False, "Expected TypeError but no error was raised"
-    except TypeError:
-        pass
 
 
 def test_parse_txt_empty_input():
@@ -76,15 +74,13 @@ def test_parse_txt_empty_input():
 
 
 def test_parse_unknown_gene_only():
-    file = "UNKNOWNGENE"
-    parser = region_parser(file, organism="sacCer3")
+    parser = region_parser("UNKNOWNGENE", organism="sacCer3")
     regions = list(region for region in parser)
     assert regions == []
 
 
 def test_parse_unknown_and_real_genes():
-    file = "RAD51\nUNKNOWNGENE\nchrII:5000-8000"
-    parser = region_parser(file, organism="sacCer3")
+    parser = region_parser("RAD51\nUNKNOWNGENE\nchrII:5000-8000", organism="sacCer3")
     regions = list(region for region in parser)
     assert regions == [
         ("RAD51", "chrV", 349980, 351182),
