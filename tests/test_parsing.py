@@ -1,3 +1,4 @@
+import pytest
 import os.path
 from guidescanpy.flask.core.parser import region_parser
 
@@ -60,13 +61,12 @@ def test_parse_gtf(data_folder):
     ]
 
 
-def test_parse_unrecognized_extension(data_folder):
-    file = os.path.join(data_folder, "test_invalid.csv")
-    try:
-        region_parser(file, organism="sacCer3")
-        assert False, "Expected TypeError but no error was raised"
-    except TypeError:
-        pass
+def test_parse_unrecognized_extension(tmp_path):
+    file_path = tmp_path / "sacCer3_regions.csv"
+    file_path.write_text("")
+
+    with pytest.raises(TypeError):
+        region_parser(file_path, organism="sacCer3")
 
 
 def test_parse_txt_empty_input():
