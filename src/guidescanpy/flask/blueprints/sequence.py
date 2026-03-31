@@ -32,8 +32,7 @@ def sequence(args):
     if mismatches > 6:  # would be too computationally expensive!
         raise RuntimeError("Max. mismatches should be <= 6")
 
-    # TODO: Why is this \r\n and not just \n?
-    sequences = args["sequences"].split("\r\n")
+    sequences = args["sequences"].splitlines()
 
     if len(sequences) > max_sequences:
         raise GuidescanException(f"Maximimum {max_sequences} sequences allowed.")
