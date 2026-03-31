@@ -95,7 +95,7 @@ def create_region_query(organism, region):
     results = conn.execute(query, {"organism": organism, "entrez_id": region})
     for row in results.mappings():
         return_value = dict(row)
-        # TODO: sqlite backend seems to return boolean as int
+
         return_value["sense"] = bool(return_value["sense"])
         return return_value
 
@@ -132,17 +132,21 @@ def get_library_info_by_gene(organism, genes, n_guides=6):
 def get_essential_genes(organism, n=1):
     conn = get_connection()
     query = text(
-        "SELECT gene_symbol FROM essential_genes WHERE organism = :organism LIMIT :n"
+        "SELECT gene_symbol FROM essential_genes WHERE organism = :organism ORDER BY RANDOM() LIMIT :n"
     )
     results = conn.execute(query, {"organism": organism, "n": n})
-    return [r[0] for r in results]  # TODO: Ugly!
+
+    return_value = []
+    for row in results.mappings():
+        return_value.append(row["gene_symbol"])
+    return return_value
 
 
 def get_control_guides(organism, n=1):
     conn = get_connection()
-    # TODO: Order by?
+
     query = text(
-        "SELECT * FROM libraries WHERE organism = :organism AND (grna_type='safe_targeting_control' OR grna_type='non_targeting_control') LIMIT :n"
+        "SELECT * FROM libraries WHERE organism = :organism AND (grna_type='safe_targeting_control' OR grna_type='non_targeting_control') ORDER BY RANDOM() LIMIT :n"
     )
     results = conn.execute(query, {"organism": organism, "n": n})
     return [dict(row) for row in results.mappings()]
