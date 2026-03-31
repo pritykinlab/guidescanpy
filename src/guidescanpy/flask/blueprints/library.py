@@ -55,7 +55,6 @@ def library(
     frac_control: float = 0.0,
     append5: bool = False,
 ):
-    # TODO: Why is this \r\n and not just \n?
     genes = genes.splitlines()
 
     library_info = get_library_info_by_gene(organism, genes, n_guides)
@@ -64,7 +63,6 @@ def library(
     results = []
     for i, genes in enumerate(genes_by_pool_index):
         n_essential_genes = round(frac_essential * len(genes))
-        # TODO: randomize
         essential_genes = get_essential_genes(organism, n_essential_genes)
         essential_genes_library_info = get_library_info_by_gene(
             organism, essential_genes, n_guides
@@ -73,7 +71,6 @@ def library(
         n_control_guides = round(
             frac_control * len(genes)
         )  # TODO: Clojure code does this, but it doesn't seem correct
-        # TODO: randomize
         control_guides = get_control_guides(organism, n_control_guides)
 
         for gene in genes:
