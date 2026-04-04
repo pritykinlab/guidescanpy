@@ -1,4 +1,4 @@
-name: Snakemake
+name: Snakemake (MacOS)
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   run_snakemake:
 
-    runs-on: ubuntu-latest
+    runs-on: [macos-latest]
     defaults:
       run:
         # Required when using an activated conda environment in steps
@@ -20,30 +20,8 @@ jobs:
         python: ['3.10']
       fail-fast: false
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: scott
-          POSTGRES_PASSWORD: tiger
-          POSTGRES_DB: guidescan
-
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
-
     steps:
       - uses: actions/checkout@v2
-
-      - name: Install essentials
-        run: |
-          sudo apt-get update && sudo apt-get install -y build-essential
 
       - name: Set up conda environment
         uses: conda-incubator/setup-miniconda@v3
@@ -64,10 +42,11 @@ jobs:
         run: |
           cd docker/snakemake
           snakemake -F guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
-
-      - name: Pytest in Snakemake (postgres)
-        run: |
-          cd docker/snakemake
-          snakemake -F guidescan_pytest --cores 1 --use-conda --config max_kmers=1000 enzymes="[\"cas9\"]" organisms="[\"sacCer3\"]" --conda-frontend conda
         env:
-          GUIDESCAN_GUIDESCAN_DB: postgresql+psycopg2://scott:tiger@localhost/guidescan
+          # Ask conda to use the Rosetta 2 emulator, since otherwise we're
+          # unable to install Python 2.7
+          # see https://stackoverflow.com/questions/67380286/anaconda-channel-for-installing-python-2-7
+          # Since the only Snakemake rule with a `conda` directive is the one
+          # that needs Python 2.7, we can set this environment variable for the
+          # entire step.
+          CONDA_SUBDIR: osx-64
