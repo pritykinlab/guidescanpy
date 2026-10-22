@@ -20,6 +20,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+    image: localhost/guidescan_snakemake:latest
     depends_on:
       guidescan_db:
         condition: service_healthy
@@ -44,6 +45,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+    image: localhost/guidescan_celery:latest
     depends_on:
       guidescan_redis:
         condition: service_healthy
@@ -64,6 +66,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+    image: localhost/guidescan_flower:latest
     ports:
       - "5555:5555"
     depends_on:
@@ -86,6 +89,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+    image: localhost/guidescan_app:latest
     ports:
       - "5001:5001"
     depends_on:
