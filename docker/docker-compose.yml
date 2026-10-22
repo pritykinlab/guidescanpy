@@ -3,7 +3,7 @@ version: "3.8"
 services:
   guidescan_db:
     container_name: guidescan_db
-    image: postgres:13-alpine
+    image: docker.io/library/postgres:13-alpine
     volumes:
       - guidescan_postgres_data:/var/lib/postgresql/data
     environment:
@@ -31,7 +31,7 @@ services:
 
   guidescan_redis:
     container_name: guidescan_redis
-    image: redis:7.4-alpine
+    image: docker.io/library/redis:7.4-alpine
     command: redis-server --appendonly yes
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
