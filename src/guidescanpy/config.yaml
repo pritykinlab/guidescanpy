@@ -154,6 +154,12 @@ guidescan:
     ce11:cpf1: 1
     mm10:cpf1: 1
 
+  # Genome ids used by the IGV viewer, for organisms whose name IGV doesn't know
+  igv_genome_map:
+    hg38_no_alt: hg38
+    mm10_no_alt: mm10
+    t2t_chm13: hs1
+
   example_sequences:
     ce11:
       cas9: |-

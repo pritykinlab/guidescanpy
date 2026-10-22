@@ -44,4 +44,9 @@ def create_app(debug=False):
         return redirect(url_for("web.index"))
 
     app.add_template_global(lambda: __version__, name="app_version")
+
+    @app.template_filter("igv_genome")
+    def igv_genome(organism):
+        return config.json["guidescan"]["igv_genome_map"].get(organism, organism)
+
     return app

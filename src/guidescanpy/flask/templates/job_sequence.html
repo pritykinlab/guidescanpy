@@ -75,7 +75,7 @@
                             {
                                 data: 'coordinate',
                                 render: function (data) {
-                                    return '<a target="_blank" href="https://igv.org/app/?genome={{ result.result['organism'] }}&locus=' + data + '">' + data + '</a>';
+                                    return '<a target="_blank" href="https://igv.org/app/?genome={{ result.result['organism'] | igv_genome }}&locus=' + data + '">' + data + '</a>';
                                 }
                             }
                         ]
