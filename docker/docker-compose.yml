@@ -31,7 +31,7 @@ services:
 
   guidescan_redis:
     container_name: guidescan_redis
-    image: redis:4.0.5-alpine
+    image: redis:7.4-alpine
     command: redis-server --appendonly yes
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
