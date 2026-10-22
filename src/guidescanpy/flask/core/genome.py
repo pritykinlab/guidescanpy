@@ -54,9 +54,19 @@ class GenomeStructure:
             bam_filepath = os.path.join(bam_dir, bam_filename)
 
         with pysam.AlignmentFile(bam_filepath, "r") as bam:
-            self.acc_to_length = OrderedDict(zip(bam.references, bam.lengths))
+            # Some .bam files (e.g. hg38_no_alt) name their references by chromosome
+            # ("chr1") instead of by accession. Translate these to accessions, so that
+            # everything outside of .bam access deals with accessions only.
+            references = tuple(
+                ref if ref in self.acc_to_chr else self.chr_to_acc.get(ref, ref)
+                for ref in bam.references
+            )
+            self.ref_to_acc = dict(zip(bam.references, references))
+            self.acc_to_ref = {v: k for k, v in self.ref_to_acc.items()}
+
+            self.acc_to_length = OrderedDict(zip(references, bam.lengths))
             # TODO: The following 2 attributes are not required if we have self.acc_to_length, and can be obsoleted
-            self.genome = bam.lengths, bam.references
+            self.genome = bam.lengths, references
             self.absolute_genome = np.insert(np.cumsum(bam.lengths), 0, 0)
             self.off_target_delim = -(self.absolute_genome[-1] + 1)
 
@@ -158,7 +168,7 @@ class GenomeStructure:
                 start -= 1
                 end -= 1
         else:
-            accession = read.reference_name
+            accession = self.ref_to_acc.get(read.reference_name, read.reference_name)
             direction = "+" if read.is_forward else "-"
             start = read.reference_start
             end = read.reference_end
@@ -287,7 +297,8 @@ class GenomeStructure:
                 pysam.index(bam_filepath)
 
         with pysam.AlignmentFile(bam_filepath, "r") as bam:
-            for i, read in enumerate(bam.fetch(chromosome, start_pos, end_pos)):
+            reference = self.acc_to_ref.get(chromosome, chromosome)
+            for i, read in enumerate(bam.fetch(reference, start_pos, end_pos)):
                 annotations = []
                 interval_tree = get_chromosome_interval_trees().get(chromosome)
 

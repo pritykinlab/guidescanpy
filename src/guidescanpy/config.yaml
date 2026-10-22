@@ -25,15 +25,21 @@ guidescan:
     hg38:
       cas9: cas9/hg38.bam.sorted
       cpf1: cpf1/hg38.bam.sorted
+    hg38_no_alt:
+      cas9: cas9/hg38_no_alt.bam.sorted
     mm10:
       cas9: cas9/mm10.bam.sorted
       cpf1: cpf1/mm10.bam.sorted
+    mm10_no_alt:
+      cas9: cas9/mm10_no_alt.bam.sorted
     mm39:
       cas9: cas9/mm39.bam.sorted
     rn6:
       cas9: cas9/rn6.bam.sorted
     sacCer3:
       cas9: cas9/sacCer3.bam.sorted
+    t2t_chm13:
+      cas9: cas9/t2t_chm13.bam.sorted
 
   example_queries:
     ce11:
@@ -69,6 +75,13 @@ guidescan:
         CDK1
         MTOR
         G6PD
+    hg38_no_alt:
+      cas9: |-
+        RAD51
+        ACTB
+        CDK1
+        MTOR
+        G6PD
     mm10:
       cas9: |-
         Rad51
@@ -77,6 +90,13 @@ guidescan:
         Mtor
         G6pd
       cpf1: |-
+        Rad51
+        Actb
+        Cdk1
+        Mtor
+        G6pd
+    mm10_no_alt:
+      cas9: |-
         Rad51
         Actb
         Cdk1
@@ -103,6 +123,13 @@ guidescan:
         CDC28
         TOR1
         ZWF1
+    t2t_chm13:
+      cas9: |-
+        RAD51
+        ACTB
+        CDK1
+        MTOR
+        G6PD
 
   index_files_path_prefix: "{GUIDESCAN_INDEX_PATH}"
   index_files_path_map:
@@ -113,6 +140,7 @@ guidescan:
     mm39: mm39.index
     rn6: rn6.index
     sacCer3: sacCer3.index
+    t2t_chm13: t2t_chm13.index
 
   # Folders served (and browsable) at /indices and /databases on the Downloads page
   download_indices_path: "{GUIDESCAN_DOWNLOAD_INDICES_PATH}"
@@ -121,6 +149,8 @@ guidescan:
   grna_db_offset_map:
     hg38:cas9: 1
     hg38:cpf1: 1
+    hg38_no_alt:cas9: 1
+    t2t_chm13:cas9: 1
     ce11:cpf1: 1
     mm10:cpf1: 1
 
@@ -165,6 +195,10 @@ guidescan:
       None: |-
         AGAATATTTCGTA
         ATGTGACCTCATACGA
+    t2t_chm13:
+      cas9: |-
+        GGGATACGTTACGTCGACGC
+        CGTAACGTATCCCCGCCTCC
 
   db: sqlite:///__dir__/guidescan.db
   cachedir: "/tmp"
