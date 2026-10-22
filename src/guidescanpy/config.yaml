@@ -171,7 +171,6 @@ flask:
   SECRET_KEY: Dfsf00_34aslaS~~t5))pVls0$aGkxlas[q%91;
   SQLALCHEMY_TRACK_MODIFICATIONS: 0
   UPLOAD_FOLDER: "/tmp"
-  SERVER_NAME: 127.0.0.1:5001
 
 celery:
   broker: sqla+sqlite:///__dir__/guidescan.db

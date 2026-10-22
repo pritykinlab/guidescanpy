@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from guidescanpy import __version__, config
 
 
@@ -35,6 +35,10 @@ def create_app(debug=False):
     app.register_blueprint(job_query.bp, url_prefix="/py/job/query")
     app.register_blueprint(job_sequence.bp, url_prefix="/py/job/sequence")
     app.register_blueprint(job_library.bp, url_prefix="/py/job/library")
+
+    @app.route("/")
+    def root():
+        return redirect(url_for("web.index"))
 
     app.add_template_global(lambda: __version__, name="app_version")
     return app

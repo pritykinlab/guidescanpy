@@ -45,6 +45,10 @@ class ConfigNode:
     def __getitem__(self, key):
         return getattr(self, key)
 
+    def __dir__(self):
+        # Expose config keys to dir(), which Flask's config.from_object relies on
+        return list(super().__dir__()) + list(self._data)
+
     def __repr__(self):
         return repr(self._data)
 
