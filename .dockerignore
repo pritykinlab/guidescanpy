@@ -1,0 +1,11 @@
+# Docker build context is the repository root (see docker/docker-compose.yml)
+.idea
+.venv
+**/__pycache__
+**/*.egg-info
+build
+dist
+
+# Of the docker folder, only the snakemake workflow is needed in the image
+docker/*
+!docker/snakemake

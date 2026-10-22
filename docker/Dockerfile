@@ -27,9 +27,12 @@ RUN wget -qO- https://github.com/pritykinlab/guidescan-cli/releases/download/${G
 
 # Note: there is no conda in this image, so `snakemake --use-conda` (needed only for
 # the RS2 cutting-efficiency rule, rs2/env.yaml) will not work here.
+# The build context is the repository root (see docker-compose.yml). .git is included
+# so that setuptools_scm can determine the package version.
+COPY . /src
 RUN uv venv /app/.venv \
-    && uv pip install --python /app/.venv "guidescanpy[dev] @ git+https://github.com/pritykinlab/guidescanpy.git"
+    && uv pip install --python /app/.venv "/src[dev]"
 
 RUN mkdir /snakemake
-COPY snakemake /snakemake
+COPY docker/snakemake /snakemake
 WORKDIR /snakemake

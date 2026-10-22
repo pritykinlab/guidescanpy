@@ -17,7 +17,9 @@ services:
 
   guidescan_snakemake:
     container_name: guidescan_snakemake
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     depends_on:
       guidescan_db:
         condition: service_healthy
@@ -39,7 +41,9 @@ services:
 
   guidescan_celery:
     container_name: guidescan_celery
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     depends_on:
       guidescan_redis:
         condition: service_healthy
@@ -57,7 +61,9 @@ services:
 
   guidescan_flower:
     container_name: guidescan_flower
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     ports:
       - "5555:5555"
     depends_on:
@@ -77,7 +83,9 @@ services:
 
   guidescan_app:
     container_name: guidescan_app
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     ports:
       - "5001:5001"
     depends_on:
