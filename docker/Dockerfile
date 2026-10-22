@@ -1,19 +1,34 @@
-FROM anaconda/miniconda 
+FROM docker.io/library/python:3.12
 
-RUN apt-get update && apt-get install -y build-essential
-RUN apt-get install -y git zlib1g-dev libbz2-dev liblzma-dev
+# git: pip install from GitHub; libcurl4: runtime dependency of the guidescan binary;
+# wget: used by snakemake download rules
+# RUN apt-get update && apt-get install -y --no-install-recommends git libcurl4 wget ca-certificates \
+#     && rm -rf /var/lib/apt/lists/*
 
-ENV CONDA_PLUGINS_AUTO_ACCEPT_TOS=true
-# GCC 14 turns implicit declarations etc. into errors, breaking source builds of
-# old pip packages in rs2/env.yaml (scikit-learn 0.16.1). -fPIC is needed because
-# setting CFLAGS overrides pysam's bundled htslib defaults.
-ENV CFLAGS="-fPIC -fpermissive"
+COPY --from=ghcr.io/astral-sh/uv:0.9.28 /uv /usr/local/bin/uv
 
-# Install and use mamba (faster) instead of conda
-# RUN conda install -n base --override-channels -c conda-forge mamba 'python_abi=*=*cp*'
-RUN conda install python=3.10 pip --yes
-RUN conda install -c conda-forge -c bioconda guidescan --yes
-RUN pip install "guidescanpy[dev] @ git+https://github.com/pritykinlab/guidescanpy.git"
+ENV \
+    # show stdout/stderr eagerly
+    PYTHONUNBUFFERED=1 \
+    # to allow --mount=type=cache to work without copy warning from uv
+    UV_LINK_MODE=copy \
+    # stick to the python version explicitly defined in FROM
+    UV_PYTHON_DOWNLOADS=never \
+    PATH="/app/.venv/bin:$PATH"
+
+WORKDIR /app
+
+# Prebuilt guidescan binary from the guidescan-cli GitHub releases
+ARG GUIDESCAN_VERSION=v2.2.1
+RUN wget -qO- https://github.com/pritykinlab/guidescan-cli/releases/download/${GUIDESCAN_VERSION}/guidescan-${GUIDESCAN_VERSION}-Linux.tar.gz \
+    | tar xz -C /usr/local bin/guidescan \
+    && guidescan --version
+
+
+# Note: there is no conda in this image, so `snakemake --use-conda` (needed only for
+# the RS2 cutting-efficiency rule, rs2/env.yaml) will not work here.
+RUN uv venv /app/.venv \
+    && uv pip install --python /app/.venv "guidescanpy[dev] @ git+https://github.com/pritykinlab/guidescanpy.git"
 
 RUN mkdir /snakemake
 COPY snakemake /snakemake

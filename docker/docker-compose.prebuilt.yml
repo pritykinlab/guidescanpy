@@ -1,0 +1,24 @@
+# Override for running with prebuilt gRNA databases (<enzyme>/<organism>.bam.sorted + .bai)
+# from a host folder, instead of generating them. Set GUIDESCAN_BAM_DIR (e.g. in .env) to
+# that folder and run:
+#   docker compose -f docker-compose.yml -f docker-compose.prebuilt.yml up --build --abort-on-container-exit guidescan_snakemake
+# Add build_indices=True to the --config of the snakemake command below to also build
+# the guidescan indices needed for sequence queries (this downloads each genome).
+
+services:
+  guidescan_snakemake:
+    volumes:
+      - ${GUIDESCAN_BAM_DIR:?Set GUIDESCAN_BAM_DIR to the folder with prebuilt bam files}:/data/databases:ro
+    command: snakemake -s Snakefile.prebuilt --cores 1 --config output_dir="/data"
+
+  guidescan_celery:
+    volumes:
+      - ${GUIDESCAN_BAM_DIR}:/data/databases:ro
+
+  guidescan_flower:
+    volumes:
+      - ${GUIDESCAN_BAM_DIR}:/data/databases:ro
+
+  guidescan_app:
+    volumes:
+      - ${GUIDESCAN_BAM_DIR}:/data/databases:ro

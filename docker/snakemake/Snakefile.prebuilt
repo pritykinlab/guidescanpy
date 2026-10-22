@@ -1,0 +1,114 @@
+configfile: "config.json"
+threads: 1
+# -----------------------------------------------------------------------------
+# Alternative to the main Snakefile, for when the gRNA databases
+# (<enzyme>/<organism>.bam.sorted + .bai files) have already been generated.
+# Instead of building these files, this workflow only does the remaining setup:
+# initializing the database, adding organism annotations to it, and
+# (optionally) building the guidescan indices needed for sequence queries.
+#
+# Organisms and enzymes are discovered from the files present in `bam_dir`.
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# Setup
+# -----------------------------------------------------------------------------
+OUTPUT_DIR = config['output_dir']
+BAM_DIR = config.get('bam_dir', f"{OUTPUT_DIR}/databases")
+BUILD_INDICES = config.get('build_indices', False)
+
+shell.executable("/bin/bash")
+
+_enzymes, _organisms = glob_wildcards(f"{BAM_DIR}/{{enzyme}}/{{organism}}.bam.sorted")
+BAMS = [
+    (enzyme, organism) for enzyme, organism in zip(_enzymes, _organisms)
+    if enzyme in config['pams'] and organism in config
+]
+if not BAMS:
+    raise ValueError(f"No <enzyme>/<organism>.bam.sorted files found in {BAM_DIR}")
+ORGANISMS = sorted({organism for _, organism in BAMS})
+
+wildcard_constraints:
+    organism = "|".join(ORGANISMS)
+
+# Rules that should be run on the head node in a cluster environment
+# These typically involve web access or one time installation steps
+localrules:
+    download_sequence,
+    download_annotations,
+    download_chr2acc
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# Rules
+# -----------------------------------------------------------------------------
+rule all:
+    input:
+        # No rule produces the bam/bai files, so a missing one fails the workflow up front
+        bam_files = [f"{BAM_DIR}/{enzyme}/{organism}.bam.sorted" for enzyme, organism in BAMS],
+        bai_files = [f"{BAM_DIR}/{enzyme}/{organism}.bam.sorted.bai" for enzyme, organism in BAMS],
+        add_organism = expand(f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt", organism=ORGANISMS),
+        indices = expand(f"{OUTPUT_DIR}/indices/{{organism}}.index.gs", organism=ORGANISMS) if BUILD_INDICES else []
+
+
+rule download_sequence:
+    params:
+        url = lambda wildcards: config[wildcards.organism]['fna'],
+        fna_gz = lambda wildcards: f"{OUTPUT_DIR}/raw/{wildcards.organism}.fna.gz"
+    output:
+        f"{OUTPUT_DIR}/raw/{{organism}}.fna"
+    shell: """
+        wget -O {params.fna_gz} {params.url}
+        gunzip -c {params.fna_gz} > {output}
+        rm {params.fna_gz}
+        """
+
+
+rule download_annotations:
+    params:
+        url = lambda wildcards: config[wildcards.organism]['gtf']
+    output:
+        f"{OUTPUT_DIR}/raw/{{organism}}.gtf.gz"
+    shell:
+        "wget -O {output} {params.url}"
+
+
+rule download_chr2acc:
+    params:
+        url = lambda wildcards: config[wildcards.organism]['chr2acc']
+    output:
+        f"{OUTPUT_DIR}/raw/{{organism}}_chr2acc"
+    shell:
+        "wget -O {output} {params.url}"
+
+
+rule init_db:
+    output:
+         f"{OUTPUT_DIR}/job_status/init_db.txt"
+    shell: """
+        guidescanpy init-db
+        touch {output}
+        """
+
+
+rule add_organism:
+    input:
+        gtf_gz_file = f"{OUTPUT_DIR}/raw/{{organism}}.gtf.gz",
+        chr2acc_file = f"{OUTPUT_DIR}/raw/{{organism}}_chr2acc",
+        init_db = f"{OUTPUT_DIR}/job_status/init_db.txt"
+    output:
+        f"{OUTPUT_DIR}/job_status/add_{{organism}}.txt"
+    shell: """
+        guidescanpy add-organism {wildcards.organism} {input.gtf_gz_file} {input.chr2acc_file}
+        touch {output}
+        """
+
+
+rule guidescan_index:
+    input:
+        f"{OUTPUT_DIR}/raw/{{organism}}.fna"
+    output:
+        f"{OUTPUT_DIR}/indices/{{organism}}.index.gs"
+    shell: """
+        guidescan index {input} --index {OUTPUT_DIR}/indices/{wildcards.organism}.index
+        """
