@@ -1,0 +1,22 @@
+# Override for using an existing guidescan database dump (created with `pg_dump -Fc`)
+# instead of populating the database with snakemake. Set GUIDESCAN_DB_DUMP (e.g. in .env)
+# to the dump file, and use together with docker-compose.prebuilt.yml:
+#   docker compose -f docker-compose.yml -f docker-compose.prebuilt.yml -f docker-compose.dbdump.yml up --build -d guidescan_app
+# The dump is restored only when the guidescan_postgres_data volume is first created.
+# To restore it again, remove that volume first (this deletes the database).
+
+services:
+  guidescan_db:
+    volumes:
+      - ${GUIDESCAN_DB_DUMP:?Set GUIDESCAN_DB_DUMP to the database dump file}:/guidescan.dump:ro,z
+      - ./initdb/restore-guidescan-dump.sh:/docker-entrypoint-initdb.d/restore-guidescan-dump.sh:ro,z
+    healthcheck:
+      # Check over TCP, which (unlike the unix socket) isn't available until the restore is done
+      test: pg_isready -h 127.0.0.1 -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 10s
+      # Restoring a large dump can take a while
+      start_period: 30m
+
+  # guidescan_app waits for this service to complete successfully, so make it a no-op
+  guidescan_snakemake:
+    command: echo "Skipping snakemake, database restored from GUIDESCAN_DB_DUMP"
