@@ -1,4 +1,5 @@
 # Docker build context is the repository root (see docker/docker-compose.yml)
+.git
 .idea
 .venv
 **/__pycache__

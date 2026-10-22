@@ -25,6 +25,7 @@ def create_app(debug=False):
         job_query,
         job_sequence,
         job_library,
+        downloads,
     )
 
     app.register_blueprint(web.bp, url_prefix="/py")
@@ -35,6 +36,8 @@ def create_app(debug=False):
     app.register_blueprint(job_query.bp, url_prefix="/py/job/query")
     app.register_blueprint(job_sequence.bp, url_prefix="/py/job/sequence")
     app.register_blueprint(job_library.bp, url_prefix="/py/job/library")
+    # Served at the root since the Downloads page links to /indices and /databases
+    app.register_blueprint(downloads.bp)
 
     @app.route("/")
     def root():

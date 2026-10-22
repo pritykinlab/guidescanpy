@@ -1,9 +1,13 @@
 # Override for running with prebuilt gRNA databases (<enzyme>/<organism>.bam.sorted + .bai)
 # from a host folder, instead of generating them. Set GUIDESCAN_BAM_DIR (e.g. in .env) to
-# that folder and run:
+# that folder, and GUIDESCAN_INDICES_ZIP_DIR to the folder with zipped guidescan indices
+# (<organism>.zip). These two folders are served at /databases and /indices on the
+# Downloads page. Set GUIDESCAN_INDEX_DIR to the folder with the prebuilt guidescan indices
+# (<organism>.index.forward/.reverse/.gs) used for gRNA sequence search. Run:
 #   docker compose -f docker-compose.yml -f docker-compose.prebuilt.yml up --build --abort-on-container-exit guidescan_snakemake
-# Add build_indices=True to the --config of the snakemake command below to also build
-# the guidescan indices needed for sequence queries (this downloads each genome).
+# Alternatively, add build_indices=True to the --config of the snakemake command below to
+# build the indices into the guidescan_data volume instead (this downloads each genome); the
+# GUIDESCAN_INDEX_DIR mounts below would then hide them, so remove those mounts.
 
 services:
   guidescan_snakemake:
@@ -14,11 +18,17 @@ services:
   guidescan_celery:
     volumes:
       - ${GUIDESCAN_BAM_DIR}:/data/databases:ro,z
+      - ${GUIDESCAN_INDEX_DIR:?Set GUIDESCAN_INDEX_DIR to the folder with prebuilt guidescan indices}:/data/indices:ro,z
 
   guidescan_flower:
     volumes:
       - ${GUIDESCAN_BAM_DIR}:/data/databases:ro,z
+      - ${GUIDESCAN_INDEX_DIR:?Set GUIDESCAN_INDEX_DIR to the folder with prebuilt guidescan indices}:/data/indices:ro,z
 
   guidescan_app:
     volumes:
       - ${GUIDESCAN_BAM_DIR}:/data/databases:ro,z
+      - ${GUIDESCAN_INDEX_DIR:?Set GUIDESCAN_INDEX_DIR to the folder with prebuilt guidescan indices}:/data/indices:ro,z
+      - ${GUIDESCAN_INDICES_ZIP_DIR:?Set GUIDESCAN_INDICES_ZIP_DIR to the folder with zipped indices}:/data/downloads/indices:ro,z
+    environment:
+      - GUIDESCAN_DOWNLOAD_INDICES_PATH=/data/downloads/indices/

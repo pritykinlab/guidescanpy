@@ -114,6 +114,10 @@ guidescan:
     rn6: rn6.index
     sacCer3: sacCer3.index
 
+  # Folders served (and browsable) at /indices and /databases on the Downloads page
+  download_indices_path: "{GUIDESCAN_DOWNLOAD_INDICES_PATH}"
+  download_databases_path: "{GUIDESCAN_BAM_PATH}"
+
   grna_db_offset_map:
     hg38:cas9: 1
     hg38:cpf1: 1

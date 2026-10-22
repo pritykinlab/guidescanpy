@@ -27,11 +27,21 @@ RUN wget -qO- https://github.com/pritykinlab/guidescan-cli/releases/download/${G
 
 # Note: there is no conda in this image, so `snakemake --use-conda` (needed only for
 # the RS2 cutting-efficiency rule, rs2/env.yaml) will not work here.
-# The build context is the repository root (see docker-compose.yml). .git is included
-# so that setuptools_scm can determine the package version.
-COPY . /src
-RUN uv venv /app/.venv \
-    && uv pip install --python /app/.venv "/src[dev]"
+# The build context is the repository root (see docker-compose.yml).
+
+# Minimal COPYs to install the locked dependencies first, for speedy builds
+COPY pyproject.toml uv.lock ./
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --no-install-project
+
+# .git is not copied into the image, so the version comes in as a build arg (e.g. from `uvx setuptools-scm`)
+ARG VERSION=0.0.0
+ENV SETUPTOOLS_SCM_PRETEND_VERSION_FOR_GUIDESCANPY=${VERSION}
+
+# Minimal COPYs to allow editable package install
+COPY README.md ./
+COPY src ./src
+# --no-cache, since uv's cached build of the project wouldn't pick up a new VERSION
+RUN uv sync --locked --no-cache
 
 RUN mkdir /snakemake
 COPY docker/snakemake /snakemake
