@@ -8,17 +8,17 @@
 services:
   guidescan_snakemake:
     volumes:
-      - ${GUIDESCAN_BAM_DIR:?Set GUIDESCAN_BAM_DIR to the folder with prebuilt bam files}:/data/databases:ro
+      - ${GUIDESCAN_BAM_DIR:?Set GUIDESCAN_BAM_DIR to the folder with prebuilt bam files}:/data/databases:ro,z
     command: snakemake -s Snakefile.prebuilt --cores 1 --config output_dir="/data"
 
   guidescan_celery:
     volumes:
-      - ${GUIDESCAN_BAM_DIR}:/data/databases:ro
+      - ${GUIDESCAN_BAM_DIR}:/data/databases:ro,z
 
   guidescan_flower:
     volumes:
-      - ${GUIDESCAN_BAM_DIR}:/data/databases:ro
+      - ${GUIDESCAN_BAM_DIR}:/data/databases:ro,z
 
   guidescan_app:
     volumes:
-      - ${GUIDESCAN_BAM_DIR}:/data/databases:ro
+      - ${GUIDESCAN_BAM_DIR}:/data/databases:ro,z
